@@ -1,0 +1,263 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 920" font-family="Consolas, monospace">
+  <style>
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .step-label { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .cell { stroke: #334155; stroke-width: 2; rx: 6; }
+    .cell-input { fill: #e2e8f0; }
+    .cell-result { fill: #fef3c7; }
+    .cell-filled { fill: #86efac; }
+    .cell-active-l { fill: #93c5fd; }
+    .cell-active-r { fill: #fca5a5; }
+    .cell-compare { fill: #c4b5fd; }
+    .val { font-size: 16px; text-anchor: middle; fill: #1e293b; font-weight: bold; }
+    .idx { font-size: 11px; text-anchor: middle; fill: #94a3b8; }
+    .pointer { font-size: 13px; text-anchor: middle; font-weight: bold; }
+    .ptr-left { fill: #2563eb; }
+    .ptr-right { fill: #dc2626; }
+    .ptr-pos { fill: #059669; }
+    .note { font-size: 12px; fill: #475569; }
+    .note-bold { font-size: 12px; fill: #1e293b; font-weight: bold; }
+    .arrow { fill: none; stroke: #059669; stroke-width: 2; marker-end: url(#arrowhead); }
+    .divider { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4,4; }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="title">977. Squares of a Sorted Array — Two Pointers</text>
+  <text x="400" y="55" text-anchor="middle" class="note">Вход: [-4, -1, 0, 3, 10] → Выход: [0, 1, 9, 16, 100]</text>
+
+  <!-- ==================== STEP 0 ==================== -->
+  <line x1="30" y1="75" x2="770" y2="75" class="divider"/>
+  <text x="40" y="100" class="step-label">Старт</text>
+
+  <!-- Input array -->
+  <text x="40" y="125" class="note">nums:</text>
+  <g transform="translate(100, 108)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-active-l"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-active-r"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+    <!-- indices -->
+    <text x="28" y="-4" class="idx">0</text>
+    <text x="94" y="-4" class="idx">1</text>
+    <text x="160" y="-4" class="idx">2</text>
+    <text x="226" y="-4" class="idx">3</text>
+    <text x="292" y="-4" class="idx">4</text>
+    <!-- pointers -->
+    <text x="28" y="54" class="pointer ptr-left">↑ L</text>
+    <text x="292" y="54" class="pointer ptr-right">↑ R</text>
+  </g>
+
+  <!-- Result array -->
+  <text x="460" y="125" class="note">result:</text>
+  <g transform="translate(520, 108)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-result"/>
+    <text x="21" y="24" class="val">_</text>
+    <text x="71" y="24" class="val">_</text>
+    <text x="121" y="24" class="val">_</text>
+    <text x="171" y="24" class="val">_</text>
+    <text x="221" y="24" class="val">_</text>
+    <text x="221" y="54" class="pointer ptr-pos">↑ pos</text>
+  </g>
+
+  <!-- ==================== STEP 1 ==================== -->
+  <line x1="30" y1="175" x2="770" y2="175" class="divider"/>
+  <text x="40" y="200" class="step-label">Шаг 1</text>
+  <text x="120" y="200" class="note">(-4)² = 16 vs 10² = 100 → 100 больше → result[4] = 100, R--</text>
+
+  <g transform="translate(100, 208)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-active-l"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-compare"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+    <text x="28" y="54" class="pointer ptr-left">↑ L</text>
+    <text x="226" y="54" class="pointer ptr-right">↑ R</text>
+  </g>
+
+  <g transform="translate(520, 208)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-filled"/>
+    <text x="21" y="24" class="val">_</text>
+    <text x="71" y="24" class="val">_</text>
+    <text x="121" y="24" class="val">_</text>
+    <text x="171" y="24" class="val">_</text>
+    <text x="221" y="24" class="val">100</text>
+    <text x="171" y="54" class="pointer ptr-pos">↑ pos</text>
+  </g>
+
+  <!-- ==================== STEP 2 ==================== -->
+  <line x1="30" y1="275" x2="770" y2="275" class="divider"/>
+  <text x="40" y="300" class="step-label">Шаг 2</text>
+  <text x="120" y="300" class="note">(-4)² = 16 vs 3² = 9 → 16 больше → result[3] = 16, L++</text>
+
+  <g transform="translate(100, 308)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-compare"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-active-l"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-active-r"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-input"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+    <text x="94" y="54" class="pointer ptr-left">↑ L</text>
+    <text x="226" y="54" class="pointer ptr-right">↑ R</text>
+  </g>
+
+  <g transform="translate(520, 308)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-filled"/>
+    <text x="21" y="24" class="val">_</text>
+    <text x="71" y="24" class="val">_</text>
+    <text x="121" y="24" class="val">_</text>
+    <text x="171" y="24" class="val">16</text>
+    <text x="221" y="24" class="val">100</text>
+    <text x="121" y="54" class="pointer ptr-pos">↑ pos</text>
+  </g>
+
+  <!-- ==================== STEP 3 ==================== -->
+  <line x1="30" y1="375" x2="770" y2="375" class="divider"/>
+  <text x="40" y="400" class="step-label">Шаг 3</text>
+  <text x="120" y="400" class="note">(-1)² = 1 vs 3² = 9 → 9 больше → result[2] = 9, R--</text>
+
+  <g transform="translate(100, 408)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-active-l"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-active-r"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-compare"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-input"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+    <text x="94" y="54" class="pointer ptr-left">↑ L</text>
+    <text x="160" y="54" class="pointer ptr-right">↑ R</text>
+  </g>
+
+  <g transform="translate(520, 408)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-filled"/>
+    <text x="21" y="24" class="val">_</text>
+    <text x="71" y="24" class="val">_</text>
+    <text x="121" y="24" class="val">9</text>
+    <text x="171" y="24" class="val">16</text>
+    <text x="221" y="24" class="val">100</text>
+    <text x="71" y="54" class="pointer ptr-pos">↑ pos</text>
+  </g>
+
+  <!-- ==================== STEP 4 ==================== -->
+  <line x1="30" y1="475" x2="770" y2="475" class="divider"/>
+  <text x="40" y="500" class="step-label">Шаг 4</text>
+  <text x="120" y="500" class="note">(-1)² = 1 vs 0² = 0 → 1 больше → result[1] = 1, L++</text>
+
+  <g transform="translate(100, 508)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-compare"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-active-l cell-active-r"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-input"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+    <text x="160" y="54" class="pointer ptr-left">↑ L=R</text>
+  </g>
+
+  <g transform="translate(520, 508)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-result"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-filled"/>
+    <text x="21" y="24" class="val">_</text>
+    <text x="71" y="24" class="val">1</text>
+    <text x="121" y="24" class="val">9</text>
+    <text x="171" y="24" class="val">16</text>
+    <text x="221" y="24" class="val">100</text>
+    <text x="21" y="54" class="pointer ptr-pos">↑ pos</text>
+  </g>
+
+  <!-- ==================== STEP 5 ==================== -->
+  <line x1="30" y1="575" x2="770" y2="575" class="divider"/>
+  <text x="40" y="600" class="step-label">Шаг 5</text>
+  <text x="120" y="600" class="note">L = R = 2 → 0² = 0 → result[0] = 0. Готово!</text>
+
+  <g transform="translate(100, 608)">
+    <rect x="0" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="66" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="132" y="0" width="56" height="36" class="cell cell-compare"/>
+    <rect x="198" y="0" width="56" height="36" class="cell cell-input"/>
+    <rect x="264" y="0" width="56" height="36" class="cell cell-input"/>
+    <text x="28" y="24" class="val">-4</text>
+    <text x="94" y="24" class="val">-1</text>
+    <text x="160" y="24" class="val">0</text>
+    <text x="226" y="24" class="val">3</text>
+    <text x="292" y="24" class="val">10</text>
+  </g>
+
+  <g transform="translate(520, 608)">
+    <rect x="0" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="50" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="100" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="150" y="0" width="42" height="36" class="cell cell-filled"/>
+    <rect x="200" y="0" width="42" height="36" class="cell cell-filled"/>
+    <text x="21" y="24" class="val">0</text>
+    <text x="71" y="24" class="val">1</text>
+    <text x="121" y="24" class="val">9</text>
+    <text x="171" y="24" class="val">16</text>
+    <text x="221" y="24" class="val">100</text>
+  </g>
+
+  <!-- ==================== LEGEND ==================== -->
+  <line x1="30" y1="670" x2="770" y2="670" class="divider"/>
+  <text x="400" y="700" text-anchor="middle" class="step-label">Легенда</text>
+
+  <rect x="60" y="715" width="24" height="18" class="cell cell-active-l" rx="4"/>
+  <text x="94" y="729" class="note">Left pointer</text>
+
+  <rect x="220" y="715" width="24" height="18" class="cell cell-active-r" rx="4"/>
+  <text x="254" y="729" class="note">Right pointer</text>
+
+  <rect x="400" y="715" width="24" height="18" class="cell cell-compare" rx="4"/>
+  <text x="434" y="729" class="note">Выбранный элемент</text>
+
+  <rect x="600" y="715" width="24" height="18" class="cell cell-filled" rx="4"/>
+  <text x="634" y="729" class="note">Заполнено</text>
+
+  <!-- Summary -->
+  <text x="400" y="770" text-anchor="middle" class="note">Время: O(n) — 5 элементов, 5 шагов. Память: O(n) — массив result.</text>
+  <text x="400" y="790" text-anchor="middle" class="note">Ключевая идея: квадраты максимальны по краям → заполняем result с конца.</text>
+</svg>

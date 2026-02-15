@@ -1,4 +1,5 @@
-class Solution {
+// LeetCode: перед вставкой переименуй класс в Solution
+class SquaresOfSortedArray {
     // Временная сложность: O(n) — один проход по массиву
     // Пространственная сложность: O(n) — массив для результата
     public int[] sortedSquares(int[] nums) {
@@ -37,7 +38,7 @@ class Solution {
     }
 
     static void main(String[] args) {
-        var sol = new Solution();
+        var sol = new SquaresOfSortedArray();
         System.out.println(java.util.Arrays.toString(
             sol.sortedSquares(new int[]{-4, -1, 0, 3, 10})
         )); // [0, 1, 9, 16, 100]
