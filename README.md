@@ -9,10 +9,11 @@
 | 977 | Squares of a Sorted Array | Easy | Two Pointers | [Java](two-pointers/977-squares-of-sorted-array.java) |
 | 167 | Two Sum II - Input Array Is Sorted | Medium | Two Pointers | [Java](two-pointers/167-two-sum-ii.java) |
 | 15 | 3Sum | Medium | Two Pointers | [Java](two-pointers/15-3sum.java) |
+| 11 | Container With Most Water | Medium | Two Pointers | [Java](two-pointers/11-container-with-most-water.java) |
 
 ## Паттерны
 
-- [Two Pointers](two-pointers/) — 3/5
+- [Two Pointers](two-pointers/) — 4/5
 - [Sliding Window](sliding-window/) — 0/5
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
@@ -36,7 +37,7 @@
 | 977 | Squares of a Sorted Array | Easy | Базовый Two Pointers, заполнение массива | done |
 | 167 | Two Sum II | Medium | Сравнение суммы с target | done |
 | 15 | 3Sum | Medium | Two Pointers внутри цикла + дедупликация | done |
-| 11 | Container With Most Water | Medium | Жадная логика — двигай короткую стенку | |
+| 11 | Container With Most Water | Medium | Жадная логика — двигай короткую стенку | done |
 | 42 | Trapping Rain Water | Hard | Накопление состояния (максимумы слева/справа) | |
 
 ### Sliding Window
