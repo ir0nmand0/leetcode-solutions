@@ -1,24 +1,29 @@
 // LeetCode: перед вставкой переименуй класс в Solution
 class TwoSumII {
-    // Временная сложность: O(n)
-    // Пространственная сложность: O(1)
+    // Временная сложность: O(n) — один проход двумя указателями
+    // Пространственная сложность: O(1) — только два указателя, результат фиксированный (2 элемента)
     public int[] twoSum(int[] numbers, int target) {
         int n = numbers.length;
+
+        // Два указателя: left — начало, right — конец (массив уже отсортирован)
         int left = 0;
         int right = n - 1;
 
         while (left <= right) {
+            // Считаем сумму двух крайних элементов
             int result = numbers[left] + numbers[right];
 
             if (result > target) {
-                --right;
+                --right;   // Сумма слишком большая — уменьшаем правый
             } else if (result < target) {
-                ++left;
+                ++left;    // Сумма слишком маленькая — увеличиваем левый
             } else {
+                // Нашли пару — возвращаем 1-indexed индексы (++left и ++right добавляют 1)
                 return new int[]{++left, ++right};
             }
         }
 
+        // Задача гарантирует решение — сюда не попадём, но если попали — это баг
         throw new IllegalArgumentException("No solution found");
     }
 
