@@ -10,10 +10,11 @@
 | 167 | Two Sum II - Input Array Is Sorted | Medium | Two Pointers | [Java](two-pointers/167-two-sum-ii.java) |
 | 15 | 3Sum | Medium | Two Pointers | [Java](two-pointers/15-3sum.java) |
 | 11 | Container With Most Water | Medium | Two Pointers | [Java](two-pointers/11-container-with-most-water.java) |
+| 42 | Trapping Rain Water | Hard | Two Pointers | [Java](two-pointers/42-trapping-rain-water.java) |
 
 ## Паттерны
 
-- [Two Pointers](two-pointers/) — 4/5
+- [Two Pointers](two-pointers/) — 5/5 ✓
 - [Sliding Window](sliding-window/) — 0/5
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
@@ -38,7 +39,7 @@
 | 167 | Two Sum II | Medium | Сравнение суммы с target | done |
 | 15 | 3Sum | Medium | Two Pointers внутри цикла + дедупликация | done |
 | 11 | Container With Most Water | Medium | Жадная логика — двигай короткую стенку | done |
-| 42 | Trapping Rain Water | Hard | Накопление состояния (максимумы слева/справа) | |
+| 42 | Trapping Rain Water | Hard | Накопление состояния (максимумы слева/справа) | done |
 
 ### Sliding Window
 | # | Задача | Сложность | Навык | Статус |
