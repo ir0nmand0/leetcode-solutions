@@ -14,7 +14,7 @@
 
 ## Паттерны
 
-- [Two Pointers](two-pointers/) — 5/5 ✓
+- [Two Pointers](two-pointers/) — 5/8
 - [Sliding Window](sliding-window/) — 0/5
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
@@ -25,7 +25,7 @@
 
 ## План задач
 
-Каждый паттерн — 5 задач от простого к сложному. Каждая следующая добавляет одно усложнение поверх предыдущей.
+Каждый паттерн — 5+ задач от простого к сложному. Каждая следующая добавляет одно усложнение поверх предыдущей. Дополнительные задачи — на закрепление подвидов паттерна.
 
 Источники подборки:
 - [Neetcode Roadmap](https://neetcode.io/roadmap)
@@ -40,6 +40,9 @@
 | 15 | 3Sum | Medium | Two Pointers внутри цикла + дедупликация | done |
 | 11 | Container With Most Water | Medium | Жадная логика — двигай короткую стенку | done |
 | 42 | Trapping Rain Water | Hard | Накопление состояния (максимумы слева/справа) | done |
+| 125 | Valid Palindrome | Easy | Встречные указатели, пропуск символов | |
+| 283 | Move Zeroes | Easy | Быстрый/медленный указатель, перезапись на месте | |
+| 26 | Remove Duplicates from Sorted Array | Easy | Быстрый/медленный, дедупликация | |
 
 ### Sliding Window
 | # | Задача | Сложность | Навык | Статус |
