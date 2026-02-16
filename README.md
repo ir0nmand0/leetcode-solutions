@@ -11,10 +11,11 @@
 | 15 | 3Sum | Medium | Two Pointers | [Java](two-pointers/15-3sum.java) |
 | 11 | Container With Most Water | Medium | Two Pointers | [Java](two-pointers/11-container-with-most-water.java) |
 | 42 | Trapping Rain Water | Hard | Two Pointers | [Java](two-pointers/42-trapping-rain-water.java) |
+| 125 | Valid Palindrome | Easy | Two Pointers | [Java](two-pointers/125-valid-palindrome.java) |
 
 ## Паттерны
 
-- [Two Pointers](two-pointers/) — 5/8
+- [Two Pointers](two-pointers/) — 6/8
 - [Sliding Window](sliding-window/) — 0/5
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
@@ -40,7 +41,7 @@
 | 15 | 3Sum | Medium | Two Pointers внутри цикла + дедупликация | done |
 | 11 | Container With Most Water | Medium | Жадная логика — двигай короткую стенку | done |
 | 42 | Trapping Rain Water | Hard | Накопление состояния (максимумы слева/справа) | done |
-| 125 | Valid Palindrome | Easy | Встречные указатели, пропуск символов | |
+| 125 | Valid Palindrome | Easy | Встречные указатели, пропуск символов | done |
 | 283 | Move Zeroes | Easy | Быстрый/медленный указатель, перезапись на месте | |
 | 26 | Remove Duplicates from Sorted Array | Easy | Быстрый/медленный, дедупликация | |
 

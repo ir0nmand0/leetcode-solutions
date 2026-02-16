@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 535" font-family="monospace">
+  <rect width="900" height="535" fill="#1e1e2e" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#cdd6f4" font-size="17" font-weight="bold">125. Valid Palindrome — Two Pointers</text>
+  <text x="450" y="52" text-anchor="middle" fill="#a6adc8" font-size="12">s = "A man, a plan, a canal: Panama" → true</text>
+
+  <!-- Legend -->
+  <rect x="220" y="66" width="14" height="12" fill="#a6e3a1" opacity="0.3" rx="2"/>
+  <text x="240" y="77" fill="#a6adc8" font-size="11">Совпало</text>
+  <rect x="310" y="66" width="14" height="12" fill="#585b70" opacity="0.5" rx="2"/>
+  <text x="330" y="77" fill="#a6adc8" font-size="11">Пропуск (не буква/цифра)</text>
+  <rect x="540" y="66" width="14" height="12" fill="#f38ba8" opacity="0.3" rx="2"/>
+  <text x="560" y="77" fill="#a6adc8" font-size="11">Не совпало (return false)</text>
+
+  <!-- String display -->
+  <text x="450" y="105" text-anchor="middle" fill="#cdd6f4" font-size="13" font-weight="bold">Исходная строка (каждый символ — ячейка)</text>
+
+  <!-- Characters - 30 chars: A _ m a n , _ a _ p l a n , _ a _ c a n a l : _ P a n a m a -->
+  <!-- x positions: starting at 55, each cell 27px wide -->
+  <rect x="55" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="68" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">A</text>
+  <rect x="82" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="95" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="109" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="122" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">m</text>
+  <rect x="136" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="149" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="163" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="176" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">n</text>
+  <rect x="190" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="203" y="128" text-anchor="middle" fill="#6c7086" font-size="10">,</text>
+  <rect x="217" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="230" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="244" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="257" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="271" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="284" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="298" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="311" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">p</text>
+  <rect x="325" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="338" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">l</text>
+  <rect x="352" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="365" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="379" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="392" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">n</text>
+  <rect x="406" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="419" y="128" text-anchor="middle" fill="#6c7086" font-size="10">,</text>
+  <rect x="433" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="446" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="460" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="473" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="487" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="500" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="514" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="527" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">c</text>
+  <rect x="541" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="554" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="568" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="581" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">n</text>
+  <rect x="595" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="608" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="622" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="635" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">l</text>
+  <rect x="649" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="662" y="128" text-anchor="middle" fill="#6c7086" font-size="10">:</text>
+  <rect x="676" y="112" width="27" height="24" fill="#585b70" opacity="0.3" rx="2" stroke="#45475a" stroke-width="1"/>
+  <text x="689" y="128" text-anchor="middle" fill="#6c7086" font-size="10">_</text>
+  <rect x="703" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="716" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">P</text>
+  <rect x="730" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="743" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="757" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="770" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">n</text>
+  <rect x="784" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="797" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+  <rect x="811" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="824" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">m</text>
+  <rect x="838" y="112" width="27" height="24" fill="none" stroke="#45475a" stroke-width="1" rx="2"/>
+  <text x="851" y="128" text-anchor="middle" fill="#cdd6f4" font-size="10">a</text>
+
+  <!-- Index row -->
+  <text x="68"  y="150" text-anchor="middle" fill="#6c7086" font-size="8">0</text>
+  <text x="95"  y="150" text-anchor="middle" fill="#6c7086" font-size="8">1</text>
+  <text x="122" y="150" text-anchor="middle" fill="#6c7086" font-size="8">2</text>
+  <text x="149" y="150" text-anchor="middle" fill="#6c7086" font-size="8">3</text>
+  <text x="176" y="150" text-anchor="middle" fill="#6c7086" font-size="8">4</text>
+  <text x="203" y="150" text-anchor="middle" fill="#6c7086" font-size="8">5</text>
+  <text x="230" y="150" text-anchor="middle" fill="#6c7086" font-size="8">6</text>
+  <text x="257" y="150" text-anchor="middle" fill="#6c7086" font-size="8">7</text>
+  <text x="284" y="150" text-anchor="middle" fill="#6c7086" font-size="8">8</text>
+  <text x="311" y="150" text-anchor="middle" fill="#6c7086" font-size="8">9</text>
+  <text x="338" y="150" text-anchor="middle" fill="#6c7086" font-size="8">10</text>
+  <text x="365" y="150" text-anchor="middle" fill="#6c7086" font-size="8">11</text>
+  <text x="392" y="150" text-anchor="middle" fill="#6c7086" font-size="8">12</text>
+  <text x="419" y="150" text-anchor="middle" fill="#6c7086" font-size="8">13</text>
+  <text x="446" y="150" text-anchor="middle" fill="#6c7086" font-size="8">14</text>
+  <text x="473" y="150" text-anchor="middle" fill="#6c7086" font-size="8">15</text>
+  <text x="500" y="150" text-anchor="middle" fill="#6c7086" font-size="8">16</text>
+  <text x="527" y="150" text-anchor="middle" fill="#6c7086" font-size="8">17</text>
+  <text x="554" y="150" text-anchor="middle" fill="#6c7086" font-size="8">18</text>
+  <text x="581" y="150" text-anchor="middle" fill="#6c7086" font-size="8">19</text>
+  <text x="608" y="150" text-anchor="middle" fill="#6c7086" font-size="8">20</text>
+  <text x="635" y="150" text-anchor="middle" fill="#6c7086" font-size="8">21</text>
+  <text x="662" y="150" text-anchor="middle" fill="#6c7086" font-size="8">22</text>
+  <text x="689" y="150" text-anchor="middle" fill="#6c7086" font-size="8">23</text>
+  <text x="716" y="150" text-anchor="middle" fill="#6c7086" font-size="8">24</text>
+  <text x="743" y="150" text-anchor="middle" fill="#6c7086" font-size="8">25</text>
+  <text x="770" y="150" text-anchor="middle" fill="#6c7086" font-size="8">26</text>
+  <text x="797" y="150" text-anchor="middle" fill="#6c7086" font-size="8">27</text>
+  <text x="824" y="150" text-anchor="middle" fill="#6c7086" font-size="8">28</text>
+  <text x="851" y="150" text-anchor="middle" fill="#6c7086" font-size="8">29</text>
+
+  <!-- Separator -->
+  <line x1="40" y1="162" x2="860" y2="162" stroke="#313244" stroke-width="1"/>
+
+  <!-- Step table -->
+  <text x="450" y="182" text-anchor="middle" fill="#cdd6f4" font-size="13" font-weight="bold">Пошаговое выполнение</text>
+
+  <!-- Table header -->
+  <rect x="40" y="190" width="820" height="22" fill="#313244" rx="3"/>
+  <text x="63"  y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">#</text>
+  <text x="120" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">L</text>
+  <text x="175" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">R</text>
+  <text x="280" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">Пропуск</text>
+  <text x="450" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">Сравнение</text>
+  <text x="620" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">toLowerCase</text>
+  <text x="780" y="205" text-anchor="middle" fill="#cdd6f4" font-size="10" font-weight="bold">Результат</text>
+
+  <!-- All rows highlighted green (all match) -->
+  <rect x="40" y="214" width="820" height="24" fill="#a6e3a1" opacity="0.06" rx="2"/>
+  <rect x="40" y="262" width="820" height="24" fill="#a6e3a1" opacity="0.06" rx="2"/>
+  <rect x="40" y="310" width="820" height="24" fill="#a6e3a1" opacity="0.06" rx="2"/>
+  <rect x="40" y="358" width="820" height="24" fill="#a6e3a1" opacity="0.06" rx="2"/>
+
+  <!-- Step 1: L=0('A') R=29('a') → a == a ✓ -->
+  <text x="63"  y="230" text-anchor="middle" fill="#a6e3a1" font-size="10">1</text>
+  <text x="120" y="230" text-anchor="middle" fill="#a6e3a1" font-size="10">0</text>
+  <text x="175" y="230" text-anchor="middle" fill="#a6e3a1" font-size="10">29</text>
+  <text x="280" y="230" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="450" y="230" text-anchor="middle" fill="#a6e3a1" font-size="10">'A' vs 'a'</text>
+  <text x="620" y="230" text-anchor="middle" fill="#a6e3a1" font-size="10">'a' == 'a'</text>
+  <text x="780" y="230" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 2: L=1(' ') skip→2('m') R=28('m') → m == m ✓ -->
+  <text x="63"  y="254" text-anchor="middle" fill="#bac2de" font-size="10">2</text>
+  <text x="120" y="254" text-anchor="middle" fill="#bac2de" font-size="10">1→2</text>
+  <text x="175" y="254" text-anchor="middle" fill="#bac2de" font-size="10">28</text>
+  <text x="280" y="254" text-anchor="middle" fill="#6c7086" font-size="10">L: пропуск ' ' (idx 1)</text>
+  <text x="450" y="254" text-anchor="middle" fill="#bac2de" font-size="10">'m' vs 'm'</text>
+  <text x="620" y="254" text-anchor="middle" fill="#bac2de" font-size="10">'m' == 'm'</text>
+  <text x="780" y="254" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 3: L=3('a') R=27('a') → a == a ✓ -->
+  <text x="63"  y="278" text-anchor="middle" fill="#a6e3a1" font-size="10">3</text>
+  <text x="120" y="278" text-anchor="middle" fill="#a6e3a1" font-size="10">3</text>
+  <text x="175" y="278" text-anchor="middle" fill="#a6e3a1" font-size="10">27</text>
+  <text x="280" y="278" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="450" y="278" text-anchor="middle" fill="#a6e3a1" font-size="10">'a' vs 'a'</text>
+  <text x="620" y="278" text-anchor="middle" fill="#a6e3a1" font-size="10">'a' == 'a'</text>
+  <text x="780" y="278" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 4: L=4('n') R=26('n') → n == n ✓ -->
+  <text x="63"  y="302" text-anchor="middle" fill="#bac2de" font-size="10">4</text>
+  <text x="120" y="302" text-anchor="middle" fill="#bac2de" font-size="10">4</text>
+  <text x="175" y="302" text-anchor="middle" fill="#bac2de" font-size="10">26</text>
+  <text x="280" y="302" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="450" y="302" text-anchor="middle" fill="#bac2de" font-size="10">'n' vs 'n'</text>
+  <text x="620" y="302" text-anchor="middle" fill="#bac2de" font-size="10">'n' == 'n'</text>
+  <text x="780" y="302" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 5: L=5(',')6(' ')→7('a') R=25('a') → a == a ✓ -->
+  <text x="63"  y="326" text-anchor="middle" fill="#a6e3a1" font-size="10">5</text>
+  <text x="120" y="326" text-anchor="middle" fill="#a6e3a1" font-size="10">5→7</text>
+  <text x="175" y="326" text-anchor="middle" fill="#a6e3a1" font-size="10">25</text>
+  <text x="280" y="326" text-anchor="middle" fill="#6c7086" font-size="10">L: пропуск ',' ' ' (5,6)</text>
+  <text x="450" y="326" text-anchor="middle" fill="#a6e3a1" font-size="10">'a' vs 'a'</text>
+  <text x="620" y="326" text-anchor="middle" fill="#a6e3a1" font-size="10">'a' == 'a'</text>
+  <text x="780" y="326" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 6: L=8(' ')→9('p') R=24('P') → p == p ✓ -->
+  <text x="63"  y="350" text-anchor="middle" fill="#bac2de" font-size="10">6</text>
+  <text x="120" y="350" text-anchor="middle" fill="#bac2de" font-size="10">8→9</text>
+  <text x="175" y="350" text-anchor="middle" fill="#bac2de" font-size="10">24</text>
+  <text x="280" y="350" text-anchor="middle" fill="#6c7086" font-size="10">L: пропуск ' ' (idx 8)</text>
+  <text x="450" y="350" text-anchor="middle" fill="#bac2de" font-size="10">'p' vs 'P'</text>
+  <text x="620" y="350" text-anchor="middle" fill="#bac2de" font-size="10">'p' == 'p'</text>
+  <text x="780" y="350" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 7: L=10('l') R=23(' ')22(':')→21('l') → l == l ✓ -->
+  <text x="63"  y="374" text-anchor="middle" fill="#a6e3a1" font-size="10">7</text>
+  <text x="120" y="374" text-anchor="middle" fill="#a6e3a1" font-size="10">10</text>
+  <text x="175" y="374" text-anchor="middle" fill="#a6e3a1" font-size="10">23→21</text>
+  <text x="280" y="374" text-anchor="middle" fill="#6c7086" font-size="10">R: пропуск ' ' ':' (23,22)</text>
+  <text x="450" y="374" text-anchor="middle" fill="#a6e3a1" font-size="10">'l' vs 'l'</text>
+  <text x="620" y="374" text-anchor="middle" fill="#a6e3a1" font-size="10">'l' == 'l'</text>
+  <text x="780" y="374" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 8: L=11('a') R=20('a') → a == a ✓ -->
+  <text x="63"  y="398" text-anchor="middle" fill="#bac2de" font-size="10">8</text>
+  <text x="120" y="398" text-anchor="middle" fill="#bac2de" font-size="10">11</text>
+  <text x="175" y="398" text-anchor="middle" fill="#bac2de" font-size="10">20</text>
+  <text x="280" y="398" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="450" y="398" text-anchor="middle" fill="#bac2de" font-size="10">'a' vs 'a'</text>
+  <text x="620" y="398" text-anchor="middle" fill="#bac2de" font-size="10">'a' == 'a'</text>
+  <text x="780" y="398" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 9: L=12('n') R=19('n') → n == n ✓ -->
+  <text x="63"  y="422" text-anchor="middle" fill="#a6e3a1" font-size="10">9</text>
+  <text x="120" y="422" text-anchor="middle" fill="#a6e3a1" font-size="10">12</text>
+  <text x="175" y="422" text-anchor="middle" fill="#a6e3a1" font-size="10">19</text>
+  <text x="280" y="422" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="450" y="422" text-anchor="middle" fill="#a6e3a1" font-size="10">'n' vs 'n'</text>
+  <text x="620" y="422" text-anchor="middle" fill="#a6e3a1" font-size="10">'n' == 'n'</text>
+  <text x="780" y="422" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 10: L=13(',')14(' ')→15('a') R=18('a') → a == a ✓ -->
+  <text x="63"  y="446" text-anchor="middle" fill="#bac2de" font-size="10">10</text>
+  <text x="120" y="446" text-anchor="middle" fill="#bac2de" font-size="10">13→15</text>
+  <text x="175" y="446" text-anchor="middle" fill="#bac2de" font-size="10">18</text>
+  <text x="280" y="446" text-anchor="middle" fill="#6c7086" font-size="10">L: пропуск ',' ' ' (13,14)</text>
+  <text x="450" y="446" text-anchor="middle" fill="#bac2de" font-size="10">'a' vs 'a'</text>
+  <text x="620" y="446" text-anchor="middle" fill="#bac2de" font-size="10">'a' == 'a'</text>
+  <text x="780" y="446" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="bold">✓ L++ R--</text>
+
+  <!-- Step 11: L=16(' ')→17('c') R=17('c') → L >= R → STOP -->
+  <text x="63"  y="470" text-anchor="middle" fill="#bac2de" font-size="10">11</text>
+  <text x="120" y="470" text-anchor="middle" fill="#bac2de" font-size="10">16→17</text>
+  <text x="175" y="470" text-anchor="middle" fill="#bac2de" font-size="10">17</text>
+  <text x="280" y="470" text-anchor="middle" fill="#6c7086" font-size="10">L: пропуск ' ' (idx 16)</text>
+  <text x="450" y="470" text-anchor="middle" fill="#f9e2af" font-size="10">L == R на 'c' → СТОП</text>
+  <text x="620" y="470" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+  <text x="780" y="470" text-anchor="middle" fill="#bac2de" font-size="10">—</text>
+
+  <!-- Note about middle char -->
+  <text x="450" y="490" text-anchor="middle" fill="#f9e2af" font-size="10">'c' — середина палиндрома (нечётная длина). Ей не нужна пара, сама с собой совпадает.</text>
+
+  <!-- Result -->
+  <rect x="310" y="498" width="280" height="28" fill="#a6e3a1" opacity="0.12" rx="6" stroke="#a6e3a1" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="450" y="517" text-anchor="middle" fill="#a6e3a1" font-size="14" font-weight="bold">Все пары совпали → return true</text>
+</svg>
