@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 750" font-family="monospace">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#a6e3a1"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="750" fill="#1e1e2e" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#cdd6f4" font-size="17" font-weight="bold">26. Remove Duplicates from Sorted Array — Two Pointers</text>
+  <text x="450" y="50" text-anchor="middle" fill="#a6adc8" font-size="12">nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4] → k=5, [0, 1, 2, 3, 4, ...]</text>
+
+  <!-- Legend -->
+  <rect x="150" y="62" width="14" height="12" fill="#a6e3a1" opacity="0.3" rx="2"/>
+  <text x="170" y="73" fill="#a6adc8" font-size="11">Новый уникальный</text>
+  <rect x="330" y="62" width="14" height="12" fill="#585b70" opacity="0.5" rx="2"/>
+  <text x="350" y="73" fill="#a6adc8" font-size="11">Дубликат (пропуск)</text>
+  <text x="510" y="73" fill="#f9e2af" font-size="11">Массив отсортирован → дубликаты всегда рядом</text>
+
+  <!-- ═══════════════════════════════════════ -->
+  <text x="450" y="100" text-anchor="middle" fill="#cdd6f4" font-size="14" font-weight="bold">Пошаговое выполнение</text>
+
+  <!-- Начальное состояние -->
+  <text x="60" y="128" text-anchor="end" fill="#6c7086" font-size="11">Старт:</text>
+  <rect x="80" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="180" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="230" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="252" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="280" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="302" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="330" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="352" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="380" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="402" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="430" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="452" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">3</text>
+  <rect x="480" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="502" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">3</text>
+  <rect x="530" y="114" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="552" y="131" text-anchor="middle" fill="#cdd6f4" font-size="12">4</text>
+  <text x="102" y="109" text-anchor="middle" fill="#a6e3a1" font-size="9">slow</text>
+  <text x="152" y="109" text-anchor="middle" fill="#f9e2af" font-size="9">fast</text>
+  <text x="610" y="131" fill="#6c7086" font-size="11">slow=0, fast=1</text>
+
+  <!-- Шаг 1: fast=1, nums[0]=0 == nums[1]=0 → дубликат -->
+  <text x="60" y="172" text-anchor="end" fill="#6c7086" font-size="11">f=1:</text>
+  <rect x="80" y="158" width="44" height="26" fill="none" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="102" y="175" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="158" width="44" height="26" fill="#585b70" opacity="0.5" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="152" y="175" text-anchor="middle" fill="#6c7086" font-size="12">0</text>
+  <rect x="180" y="158" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="175" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <text x="610" y="175" fill="#6c7086" font-size="11">0 == 0 → дубликат, пропуск</text>
+
+  <!-- Шаг 2: fast=2, nums[0]=0 != nums[2]=1 → уникальный! -->
+  <text x="60" y="216" text-anchor="end" fill="#a6e3a1" font-size="11">f=2:</text>
+  <rect x="80" y="202" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="219" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="202" width="44" height="26" fill="#a6e3a1" opacity="0.2" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="152" y="219" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">1</text>
+  <rect x="180" y="202" width="44" height="26" fill="none" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="202" y="219" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <text x="152" y="197" text-anchor="middle" fill="#a6e3a1" font-size="9">slow</text>
+  <text x="202" y="197" text-anchor="middle" fill="#f9e2af" font-size="9">fast</text>
+  <line x1="195" y1="212" x2="170" y2="212" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="610" y="219" fill="#a6e3a1" font-size="11">0 != 1 → nums[++slow]=1</text>
+
+  <!-- Шаг 3: fast=3, nums[1]=1 == nums[3]=1 → дубликат -->
+  <text x="60" y="260" text-anchor="end" fill="#6c7086" font-size="11">f=3:</text>
+  <rect x="80" y="246" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="263" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="246" width="44" height="26" fill="none" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="152" y="263" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="246" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="263" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="230" y="246" width="44" height="26" fill="#585b70" opacity="0.5" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="252" y="263" text-anchor="middle" fill="#6c7086" font-size="12">1</text>
+  <text x="610" y="263" fill="#6c7086" font-size="11">1 == 1 → дубликат, пропуск</text>
+
+  <!-- Шаг 4: fast=4, nums[1]=1 == nums[4]=1 → дубликат -->
+  <text x="60" y="304" text-anchor="end" fill="#6c7086" font-size="11">f=4:</text>
+  <rect x="80" y="290" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="307" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="290" width="44" height="26" fill="none" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="152" y="307" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="290" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="307" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="230" y="290" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="252" y="307" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="280" y="290" width="44" height="26" fill="#585b70" opacity="0.5" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="302" y="307" text-anchor="middle" fill="#6c7086" font-size="12">1</text>
+  <text x="610" y="307" fill="#6c7086" font-size="11">1 == 1 → дубликат, пропуск</text>
+
+  <!-- Шаг 5: fast=5, nums[1]=1 != nums[5]=2 → уникальный! -->
+  <text x="60" y="348" text-anchor="end" fill="#a6e3a1" font-size="11">f=5:</text>
+  <rect x="80" y="334" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="351" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="334" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="351" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="334" width="44" height="26" fill="#a6e3a1" opacity="0.2" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="202" y="351" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">2</text>
+  <rect x="230" y="334" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="252" y="351" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="280" y="334" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="302" y="351" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="330" y="334" width="44" height="26" fill="none" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="352" y="351" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <text x="202" y="329" text-anchor="middle" fill="#a6e3a1" font-size="9">slow</text>
+  <text x="352" y="329" text-anchor="middle" fill="#f9e2af" font-size="9">fast</text>
+  <line x1="345" y1="344" x2="220" y2="344" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="610" y="351" fill="#a6e3a1" font-size="11">1 != 2 → nums[++slow]=2</text>
+
+  <!-- Шаг 6: fast=6, nums[2]=2 == nums[6]=2 → дубликат -->
+  <text x="60" y="392" text-anchor="end" fill="#6c7086" font-size="11">f=6:</text>
+  <rect x="80" y="378" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="395" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="378" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="395" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="378" width="44" height="26" fill="none" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="202" y="395" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="380" y="378" width="44" height="26" fill="#585b70" opacity="0.5" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="402" y="395" text-anchor="middle" fill="#6c7086" font-size="12">2</text>
+  <text x="610" y="395" fill="#6c7086" font-size="11">2 == 2 → дубликат, пропуск</text>
+
+  <!-- Шаг 7: fast=7, nums[2]=2 != nums[7]=3 → уникальный! -->
+  <text x="60" y="436" text-anchor="end" fill="#a6e3a1" font-size="11">f=7:</text>
+  <rect x="80" y="422" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="439" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="422" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="439" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="422" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="439" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="230" y="422" width="44" height="26" fill="#a6e3a1" opacity="0.2" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="252" y="439" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">3</text>
+  <rect x="430" y="422" width="44" height="26" fill="none" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="452" y="439" text-anchor="middle" fill="#cdd6f4" font-size="12">3</text>
+  <text x="252" y="417" text-anchor="middle" fill="#a6e3a1" font-size="9">slow</text>
+  <text x="452" y="417" text-anchor="middle" fill="#f9e2af" font-size="9">fast</text>
+  <line x1="445" y1="432" x2="270" y2="432" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="610" y="439" fill="#a6e3a1" font-size="11">2 != 3 → nums[++slow]=3</text>
+
+  <!-- Шаг 8: fast=8, nums[3]=3 == nums[8]=3 → дубликат -->
+  <text x="60" y="480" text-anchor="end" fill="#6c7086" font-size="11">f=8:</text>
+  <rect x="80" y="466" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="483" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="466" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="483" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="466" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="483" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="230" y="466" width="44" height="26" fill="none" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="252" y="483" text-anchor="middle" fill="#cdd6f4" font-size="12">3</text>
+  <rect x="480" y="466" width="44" height="26" fill="#585b70" opacity="0.5" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="502" y="483" text-anchor="middle" fill="#6c7086" font-size="12">3</text>
+  <text x="610" y="483" fill="#6c7086" font-size="11">3 == 3 → дубликат, пропуск</text>
+
+  <!-- Шаг 9: fast=9, nums[3]=3 != nums[9]=4 → уникальный! -->
+  <text x="60" y="524" text-anchor="end" fill="#a6e3a1" font-size="11">f=9:</text>
+  <rect x="80" y="510" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="102" y="527" text-anchor="middle" fill="#cdd6f4" font-size="12">0</text>
+  <rect x="130" y="510" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="152" y="527" text-anchor="middle" fill="#cdd6f4" font-size="12">1</text>
+  <rect x="180" y="510" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="202" y="527" text-anchor="middle" fill="#cdd6f4" font-size="12">2</text>
+  <rect x="230" y="510" width="44" height="26" fill="none" stroke="#6c7086" stroke-width="1" rx="3"/>
+  <text x="252" y="527" text-anchor="middle" fill="#cdd6f4" font-size="12">3</text>
+  <rect x="280" y="510" width="44" height="26" fill="#a6e3a1" opacity="0.2" stroke="#a6e3a1" stroke-width="2" rx="3"/>
+  <text x="302" y="527" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">4</text>
+  <rect x="530" y="510" width="44" height="26" fill="none" stroke="#f9e2af" stroke-width="2" rx="3"/>
+  <text x="552" y="527" text-anchor="middle" fill="#cdd6f4" font-size="12">4</text>
+  <text x="302" y="505" text-anchor="middle" fill="#a6e3a1" font-size="9">slow</text>
+  <text x="552" y="505" text-anchor="middle" fill="#f9e2af" font-size="9">fast</text>
+  <line x1="545" y1="520" x2="320" y2="520" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="610" y="527" fill="#a6e3a1" font-size="11">3 != 4 → nums[++slow]=4</text>
+
+  <!-- Итог -->
+  <line x1="40" y1="552" x2="860" y2="552" stroke="#313244" stroke-width="1"/>
+
+  <text x="60" y="580" text-anchor="end" fill="#a6e3a1" font-size="11">Итог:</text>
+  <rect x="80" y="566" width="44" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="102" y="583" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">0</text>
+  <rect x="130" y="566" width="44" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="152" y="583" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">1</text>
+  <rect x="180" y="566" width="44" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="202" y="583" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">2</text>
+  <rect x="230" y="566" width="44" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="252" y="583" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">3</text>
+  <rect x="280" y="566" width="44" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="302" y="583" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="bold">4</text>
+  <rect x="330" y="566" width="44" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="352" y="583" text-anchor="middle" fill="#6c7086" font-size="12">2</text>
+  <rect x="380" y="566" width="44" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="402" y="583" text-anchor="middle" fill="#6c7086" font-size="12">2</text>
+  <rect x="430" y="566" width="44" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="452" y="583" text-anchor="middle" fill="#6c7086" font-size="12">3</text>
+  <rect x="480" y="566" width="44" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="502" y="583" text-anchor="middle" fill="#6c7086" font-size="12">3</text>
+  <rect x="530" y="566" width="44" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="552" y="583" text-anchor="middle" fill="#6c7086" font-size="12">4</text>
+  <text x="610" y="580" fill="#6c7086" font-size="11">после k=5 — мусор (неважно)</text>
+
+  <rect x="280" y="600" width="340" height="28" fill="#a6e3a1" opacity="0.12" rx="6" stroke="#a6e3a1" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="450" y="619" text-anchor="middle" fill="#a6e3a1" font-size="14" font-weight="bold">slow=4, return ++slow = 5 ✓</text>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- ГРАНИЧНЫЕ СЛУЧАИ                        -->
+  <!-- ═══════════════════════════════════════ -->
+  <line x1="40" y1="640" x2="860" y2="640" stroke="#313244" stroke-width="1"/>
+  <text x="450" y="662" text-anchor="middle" fill="#cdd6f4" font-size="14" font-weight="bold">Граничные случаи</text>
+
+  <!-- Случай 1: все одинаковые -->
+  <text x="100" y="690" text-anchor="end" fill="#f9e2af" font-size="11">[1, 1, 1]:</text>
+  <rect x="120" y="676" width="50" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="145" y="693" text-anchor="middle" fill="#a6e3a1" font-size="12">1</text>
+  <rect x="178" y="676" width="50" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="203" y="693" text-anchor="middle" fill="#6c7086" font-size="12">1</text>
+  <rect x="236" y="676" width="50" height="26" fill="#45475a" opacity="0.3" stroke="#6c7086" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+  <text x="261" y="693" text-anchor="middle" fill="#6c7086" font-size="12">1</text>
+  <text x="310" y="693" fill="#6c7086" font-size="11">→ k=1, slow не сдвинулся (все дубликаты)</text>
+
+  <!-- Случай 2: все уникальные -->
+  <text x="100" y="726" text-anchor="end" fill="#f9e2af" font-size="11">[1, 2, 3]:</text>
+  <rect x="120" y="712" width="50" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="145" y="729" text-anchor="middle" fill="#a6e3a1" font-size="12">1</text>
+  <rect x="178" y="712" width="50" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="203" y="729" text-anchor="middle" fill="#a6e3a1" font-size="12">2</text>
+  <rect x="236" y="712" width="50" height="26" fill="#a6e3a1" opacity="0.1" stroke="#a6e3a1" stroke-width="1" rx="3"/>
+  <text x="261" y="729" text-anchor="middle" fill="#a6e3a1" font-size="12">3</text>
+  <text x="310" y="729" fill="#6c7086" font-size="11">→ k=3, slow и fast бежали вместе (нет дубликатов)</text>
+</svg>
