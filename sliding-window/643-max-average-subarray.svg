@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 980 760"
+   font-family="monospace"
+   version="1.1"
+   id="svg77"
+   sodipodi:docname="643-max-average-subarray.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview77"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.0723684"
+     inkscape:cx="490.03681"
+     inkscape:cy="380"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg77" />
+  <defs
+     id="defs1">
+    <marker
+       id="arrow"
+       markerWidth="8"
+       markerHeight="6"
+       refX="8"
+       refY="3"
+       orient="auto">
+      <path
+         d="M0,0 L8,3 L0,6"
+         fill="#a6e3a1"
+         id="path1" />
+    </marker>
+  </defs>
+  <rect
+     width="980"
+     height="760"
+     fill="#1e1e2e"
+     rx="14"
+     id="rect1" />
+  <!-- Title -->
+  <text
+     x="490"
+     y="30"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="17"
+     font-weight="bold"
+     id="text1">
+    643. Maximum Average Subarray I — Sliding Window
+  </text>
+  <text
+     x="490"
+     y="50"
+     text-anchor="middle"
+     fill="#a6adc8"
+     font-size="12"
+     id="text2">
+    nums = [0, 4, 0, 3, 2], k = 1 → max average = 4.0
+  </text>
+  <!-- Legend -->
+  <rect
+     x="90"
+     y="64"
+     width="14"
+     height="12"
+     fill="#f9e2af"
+     opacity="0.25"
+     rx="2"
+     id="rect2" />
+  <text
+     x="112"
+     y="75"
+     fill="#a6adc8"
+     font-size="11"
+     id="text3">Текущее окно (window)</text>
+  <rect
+     x="285"
+     y="64"
+     width="14"
+     height="12"
+     fill="#a6e3a1"
+     opacity="0.25"
+     rx="2"
+     id="rect3" />
+  <text
+     x="307"
+     y="75"
+     fill="#a6adc8"
+     font-size="11"
+     id="text4">Новый максимум (maxSum обновился)</text>
+  <rect
+     x="555"
+     y="64"
+     width="14"
+     height="12"
+     fill="#f38ba8"
+     opacity="0.20"
+     rx="2"
+     id="rect4" />
+  <text
+     x="577"
+     y="75"
+     fill="#a6adc8"
+     font-size="11"
+     id="text5">Ошибка из старой логики: &quot;не обновить окно&quot;</text>
+  <text
+     x="490"
+     y="100"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="14"
+     font-weight="bold"
+     id="text6">
+    Пошаговый разбор (правильная версия)
+  </text>
+  <!-- Column headers -->
+  <text
+     x="40"
+     y="130"
+     fill="#6c7086"
+     font-size="11"
+     id="text7">Шаг</text>
+  <text
+     x="95"
+     y="130"
+     fill="#6c7086"
+     font-size="11"
+     id="text8">Массив / окно</text>
+  <text
+     x="430"
+     y="130"
+     fill="#6c7086"
+     font-size="11"
+     id="text9">Формула</text>
+  <text
+     x="740"
+     y="130"
+     fill="#6c7086"
+     font-size="11"
+     id="text10">Состояние</text>
+  <!-- helper line -->
+  <line
+     x1="30"
+     y1="138"
+     x2="950"
+     y2="138"
+     stroke="#313244"
+     stroke-width="1"
+     id="line10" />
+  <!-- ===== Start row ===== -->
+  <text
+     x="40"
+     y="170"
+     fill="#a6adc8"
+     font-size="11"
+     id="text11">Старт</text>
+  <!-- Array row start -->
+  <rect
+     x="95"
+     y="150"
+     width="46"
+     height="28"
+     fill="#f9e2af"
+     opacity="0.18"
+     stroke="#f9e2af"
+     stroke-width="2"
+     rx="4"
+     id="rect11" />
+  <text
+     x="118"
+     y="168"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="12"
+     font-weight="bold"
+     id="text12">0</text>
+  <rect
+     x="147"
+     y="150"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect12" />
+  <text
+     x="170"
+     y="168"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text13">4</text>
+  <rect
+     x="199"
+     y="150"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect13" />
+  <text
+     x="222"
+     y="168"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text14">0</text>
+  <rect
+     x="251"
+     y="150"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect14" />
+  <text
+     x="274"
+     y="168"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text15">3</text>
+  <rect
+     x="303"
+     y="150"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect15" />
+  <text
+     x="326"
+     y="168"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text16">2</text>
+  <text
+     x="118"
+     y="145"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="9"
+     id="text17">window [0]</text>
+  <text
+     x="430"
+     y="168"
+     fill="#a6adc8"
+     font-size="11"
+     id="text18">windowSum = nums[0] = 0</text>
+  <text
+     x="740"
+     y="168"
+     fill="#a6adc8"
+     font-size="11"
+     id="text19">windowSum=0, maxSum=0</text>
+  <!-- ===== i=1 ===== -->
+  <line
+     x1="30"
+     y1="192"
+     x2="950"
+     y2="192"
+     stroke="#313244"
+     stroke-width="1"
+     id="line19" />
+  <text
+     x="40"
+     y="225"
+     fill="#f9e2af"
+     font-size="11"
+     id="text20">i=1</text>
+  <rect
+     x="95"
+     y="205"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect20" />
+  <text
+     x="118"
+     y="223"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text21">0</text>
+  <rect
+     x="147"
+     y="205"
+     width="46"
+     height="28"
+     fill="#a6e3a1"
+     opacity="0.18"
+     stroke="#a6e3a1"
+     stroke-width="2"
+     rx="4"
+     id="rect21" />
+  <text
+     x="170"
+     y="223"
+     text-anchor="middle"
+     fill="#a6e3a1"
+     font-size="12"
+     font-weight="bold"
+     id="text22">4</text>
+  <rect
+     x="199"
+     y="205"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect22" />
+  <text
+     x="222"
+     y="223"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text23">0</text>
+  <rect
+     x="251"
+     y="205"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect23" />
+  <text
+     x="274"
+     y="223"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text24">3</text>
+  <rect
+     x="303"
+     y="205"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect24" />
+  <text
+     x="326"
+     y="223"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text25">2</text>
+  <text
+     x="170"
+     y="200"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="9"
+     id="text26">window [4]</text>
+  <line
+     x1="118"
+     y1="219"
+     x2="164"
+     y2="219"
+     stroke="#a6e3a1"
+     stroke-width="1.5"
+     marker-end="url(#arrow)"
+     id="line26" />
+  <text
+     x="430"
+     y="219"
+     fill="#cdd6f4"
+     font-size="11"
+     id="text27">windowSum = 0 + nums[1] - nums[0] = 4</text>
+  <text
+     x="430"
+     y="235"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text28">maxSum = max(0, 4) = 4</text>
+  <text
+     x="740"
+     y="219"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text29">окно обновили ✓</text>
+  <text
+     x="740"
+     y="235"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text30">новый максимум ✓</text>
+  <!-- ===== i=2 ===== -->
+  <line
+     x1="30"
+     y1="258"
+     x2="950"
+     y2="258"
+     stroke="#313244"
+     stroke-width="1"
+     id="line30" />
+  <text
+     x="40"
+     y="291"
+     fill="#f9e2af"
+     font-size="11"
+     id="text31">i=2</text>
+  <rect
+     x="95"
+     y="271"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect31" />
+  <text
+     x="118"
+     y="289"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text32">0</text>
+  <rect
+     x="147"
+     y="271"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect32" />
+  <text
+     x="170"
+     y="289"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text33">4</text>
+  <rect
+     x="199"
+     y="271"
+     width="46"
+     height="28"
+     fill="#f9e2af"
+     opacity="0.18"
+     stroke="#f9e2af"
+     stroke-width="2"
+     rx="4"
+     id="rect33" />
+  <text
+     x="222"
+     y="289"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="12"
+     font-weight="bold"
+     id="text34">0</text>
+  <rect
+     x="251"
+     y="271"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect34" />
+  <text
+     x="274"
+     y="289"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text35">3</text>
+  <rect
+     x="303"
+     y="271"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect35" />
+  <text
+     x="326"
+     y="289"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text36">2</text>
+  <text
+     x="222"
+     y="266"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="9"
+     id="text37">window [0]</text>
+  <text
+     x="430"
+     y="285"
+     fill="#cdd6f4"
+     font-size="11"
+     id="text38">windowSum = 4 + nums[2] - nums[1] = 0</text>
+  <text
+     x="430"
+     y="301"
+     fill="#a6adc8"
+     font-size="11"
+     id="text39">maxSum = max(4, 0) = 4</text>
+  <text
+     x="740"
+     y="285"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text40">окно обновили ✓ (обязательно!)</text>
+  <text
+     x="740"
+     y="301"
+     fill="#6c7086"
+     font-size="11"
+     id="text41">максимум не меняется</text>
+  <!-- error note -->
+  <rect
+     x="740.03247"
+     y="307.03244"
+     width="232.91057"
+     height="33.935116"
+     fill="#f38ba8"
+     opacity="0.08"
+     stroke="#f38ba8"
+     stroke-width="1.06489"
+     rx="6.816895"
+     id="rect41" />
+  <text
+     x="748"
+     y="321"
+     fill="#f38ba8"
+     font-size="10"
+     id="text42">Старая ошибка: здесь нельзя оставить</text>
+  <text
+     x="748"
+     y="334"
+     fill="#f38ba8"
+     font-size="10"
+     id="text43">windowSum = 4 только потому что 0 &lt; 4</text>
+  <!-- ===== i=3 ===== -->
+  <line
+     x1="30"
+     y1="350"
+     x2="950"
+     y2="350"
+     stroke="#313244"
+     stroke-width="1"
+     id="line43" />
+  <text
+     x="40"
+     y="383"
+     fill="#f9e2af"
+     font-size="11"
+     id="text44">i=3</text>
+  <rect
+     x="95"
+     y="363"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect44" />
+  <text
+     x="118"
+     y="381"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text45">0</text>
+  <rect
+     x="147"
+     y="363"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect45" />
+  <text
+     x="170"
+     y="381"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text46">4</text>
+  <rect
+     x="199"
+     y="363"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect46" />
+  <text
+     x="222"
+     y="381"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text47">0</text>
+  <rect
+     x="251"
+     y="363"
+     width="46"
+     height="28"
+     fill="#f9e2af"
+     opacity="0.18"
+     stroke="#f9e2af"
+     stroke-width="2"
+     rx="4"
+     id="rect47" />
+  <text
+     x="274"
+     y="381"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="12"
+     font-weight="bold"
+     id="text48">3</text>
+  <rect
+     x="303"
+     y="363"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect48" />
+  <text
+     x="326"
+     y="381"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text49">2</text>
+  <text
+     x="274"
+     y="358"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="9"
+     id="text50">window [3]</text>
+  <text
+     x="430"
+     y="377"
+     fill="#cdd6f4"
+     font-size="11"
+     id="text51">windowSum = 0 + nums[3] - nums[2] = 3</text>
+  <text
+     x="430"
+     y="393"
+     fill="#a6adc8"
+     font-size="11"
+     id="text52">maxSum = max(4, 3) = 4</text>
+  <text
+     x="740"
+     y="377"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text53">окно обновили ✓</text>
+  <text
+     x="740"
+     y="393"
+     fill="#6c7086"
+     font-size="11"
+     id="text54">максимум не меняется</text>
+  <!-- ===== i=4 ===== -->
+  <line
+     x1="30"
+     y1="416"
+     x2="950"
+     y2="416"
+     stroke="#313244"
+     stroke-width="1"
+     id="line54" />
+  <text
+     x="40"
+     y="449"
+     fill="#f9e2af"
+     font-size="11"
+     id="text55">i=4</text>
+  <rect
+     x="95"
+     y="429"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect55" />
+  <text
+     x="118"
+     y="447"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text56">0</text>
+  <rect
+     x="147"
+     y="429"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect56" />
+  <text
+     x="170"
+     y="447"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text57">4</text>
+  <rect
+     x="199"
+     y="429"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect57" />
+  <text
+     x="222"
+     y="447"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text58">0</text>
+  <rect
+     x="251"
+     y="429"
+     width="46"
+     height="28"
+     fill="none"
+     stroke="#6c7086"
+     stroke-width="1"
+     rx="4"
+     id="rect58" />
+  <text
+     x="274"
+     y="447"
+     text-anchor="middle"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text59">3</text>
+  <rect
+     x="303"
+     y="429"
+     width="46"
+     height="28"
+     fill="#f9e2af"
+     opacity="0.18"
+     stroke="#f9e2af"
+     stroke-width="2"
+     rx="4"
+     id="rect59" />
+  <text
+     x="326"
+     y="447"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="12"
+     font-weight="bold"
+     id="text60">2</text>
+  <text
+     x="326"
+     y="424"
+     text-anchor="middle"
+     fill="#f9e2af"
+     font-size="9"
+     id="text61">window [2]</text>
+  <text
+     x="430"
+     y="443"
+     fill="#cdd6f4"
+     font-size="11"
+     id="text62">windowSum = 3 + nums[4] - nums[3] = 2</text>
+  <text
+     x="430"
+     y="459"
+     fill="#a6adc8"
+     font-size="11"
+     id="text63">maxSum = max(4, 2) = 4</text>
+  <text
+     x="740"
+     y="443"
+     fill="#a6e3a1"
+     font-size="11"
+     id="text64">окно обновили ✓</text>
+  <text
+     x="740"
+     y="459"
+     fill="#6c7086"
+     font-size="11"
+     id="text65">максимум не меняется</text>
+  <!-- Summary separator -->
+  <line
+     x1="30"
+     y1="486"
+     x2="950"
+     y2="486"
+     stroke="#313244"
+     stroke-width="1.2"
+     id="line65" />
+  <!-- Truth box -->
+  <rect
+     x="45"
+     y="505"
+     width="890"
+     height="86"
+     fill="#a6e3a1"
+     opacity="0.07"
+     stroke="#a6e3a1"
+     stroke-width="1"
+     rx="8"
+     id="rect65" />
+  <text
+     x="60"
+     y="530"
+     fill="#a6e3a1"
+     font-size="13"
+     font-weight="bold"
+     id="text66">
+    Главная истина Sliding Window:
+  </text>
+  <text
+     x="60"
+     y="552"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text67">
+    1) windowSum — это ТЕКУЩЕЕ окно, его обновляем на каждом шаге (всегда)
+  </text>
+  <text
+     x="60"
+     y="572"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text68">
+    2) maxSum — это ЛУЧШЕЕ из увиденного, его обновляем только если windowSum стал больше
+  </text>
+  <!-- Mini code -->
+  <rect
+     x="45"
+     y="604"
+     width="445"
+     height="112"
+     fill="#11111b"
+     stroke="#313244"
+     stroke-width="1"
+     rx="8"
+     id="rect68" />
+  <text
+     x="60"
+     y="626"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text69">windowSum += nums[i] - nums[i - k];   // всегда</text>
+  <text
+     x="60"
+     y="648"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text70">if (windowSum &gt; maxSum) {</text>
+  <text
+     x="60"
+     y="670"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text71">    maxSum = windowSum;               // условно</text>
+  <text
+     x="60"
+     y="692"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text72">}</text>
+  <!-- Final result -->
+  <rect
+     x="515"
+     y="604"
+     width="420"
+     height="112"
+     fill="#11111b"
+     stroke="#313244"
+     stroke-width="1"
+     rx="8"
+     id="rect72" />
+  <text
+     x="535"
+     y="628"
+     fill="#a6adc8"
+     font-size="12"
+     id="text73">Итог по примеру:</text>
+  <text
+     x="535"
+     y="652"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text74">maxSum = 4</text>
+  <text
+     x="535"
+     y="676"
+     fill="#cdd6f4"
+     font-size="12"
+     id="text75">answer = (double) maxSum / k = 4 / 1 = 4.0</text>
+  <text
+     x="535"
+     y="700"
+     fill="#a6e3a1"
+     font-size="13"
+     font-weight="bold"
+     id="text76">return 4.00000 ✓</text>
+  <!-- Footer note -->
+  <text
+     x="490"
+     y="742"
+     text-anchor="middle"
+     fill="#6c7086"
+     font-size="11"
+     id="text77">
+    k=1 особенно хорошо показывает ошибку: если не обновить windowSum, он превращается в &quot;старый max&quot;
+  </text>
+</svg>
