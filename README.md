@@ -17,11 +17,13 @@
 | 643 | Maximum Average Subarray I | Easy | Sliding Window | [Java](sliding-window/643-max-average-subarray.java) |
 | 209 | Minimum Size Subarray Sum | Medium | Sliding Window | [Java](sliding-window/209-minimum-size-subarray-sum.java) |
 | 3 | Longest Substring Without Repeating Characters | Medium | Sliding Window | [Java](sliding-window/3-longest-substring-without-repeating-characters.java) |
+| 424 | Longest Repeating Character Replacement | Medium | Sliding Window | [Java](sliding-window/424-longest-repeating-character-replacement.java) |
+| 567 | Permutation in String | Medium | Sliding Window | [Java](sliding-window/567-permutation-in-string.java) |
 
 ## Паттерны
 
 - [Two Pointers](two-pointers/) — 8/8 ✓
-- [Sliding Window](sliding-window/) — 3/6
+- [Sliding Window](sliding-window/) — 5/6
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
 - [Stack](stack/) — 0/5
@@ -56,8 +58,8 @@
 | 643 | Maximum Average Subarray I | Easy | Базовое окно фиксированного размера | done |
 | 209 | Minimum Size Subarray Sum | Medium | Гибкое окно — расширение + сжатие | done |
 | 3 | Longest Substring Without Repeating Characters | Medium | Гибкое окно + HashSet | done |
-| 424 | Longest Repeating Character Replacement | Medium | Гибкое окно + подсчёт символов | |
-| 567 | Permutation in String | Medium | Окно + частотный массив | |
+| 424 | Longest Repeating Character Replacement | Medium | Гибкое окно + подсчёт символов | done |
+| 567 | Permutation in String | Medium | Окно + частотный массив | done |
 | 76 | Minimum Window Substring | Hard | Гибкое окно + два счётчика | |
 
 ### Binary Search

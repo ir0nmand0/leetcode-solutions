@@ -1,0 +1,255 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 1580" font-family="monospace" font-size="14">
+  <style>
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .step { font-size: 13px; fill: #1a1a2e; }
+    .note { font-size: 12px; fill: #e94560; font-weight: bold; }
+    .dim { font-size: 12px; fill: #888; }
+    .cell { stroke: #333; stroke-width: 1.5; rx: 4; }
+    .window { fill: #d4edda; }
+    .match { fill: #c3e6cb; stroke: #28a745; stroke-width: 2.5; }
+    .removed { fill: #f8d7da; }
+    .inactive { fill: #f0f0f0; }
+    .added { fill: #fff3cd; }
+    .ptr { font-size: 11px; font-weight: bold; }
+    .freq-box { fill: #e8f4fd; stroke: #4a90d9; stroke-width: 1; rx: 4; }
+    .freq-match { fill: #d4edda; stroke: #28a745; stroke-width: 1.5; rx: 4; }
+    .freq-diff { fill: #f8d7da; stroke: #e94560; stroke-width: 1.5; rx: 4; }
+    .err-box { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; rx: 6; }
+  </style>
+
+  <!-- Заголовок -->
+  <text x="425" y="30" text-anchor="middle" class="title">567. Permutation in String</text>
+  <text x="425" y="52" text-anchor="middle" class="dim">Фиксированное окно размером s1.length() + сравнение частотных массивов</text>
+
+  <!-- ===== Пример: s1="ab", s2="eidbaooo" ===== -->
+  <text x="20" y="85" class="subtitle">Пример: s1 = "ab", s2 = "eidbaooo" → true</text>
+
+  <!-- Эталон freq1 -->
+  <text x="20" y="115" class="step">Эталон freq1 (s1="ab"):</text>
+  <rect x="250" y="100" width="130" height="26" class="freq-match"/>
+  <text x="315" y="118" text-anchor="middle" class="step">a:1  b:1</text>
+
+  <!-- Шаг 0: начальное окно [0..1] = "ei" -->
+  <text x="20" y="155" class="step">Начальное окно [0..1] = "ei"</text>
+  <g transform="translate(20, 165)">
+    <rect x="0" y="0" width="45" height="32" class="cell window"/>
+    <rect x="45" y="0" width="45" height="32" class="cell window"/>
+    <rect x="90" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="135" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="315" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle">e</text>
+    <text x="67" y="21" text-anchor="middle">i</text>
+    <text x="112" y="21" text-anchor="middle">d</text>
+    <text x="157" y="21" text-anchor="middle">b</text>
+    <text x="202" y="21" text-anchor="middle">a</text>
+    <text x="247" y="21" text-anchor="middle">o</text>
+    <text x="292" y="21" text-anchor="middle">o</text>
+    <text x="337" y="21" text-anchor="middle">o</text>
+  </g>
+  <rect x="420" y="165" width="130" height="26" class="freq-diff"/>
+  <text x="485" y="183" text-anchor="middle" class="step">e:1  i:1</text>
+  <text x="570" y="183" class="note">≠ freq1</text>
+
+  <!-- Шаг 1: slide → [1..2] = "id" -->
+  <text x="20" y="225" class="step">slide: -'e' +'d' → окно [1..2] = "id"</text>
+  <g transform="translate(20, 235)">
+    <rect x="0" y="0" width="45" height="32" class="cell removed"/>
+    <rect x="45" y="0" width="45" height="32" class="cell window"/>
+    <rect x="90" y="0" width="45" height="32" class="cell window"/>
+    <rect x="135" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="315" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">e</text>
+    <text x="67" y="21" text-anchor="middle">i</text>
+    <text x="112" y="21" text-anchor="middle">d</text>
+    <text x="157" y="21" text-anchor="middle">b</text>
+    <text x="202" y="21" text-anchor="middle">a</text>
+    <text x="247" y="21" text-anchor="middle">o</text>
+    <text x="292" y="21" text-anchor="middle">o</text>
+    <text x="337" y="21" text-anchor="middle">o</text>
+  </g>
+  <rect x="420" y="235" width="130" height="26" class="freq-diff"/>
+  <text x="485" y="253" text-anchor="middle" class="step">d:1  i:1</text>
+  <text x="570" y="253" class="note">≠ freq1</text>
+
+  <!-- Шаг 2: slide → [2..3] = "db" -->
+  <text x="20" y="295" class="step">slide: -'i' +'b' → окно [2..3] = "db"</text>
+  <g transform="translate(20, 305)">
+    <rect x="0" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="45" y="0" width="45" height="32" class="cell removed"/>
+    <rect x="90" y="0" width="45" height="32" class="cell window"/>
+    <rect x="135" y="0" width="45" height="32" class="cell window"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="315" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">e</text>
+    <text x="67" y="21" text-anchor="middle" fill="#999">i</text>
+    <text x="112" y="21" text-anchor="middle">d</text>
+    <text x="157" y="21" text-anchor="middle">b</text>
+    <text x="202" y="21" text-anchor="middle">a</text>
+    <text x="247" y="21" text-anchor="middle">o</text>
+    <text x="292" y="21" text-anchor="middle">o</text>
+    <text x="337" y="21" text-anchor="middle">o</text>
+  </g>
+  <rect x="420" y="305" width="130" height="26" class="freq-diff"/>
+  <text x="485" y="323" text-anchor="middle" class="step">b:1  d:1</text>
+  <text x="570" y="323" class="note">≠ freq1</text>
+
+  <!-- Шаг 3: slide → [3..4] = "ba" — MATCH! -->
+  <text x="20" y="365" class="step">slide: -'d' +'a' → окно [3..4] = "ba"</text>
+  <g transform="translate(20, 375)">
+    <rect x="0" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="45" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="90" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="135" y="0" width="45" height="32" class="cell match"/>
+    <rect x="180" y="0" width="45" height="32" class="cell match"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="315" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">e</text>
+    <text x="67" y="21" text-anchor="middle" fill="#999">i</text>
+    <text x="112" y="21" text-anchor="middle" fill="#999">d</text>
+    <text x="157" y="21" text-anchor="middle" font-weight="bold">b</text>
+    <text x="202" y="21" text-anchor="middle" font-weight="bold">a</text>
+    <text x="247" y="21" text-anchor="middle">o</text>
+    <text x="292" y="21" text-anchor="middle">o</text>
+    <text x="337" y="21" text-anchor="middle">o</text>
+  </g>
+  <rect x="420" y="375" width="130" height="26" class="freq-match"/>
+  <text x="485" y="393" text-anchor="middle" class="step">a:1  b:1</text>
+  <text x="570" y="393" class="step" fill="#28a745" font-weight="bold">= freq1 ✓</text>
+
+  <text x="20" y="435" class="subtitle">Результат: true ("ba" — анаграмма "ab")</text>
+
+  <!-- ===== Механика скольжения ===== -->
+  <line x1="20" y1="460" x2="830" y2="460" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="490" class="subtitle">Механика: как скользит окно</text>
+
+  <rect x="20" y="505" width="800" height="100" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="535" class="step">Окно фиксированного размера = s1.length()</text>
+  <text x="40" y="560" class="step" fill="#e94560">Уходит левый:  freq2[s2.charAt(i - s1.length()) - 'a']--</text>
+  <text x="40" y="585" class="step" fill="#28a745">Входит правый: freq2[s2.charAt(i) - 'a']++</text>
+
+  <!-- ===== Сравнение массивов ===== -->
+  <line x1="20" y1="625" x2="830" y2="625" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="655" class="subtitle">Как сравниваем: Arrays.equals(freq1, freq2)</text>
+
+  <rect x="20" y="670" width="800" height="135" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="695" class="step">freq1 (эталон s1="ab"):</text>
+  <g transform="translate(40, 705)">
+    <rect x="0" y="0" width="30" height="24" class="freq-match"/><text x="15" y="17" text-anchor="middle" font-size="11">1</text>
+    <rect x="30" y="0" width="30" height="24" class="freq-match"/><text x="45" y="17" text-anchor="middle" font-size="11">1</text>
+    <rect x="60" y="0" width="30" height="24" class="freq-box"/><text x="75" y="17" text-anchor="middle" font-size="11">0</text>
+    <rect x="90" y="0" width="30" height="24" class="freq-box"/><text x="105" y="17" text-anchor="middle" font-size="11">0</text>
+    <rect x="120" y="0" width="30" height="24" class="freq-box"/><text x="135" y="17" text-anchor="middle" font-size="11">0</text>
+    <text x="165" y="17" class="dim">... 0 ...</text>
+    <text x="0" y="38" font-size="10" class="dim">a  b  c  d  e</text>
+  </g>
+
+  <text x="40" y="770" class="step">freq2 (окно "ba"):</text>
+  <g transform="translate(40, 780)">
+    <rect x="0" y="0" width="30" height="24" class="freq-match"/><text x="15" y="17" text-anchor="middle" font-size="11">1</text>
+    <rect x="30" y="0" width="30" height="24" class="freq-match"/><text x="45" y="17" text-anchor="middle" font-size="11">1</text>
+    <rect x="60" y="0" width="30" height="24" class="freq-box"/><text x="75" y="17" text-anchor="middle" font-size="11">0</text>
+    <rect x="90" y="0" width="30" height="24" class="freq-box"/><text x="105" y="17" text-anchor="middle" font-size="11">0</text>
+    <rect x="120" y="0" width="30" height="24" class="freq-box"/><text x="135" y="17" text-anchor="middle" font-size="11">0</text>
+    <text x="165" y="17" class="dim">... 0 ...</text>
+    <text x="0" y="38" font-size="10" class="dim">a  b  c  d  e</text>
+  </g>
+  <text x="350" y="755" class="step" fill="#28a745" font-weight="bold">Поэлементно равны → анаграмма!</text>
+
+  <!-- ===== Ошибки на пути ===== -->
+  <line x1="20" y1="830" x2="830" y2="830" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="860" class="subtitle">Ошибки на пути к решению</text>
+
+  <!-- Ошибка 1 -->
+  <rect x="20" y="875" width="390" height="80" class="err-box"/>
+  <text x="35" y="898" class="note">Ошибка 1: Якорь и направление</text>
+  <text x="35" y="918" class="dim">Найти символ s1 в s2 и идти от него</text>
+  <text x="35" y="933" class="dim">назад? Нет — анаграмма не имеет</text>
+  <text x="35" y="948" class="dim">фиксированного порядка</text>
+
+  <!-- Ошибка 2 -->
+  <rect x="430" y="875" width="390" height="80" class="err-box"/>
+  <text x="445" y="898" class="note">Ошибка 2: Анаграмма ≠ Палиндром</text>
+  <text x="445" y="918" class="dim">Палиндром = задом наперёд</text>
+  <text x="445" y="933" class="dim">Анаграмма = те же буквы</text>
+  <text x="445" y="948" class="dim">в ЛЮБОМ порядке</text>
+
+  <!-- Ошибка 3 -->
+  <rect x="20" y="970" width="390" height="80" class="err-box"/>
+  <text x="35" y="993" class="note">Ошибка 3: Set вместо частот</text>
+  <text x="35" y="1013" class="dim">Set теряет КОЛИЧЕСТВО символов</text>
+  <text x="35" y="1028" class="dim">"aab" → Set{a,b} — потеряли что 'a'</text>
+  <text x="35" y="1043" class="dim">встречается 2 раза</text>
+
+  <!-- Ошибка 4 -->
+  <rect x="430" y="970" width="390" height="80" class="err-box"/>
+  <text x="445" y="993" class="note">Ошибка 4: O(n²) интуиция</text>
+  <text x="445" y="1013" class="dim">Пересчитывать окно заново? Нет!</text>
+  <text x="445" y="1028" class="dim">Окно скользит инкрементально:</text>
+  <text x="445" y="1043" class="dim">-левый +правый = один шаг</text>
+
+  <!-- ===== Второй пример: s1="adc", s2="dcda" ===== -->
+  <line x1="20" y1="1075" x2="830" y2="1075" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1105" class="subtitle">Кейс: s1 = "adc", s2 = "dcda" → true</text>
+
+  <text x="20" y="1135" class="step">Эталон freq1: a:1 c:1 d:1</text>
+
+  <!-- Начальное окно "dcd" -->
+  <text x="20" y="1165" class="step">Окно [0..2] = "dcd"</text>
+  <g transform="translate(20, 1175)">
+    <rect x="0" y="0" width="55" height="32" class="cell window"/>
+    <rect x="55" y="0" width="55" height="32" class="cell window"/>
+    <rect x="110" y="0" width="55" height="32" class="cell window"/>
+    <rect x="165" y="0" width="55" height="32" class="cell inactive"/>
+    <text x="27" y="21" text-anchor="middle">d</text>
+    <text x="82" y="21" text-anchor="middle">c</text>
+    <text x="137" y="21" text-anchor="middle">d</text>
+    <text x="192" y="21" text-anchor="middle">a</text>
+  </g>
+  <rect x="300" y="1175" width="150" height="26" class="freq-diff"/>
+  <text x="375" y="1193" text-anchor="middle" class="step">c:1 d:2</text>
+  <text x="470" y="1193" class="note">≠ freq1 (d:2 вместо a:1)</text>
+
+  <!-- slide → "cda" MATCH -->
+  <text x="20" y="1235" class="step">slide: -'d' +'a' → окно [1..3] = "cda"</text>
+  <g transform="translate(20, 1245)">
+    <rect x="0" y="0" width="55" height="32" class="cell removed"/>
+    <rect x="55" y="0" width="55" height="32" class="cell match"/>
+    <rect x="110" y="0" width="55" height="32" class="cell match"/>
+    <rect x="165" y="0" width="55" height="32" class="cell match"/>
+    <text x="27" y="21" text-anchor="middle" fill="#999">d</text>
+    <text x="82" y="21" text-anchor="middle" font-weight="bold">c</text>
+    <text x="137" y="21" text-anchor="middle" font-weight="bold">d</text>
+    <text x="192" y="21" text-anchor="middle" font-weight="bold">a</text>
+  </g>
+  <rect x="300" y="1245" width="150" height="26" class="freq-match"/>
+  <text x="375" y="1263" text-anchor="middle" class="step">a:1 c:1 d:1</text>
+  <text x="470" y="1263" class="step" fill="#28a745" font-weight="bold">= freq1 ✓</text>
+
+  <text x="20" y="1310" class="subtitle">Результат: true ("cda" — анаграмма "adc")</text>
+
+  <!-- ===== Граничные случаи ===== -->
+  <line x1="20" y1="1335" x2="830" y2="1335" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1365" class="subtitle">Граничные случаи</text>
+
+  <text x="40" y="1395" class="step">• s1.length() &gt; s2.length() → false (окно не влезет)</text>
+  <text x="40" y="1420" class="step">• s1 = "a", s2 = "a" → true (начальное окно = совпадение)</text>
+  <text x="40" y="1445" class="step">• s1 = "ab", s2 = "eidboaoo" → false ('a' и 'b' рядом не стоят)</text>
+
+  <!-- Итог -->
+  <line x1="20" y1="1470" x2="830" y2="1470" stroke="#ddd" stroke-width="1"/>
+  <text x="425" y="1500" text-anchor="middle" class="step" font-weight="bold">Анаграмма = одинаковые частоты букв, порядок не важен</text>
+  <text x="425" y="1525" text-anchor="middle" class="dim">freq1 не трогаем, freq2 обновляем инкрементально: -левый +правый</text>
+  <text x="425" y="1550" text-anchor="middle" class="dim">Индекс через char - 'a' → O(1) без HashMap</text>
+</svg>
