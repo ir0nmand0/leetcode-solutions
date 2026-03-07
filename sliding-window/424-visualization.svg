@@ -1,0 +1,284 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 1860" font-family="monospace" font-size="14">
+  <style>
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .step { font-size: 13px; fill: #1a1a2e; }
+    .note { font-size: 12px; fill: #e94560; font-weight: bold; }
+    .dim { font-size: 12px; fill: #888; }
+    .cell { stroke: #333; stroke-width: 1.5; rx: 4; }
+    .window { fill: #d4edda; }
+    .slide { fill: #fff3cd; }
+    .removed { fill: #f8d7da; }
+    .inactive { fill: #f0f0f0; }
+    .ptr { font-size: 11px; font-weight: bold; }
+    .freq-box { fill: #e8f4fd; stroke: #4a90d9; stroke-width: 1; rx: 4; }
+    .freq-champ { fill: #d4edda; stroke: #28a745; stroke-width: 1.5; rx: 4; }
+    .best { stroke: #28a745; stroke-width: 2.5; }
+    .info { font-size: 12px; fill: #1a1a2e; }
+  </style>
+
+  <!-- Заголовок -->
+  <text x="425" y="30" text-anchor="middle" class="title">424. Longest Repeating Character Replacement</text>
+  <text x="425" y="52" text-anchor="middle" class="dim">Окно валидно если: windowSize - maxFreq &lt;= k (остаток — замены)</text>
+
+  <!-- ===== Пример: "AABABBA", k=1 ===== -->
+  <text x="20" y="85" class="subtitle">Пример: s = "AABABBA", k = 1 → ответ 4</text>
+
+  <!-- Шаг 0: right=0 -->
+  <text x="20" y="115" class="step">right=0 'A' → freq[A]=1, maxFreq=1</text>
+  <g transform="translate(20, 125)">
+    <rect x="0" y="0" width="45" height="32" class="cell window"/>
+    <rect x="45" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="90" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="135" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle">A</text>
+    <text x="67" y="21" text-anchor="middle">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="22" y="48" text-anchor="middle" class="ptr" fill="#e94560">L,R</text>
+  </g>
+  <rect x="370" y="125" width="70" height="26" class="freq-champ"/>
+  <text x="405" y="143" text-anchor="middle" class="step">A:1</text>
+  <text x="460" y="143" class="info">size=1 замен=0 ≤1 ✓</text>
+  <text x="630" y="143" class="note">max=1</text>
+
+  <!-- Шаг 1: right=1 -->
+  <text x="20" y="195" class="step">right=1 'A' → freq[A]=2, maxFreq=2</text>
+  <g transform="translate(20, 205)">
+    <rect x="0" y="0" width="45" height="32" class="cell window"/>
+    <rect x="45" y="0" width="45" height="32" class="cell window"/>
+    <rect x="90" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="135" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle">A</text>
+    <text x="67" y="21" text-anchor="middle">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="22" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="67" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="205" width="70" height="26" class="freq-champ"/>
+  <text x="405" y="223" text-anchor="middle" class="step">A:2</text>
+  <text x="460" y="223" class="info">size=2 замен=0 ≤1 ✓</text>
+  <text x="630" y="223" class="note">max=2</text>
+
+  <!-- Шаг 2: right=2 -->
+  <text x="20" y="275" class="step">right=2 'B' → freq[B]=1, maxFreq=2 (A всё ещё чемпион)</text>
+  <g transform="translate(20, 285)">
+    <rect x="0" y="0" width="45" height="32" class="cell window"/>
+    <rect x="45" y="0" width="45" height="32" class="cell window"/>
+    <rect x="90" y="0" width="45" height="32" class="cell window"/>
+    <rect x="135" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle">A</text>
+    <text x="67" y="21" text-anchor="middle">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="22" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="112" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="285" width="110" height="26" class="freq-box"/>
+  <text x="425" y="303" text-anchor="middle" class="step">A:2 B:1</text>
+  <text x="500" y="303" class="info">size=3 замен=1 ≤1 ✓</text>
+  <text x="670" y="303" class="note">max=3</text>
+
+  <!-- Шаг 3: right=3 — окно растёт до 4! -->
+  <text x="20" y="355" class="step">right=3 'A' → freq[A]=3, maxFreq=3</text>
+  <g transform="translate(20, 365)">
+    <rect x="0" y="0" width="45" height="32" class="cell window best"/>
+    <rect x="45" y="0" width="45" height="32" class="cell window best"/>
+    <rect x="90" y="0" width="45" height="32" class="cell window best"/>
+    <rect x="135" y="0" width="45" height="32" class="cell window best"/>
+    <rect x="180" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle">A</text>
+    <text x="67" y="21" text-anchor="middle">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="22" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="157" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="365" width="110" height="26" class="freq-box"/>
+  <text x="425" y="383" text-anchor="middle" class="step">A:3 B:1</text>
+  <text x="500" y="383" class="info">size=4 замен=1 ≤1 ✓</text>
+  <text x="670" y="383" class="note">max=4 ★</text>
+
+  <!-- Шаг 4: right=4 — НЕВАЛИДНО! slide -->
+  <text x="20" y="435" class="step">right=4 'B' → freq[B]=2, maxFreq=3</text>
+  <g transform="translate(20, 445)">
+    <rect x="0" y="0" width="45" height="32" class="cell removed"/>
+    <rect x="45" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="90" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="135" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="180" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="225" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">A</text>
+    <text x="67" y="21" text-anchor="middle">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="67" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="202" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="445" width="110" height="26" class="freq-box"/>
+  <text x="425" y="463" text-anchor="middle" class="step">A:2 B:2</text>
+  <text x="500" y="463" class="note">замен=2 &gt;1 SLIDE!</text>
+  <text x="670" y="463" class="dim">max=4</text>
+
+  <!-- Шаг 5: right=5 — снова SLIDE -->
+  <text x="20" y="515" class="step">right=5 'B' → freq[B]=3, maxFreq=3</text>
+  <g transform="translate(20, 525)">
+    <rect x="0" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="45" y="0" width="45" height="32" class="cell removed"/>
+    <rect x="90" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="135" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="180" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="225" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="270" y="0" width="45" height="32" class="cell inactive"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">A</text>
+    <text x="67" y="21" text-anchor="middle" fill="#999">A</text>
+    <text x="112" y="21" text-anchor="middle">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="112" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="247" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="525" width="110" height="26" class="freq-box"/>
+  <text x="425" y="543" text-anchor="middle" class="step">A:1 B:3</text>
+  <text x="500" y="543" class="note">замен=2 &gt;1 SLIDE!</text>
+  <text x="670" y="543" class="dim">max=4</text>
+
+  <!-- Шаг 6: right=6 — снова SLIDE -->
+  <text x="20" y="595" class="step">right=6 'A' → freq[A]=2, maxFreq=3</text>
+  <g transform="translate(20, 605)">
+    <rect x="0" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="45" y="0" width="45" height="32" class="cell inactive"/>
+    <rect x="90" y="0" width="45" height="32" class="cell removed"/>
+    <rect x="135" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="180" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="225" y="0" width="45" height="32" class="cell slide"/>
+    <rect x="270" y="0" width="45" height="32" class="cell slide"/>
+    <text x="22" y="21" text-anchor="middle" fill="#999">A</text>
+    <text x="67" y="21" text-anchor="middle" fill="#999">A</text>
+    <text x="112" y="21" text-anchor="middle" fill="#999">B</text>
+    <text x="157" y="21" text-anchor="middle">A</text>
+    <text x="202" y="21" text-anchor="middle">B</text>
+    <text x="247" y="21" text-anchor="middle">B</text>
+    <text x="292" y="21" text-anchor="middle">A</text>
+    <text x="157" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="292" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">R</text>
+  </g>
+  <rect x="370" y="605" width="110" height="26" class="freq-box"/>
+  <text x="425" y="623" text-anchor="middle" class="step">A:2 B:2</text>
+  <text x="500" y="623" class="note">замен=2 &gt;1 SLIDE!</text>
+  <text x="670" y="623" class="dim">max=4</text>
+
+  <text x="20" y="670" class="subtitle">Результат: max = 4 (окно "AABA" → заменяем B → "AAAA")</text>
+
+  <!-- ===== Ключевая идея: maxFreq не уменьшается ===== -->
+  <line x1="20" y1="700" x2="830" y2="700" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="730" class="subtitle">Почему maxFreq можно НЕ уменьшать?</text>
+
+  <rect x="20" y="745" width="800" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="775" class="step">Шаг 3: maxFreq=3, maxWindow=4 (окно AABA, A встречается 3 раза)</text>
+  <text x="40" y="800" class="step">Шаг 4: freq[A] падает до 2, но maxFreq остаётся 3</text>
+
+  <text x="40" y="835" class="step" fill="#e94560">Кажется неправильно? Нет! Смотри:</text>
+
+  <text x="40" y="865" class="step">• maxFreq=3 означает: "лучшее что мы видели — 3 одинаковых символа"</text>
+  <text x="40" y="890" class="step">• Чтобы побить max=4, нужно окно ≥ 5, значит maxFreq ≥ 4</text>
+  <text x="40" y="910" class="step">• Пока maxFreq не вырастет — окно не вырастет — ответ не обновится</text>
+
+  <!-- ===== Slide vs Shrink ===== -->
+  <line x1="20" y1="940" x2="830" y2="940" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="970" class="subtitle">Slide vs Shrink: почему здесь if, а не while?</text>
+
+  <rect x="20" y="985" width="390" height="130" rx="6" fill="#d4edda" fill-opacity="0.3" stroke="#28a745" stroke-width="1.5"/>
+  <text x="35" y="1010" class="step" fill="#28a745" font-weight="bold">Эта задача: if (slide)</text>
+  <text x="35" y="1035" class="step">Окно невалидно → сдвигаем left на 1</text>
+  <text x="35" y="1055" class="step">Размер окна уменьшается на 1</text>
+  <text x="35" y="1075" class="step">Окно "едет" вправо, не сжимаясь</text>
+  <text x="35" y="1100" class="dim">Нам нужен только максимум → нет</text>
+  <text x="35" y="1112" class="dim">смысла сжимать ниже текущего max</text>
+
+  <rect x="430" y="985" width="390" height="130" rx="6" fill="#e8f4fd" fill-opacity="0.3" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="445" y="1010" class="step" fill="#4a90d9" font-weight="bold">Задача 209: while (shrink)</text>
+  <text x="445" y="1035" class="step">Окно невалидно → сжимаем пока</text>
+  <text x="445" y="1055" class="step">не станет валидным</text>
+  <text x="445" y="1075" class="step">Окно может стать сильно меньше</text>
+  <text x="445" y="1100" class="dim">Там искали МИНИМУМ → нужно</text>
+  <text x="445" y="1112" class="dim">проверять каждый размер при сжатии</text>
+
+  <!-- ===== Формула ===== -->
+  <line x1="20" y1="1140" x2="830" y2="1140" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1170" class="subtitle">Формула валидности окна</text>
+
+  <rect x="20" y="1185" width="800" height="110" rx="8" fill="#fff3cd" fill-opacity="0.5" stroke="#ffc107" stroke-width="1.5"/>
+
+  <text x="410" y="1215" text-anchor="middle" class="step" font-size="16" font-weight="bold">windowSize - maxFreq &lt;= k</text>
+
+  <text x="60" y="1245" class="step">windowSize = 5</text>
+  <text x="260" y="1245" class="step">maxFreq = 3 (A)</text>
+  <text x="500" y="1245" class="step">замен: 5-3 = 2</text>
+  <text x="680" y="1245" class="step">k = 1</text>
+
+  <text x="410" y="1275" text-anchor="middle" class="note">2 &gt; 1 → не хватает замен → slide!</text>
+
+  <!-- ===== Лайфхак: freq[c - 'A'] ===== -->
+  <line x1="20" y1="1310" x2="830" y2="1310" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1340" class="subtitle">Лайфхак: freq[c - 'A'] вместо HashMap</text>
+
+  <rect x="20" y="1355" width="800" height="120" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="1380" class="step">'A' - 'A' = 0,  'B' - 'A' = 1,  ...,  'Z' - 'A' = 25</text>
+  <text x="40" y="1405" class="step">int[] freq = new int[26] → O(1) доступ по индексу, без хэширования</text>
+  <text x="40" y="1435" class="step" fill="#28a745" font-weight="bold">Синхронизация с окном:</text>
+  <text x="40" y="1460" class="step">right++ → freq[idx]++     left++ → freq[idx]--</text>
+
+  <!-- ===== Почему не сканируем 26 элементов ===== -->
+  <line x1="20" y1="1495" x2="830" y2="1495" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1525" class="subtitle">Почему НЕ нужно сканировать 26 элементов для maxFreq?</text>
+
+  <rect x="20" y="1540" width="800" height="140" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="1570" class="step" fill="#e94560" font-weight="bold">Новый чемпион может появиться ТОЛЬКО при right++</text>
+  <text x="40" y="1595" class="step">• right++ → freq[idx]++ → только ЭТОТ символ мог вырасти</text>
+  <text x="40" y="1620" class="step">• left++ → freq[idx]-- → частоты только падают, чемпион не появится</text>
+  <text x="40" y="1650" class="step" fill="#28a745" font-weight="bold">Один кандидат → одно сравнение → O(1)</text>
+  <text x="40" y="1675" class="dim">maxFreq = Math.max(maxFreq, freq[idx])  — вот и весь поиск</text>
+
+  <!-- Граничные случаи -->
+  <line x1="20" y1="1700" x2="830" y2="1700" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1730" class="subtitle">Граничные случаи</text>
+
+  <text x="40" y="1760" class="step">• "A", k=0 → окно из 1 символа, замен не нужно → 1</text>
+  <text x="40" y="1785" class="step">• "ABAB", k=2 → заменяем обе B → "AAAA" → 4</text>
+  <text x="40" y="1810" class="step">• "AABA", k=0 → замен нет, максимум "AA" → 2</text>
+  <text x="40" y="1835" class="dim">• k ≥ длина строки → вся строка = ответ (всё можно заменить)</text>
+</svg>
