@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1380" font-family="monospace" font-size="14">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 1750" font-family="monospace" font-size="14">
   <style>
     .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
     .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
@@ -8,22 +8,23 @@
     .cell { stroke: #333; stroke-width: 1.5; rx: 4; }
     .window { fill: #d4edda; }
     .removed { fill: #f8d7da; }
-    .current { fill: #fff3cd; }
     .inactive { fill: #f0f0f0; }
     .ptr { font-size: 11px; font-weight: bold; }
-    .set-box { fill: #e8f4fd; stroke: #4a90d9; stroke-width: 1; rx: 4; }
+    .arr-box { fill: #e8f4fd; stroke: #4a90d9; stroke-width: 1; rx: 4; }
     .best { stroke: #28a745; stroke-width: 2.5; }
+    .err-box { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; rx: 6; }
+    .ok-box { fill: #d4edda; fill-opacity: 0.3; stroke: #28a745; stroke-width: 1.5; rx: 6; }
   </style>
 
   <!-- Заголовок -->
-  <text x="410" y="30" text-anchor="middle" class="title">3. Longest Substring Without Repeating Characters</text>
-  <text x="410" y="52" text-anchor="middle" class="dim">Гибкое окно [left..i] + HashSet — сжимаем пока дубликат не вылетит</text>
+  <text x="425" y="30" text-anchor="middle" class="title">3. Longest Substring Without Repeating Characters</text>
+  <text x="425" y="52" text-anchor="middle" class="dim">Гибкое окно [left..i] + lastSeen[] — прыжок за дубликат за O(1)</text>
 
-  <!-- ===== Пример 1: "abcabcbb" ===== -->
-  <text x="20" y="85" class="subtitle">Пример: s = "abcabcbb" → ответ 3</text>
+  <!-- ===== Пример: "abcabcbb" ===== -->
+  <text x="20" y="85" class="subtitle">Пример: s = "abcabcbb" → ответ 3 (v2: lastSeen[])</text>
 
   <!-- Шаг 0: i=0 -->
-  <text x="20" y="115" class="step">i=0 tmp='a' нет в set → добавляем</text>
+  <text x="20" y="115" class="step">i=0 ch='a' lastSeen['a']=-1 &lt; left=0 → нет дубликата</text>
   <g transform="translate(20, 125)">
     <rect x="0" y="0" width="40" height="32" class="cell window"/>
     <rect x="40" y="0" width="40" height="32" class="cell inactive"/>
@@ -43,12 +44,11 @@
     <text x="300" y="21" text-anchor="middle">b</text>
     <text x="20" y="48" text-anchor="middle" class="ptr" fill="#e94560">L,i</text>
   </g>
-  <rect x="370" y="125" width="120" height="26" class="set-box"/>
-  <text x="430" y="143" text-anchor="middle" class="step">set: {a}</text>
-  <text x="520" y="143" class="dim">len=1 max=1</text>
+  <text x="370" y="143" class="dim">lastSeen['a']=0</text>
+  <text x="570" y="143" class="note">max=1</text>
 
-  <!-- Шаг 1: i=2 -->
-  <text x="20" y="195" class="step">i=2 tmp='c' нет в set → окно растёт</text>
+  <!-- Шаг 1: i=2, окно растёт -->
+  <text x="20" y="195" class="step">i=2 ch='c' lastSeen['c']=-1 → нет дубликата, окно растёт</text>
   <g transform="translate(20, 205)">
     <rect x="0" y="0" width="40" height="32" class="cell window"/>
     <rect x="40" y="0" width="40" height="32" class="cell window"/>
@@ -69,12 +69,11 @@
     <text x="20" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
     <text x="100" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
   </g>
-  <rect x="370" y="205" width="140" height="26" class="set-box"/>
-  <text x="440" y="223" text-anchor="middle" class="step">set: {a,b,c}</text>
-  <text x="540" y="223" class="dim">len=3 max=3</text>
+  <text x="370" y="223" class="dim">lastSeen: a=0 b=1 c=2</text>
+  <text x="570" y="223" class="note">max=3</text>
 
-  <!-- Шаг 2: i=3 дубликат 'a' -->
-  <text x="20" y="275" class="step">i=3 tmp='a' <tspan fill="#e94560">дубликат!</tspan> → сжимаем: remove 'a', left=1</text>
+  <!-- Шаг 2: i=3 дубликат 'a' — ПРЫЖОК -->
+  <text x="20" y="275" class="step">i=3 ch='a' lastSeen['a']=0 ≥ left=0 → <tspan fill="#e94560">дубликат!</tspan> left = 0+1 = 1</text>
   <g transform="translate(20, 285)">
     <rect x="0" y="0" width="40" height="32" class="cell removed"/>
     <rect x="40" y="0" width="40" height="32" class="cell window"/>
@@ -95,44 +94,17 @@
     <text x="60" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
     <text x="140" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
   </g>
-  <rect x="370" y="285" width="140" height="26" class="set-box"/>
-  <text x="440" y="303" text-anchor="middle" class="step">set: {b,c,a}</text>
-  <text x="540" y="303" class="dim">len=3 max=3</text>
+  <text x="370" y="303" class="dim">lastSeen['a']=3</text>
+  <text x="570" y="303" class="dim">len=3 max=3</text>
 
-  <!-- Шаг 3: i=4 дубликат 'b' -->
-  <text x="20" y="355" class="step">i=4 tmp='b' <tspan fill="#e94560">дубликат!</tspan> → сжимаем: remove 'b', left=2</text>
+  <!-- Шаг 3: i=6 дубликат 'b' -->
+  <text x="20" y="355" class="step">i=6 ch='b' lastSeen['b']=4 ≥ left=3 → <tspan fill="#e94560">дубликат!</tspan> left = 4+1 = 5</text>
   <g transform="translate(20, 365)">
-    <rect x="0" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="40" y="0" width="40" height="32" class="cell removed"/>
-    <rect x="80" y="0" width="40" height="32" class="cell window"/>
-    <rect x="120" y="0" width="40" height="32" class="cell window"/>
-    <rect x="160" y="0" width="40" height="32" class="cell window"/>
-    <rect x="200" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="240" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="280" y="0" width="40" height="32" class="cell inactive"/>
-    <text x="20" y="21" text-anchor="middle" fill="#999">a</text>
-    <text x="60" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="100" y="21" text-anchor="middle">c</text>
-    <text x="140" y="21" text-anchor="middle">a</text>
-    <text x="180" y="21" text-anchor="middle">b</text>
-    <text x="220" y="21" text-anchor="middle">c</text>
-    <text x="260" y="21" text-anchor="middle">b</text>
-    <text x="300" y="21" text-anchor="middle">b</text>
-    <text x="100" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
-    <text x="180" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
-  </g>
-  <rect x="370" y="365" width="140" height="26" class="set-box"/>
-  <text x="440" y="383" text-anchor="middle" class="step">set: {c,a,b}</text>
-  <text x="540" y="383" class="dim">len=3 max=3</text>
-
-  <!-- Шаг 4: i=6 дубликат 'b', сжимаем 2 раза -->
-  <text x="20" y="435" class="step">i=6 tmp='b' <tspan fill="#e94560">дубликат!</tspan> → remove 'a'(нет), remove 'b'(да!), left=5</text>
-  <g transform="translate(20, 445)">
     <rect x="0" y="0" width="40" height="32" class="cell inactive"/>
     <rect x="40" y="0" width="40" height="32" class="cell inactive"/>
     <rect x="80" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="120" y="0" width="40" height="32" class="cell removed"/>
-    <rect x="160" y="0" width="40" height="32" class="cell removed"/>
+    <rect x="120" y="0" width="40" height="32" class="cell inactive"/>
+    <rect x="160" y="0" width="40" height="32" class="cell inactive"/>
     <rect x="200" y="0" width="40" height="32" class="cell window"/>
     <rect x="240" y="0" width="40" height="32" class="cell window"/>
     <rect x="280" y="0" width="40" height="32" class="cell inactive"/>
@@ -147,160 +119,138 @@
     <text x="220" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
     <text x="260" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
   </g>
-  <rect x="370" y="445" width="130" height="26" class="set-box"/>
-  <text x="435" y="463" text-anchor="middle" class="step">set: {c,b}</text>
-  <text x="530" y="463" class="dim">len=2 max=3</text>
-  <text x="590" y="463" class="note">← 'a' тоже удалилась (она на пути к 'b')</text>
+  <text x="370" y="383" class="dim">lastSeen['b']=6</text>
+  <text x="570" y="383" class="dim">len=2 max=3</text>
+  <text x="370" y="403" class="note">Один прыжок! Без while.</text>
 
-  <!-- Шаг 5: i=7 финал -->
-  <text x="20" y="515" class="step">i=7 tmp='b' <tspan fill="#e94560">дубликат!</tspan> → remove 'c', remove 'b', left=7</text>
-  <g transform="translate(20, 525)">
-    <rect x="0" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="40" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="80" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="120" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="160" y="0" width="40" height="32" class="cell inactive"/>
-    <rect x="200" y="0" width="40" height="32" class="cell removed"/>
-    <rect x="240" y="0" width="40" height="32" class="cell removed"/>
-    <rect x="280" y="0" width="40" height="32" class="cell window"/>
-    <text x="20" y="21" text-anchor="middle" fill="#999">a</text>
-    <text x="60" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="100" y="21" text-anchor="middle" fill="#999">c</text>
-    <text x="140" y="21" text-anchor="middle" fill="#999">a</text>
-    <text x="180" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="220" y="21" text-anchor="middle" fill="#999">c</text>
-    <text x="260" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="300" y="21" text-anchor="middle">b</text>
-    <text x="300" y="48" text-anchor="middle" class="ptr" fill="#e94560">L,i</text>
+  <text x="20" y="435" class="subtitle">Результат: max = 3 ("abc")</text>
+
+  <!-- ===== Ключевой кейс: "abba" — почему нужен max() ===== -->
+  <line x1="20" y1="460" x2="830" y2="460" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="490" class="subtitle">Ключевой кейс: s = "abba" → ответ 2</text>
+  <text x="20" y="510" class="note">Почему left = max(left, lastSeen[ch] + 1), а не просто lastSeen[ch] + 1</text>
+
+  <!-- abba i=1 -->
+  <text x="20" y="545" class="step">i=1 ch='b' lastSeen['b']=-1 → нет дубликата, окно "ab"</text>
+  <g transform="translate(20, 555)">
+    <rect x="0" y="0" width="55" height="32" class="cell window"/>
+    <rect x="55" y="0" width="55" height="32" class="cell window"/>
+    <rect x="110" y="0" width="55" height="32" class="cell inactive"/>
+    <rect x="165" y="0" width="55" height="32" class="cell inactive"/>
+    <text x="27" y="21" text-anchor="middle">a</text>
+    <text x="82" y="21" text-anchor="middle">b</text>
+    <text x="137" y="21" text-anchor="middle">b</text>
+    <text x="192" y="21" text-anchor="middle">a</text>
+    <text x="27" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="82" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
   </g>
-  <rect x="370" y="525" width="120" height="26" class="set-box"/>
-  <text x="430" y="543" text-anchor="middle" class="step">set: {b}</text>
-  <text x="520" y="543" class="dim">len=1 max=3</text>
+  <text x="300" y="575" class="dim">lastSeen: a=0 b=1</text>
+  <text x="520" y="575" class="note">max=2</text>
 
-  <text x="20" y="590" class="subtitle">Результат: max = 3 ("abc")</text>
-
-  <!-- ===== Ключевой кейс: "dvdf" ===== -->
-  <line x1="20" y1="615" x2="800" y2="615" stroke="#ddd" stroke-width="1"/>
-  <text x="20" y="640" class="subtitle">Ключевой кейс: s = "dvdf" → ответ 3</text>
-  <text x="20" y="660" class="note">Почему условие while должно быть chars.contains(tmp), а не chars.contains(s.charAt(left))</text>
-
-  <!-- dvdf шаг 0-1: окно растёт -->
-  <text x="20" y="690" class="step">i=1 окно [0..1] = "dv"</text>
-  <g transform="translate(20, 700)">
-    <rect x="0" y="0" width="50" height="32" class="cell window"/>
-    <rect x="50" y="0" width="50" height="32" class="cell window"/>
-    <rect x="100" y="0" width="50" height="32" class="cell inactive"/>
-    <rect x="150" y="0" width="50" height="32" class="cell inactive"/>
-    <text x="25" y="21" text-anchor="middle">d</text>
-    <text x="75" y="21" text-anchor="middle">v</text>
-    <text x="125" y="21" text-anchor="middle">d</text>
-    <text x="175" y="21" text-anchor="middle">f</text>
-    <text x="25" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
-    <text x="75" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
+  <!-- abba i=2 дубликат 'b' -->
+  <text x="20" y="620" class="step">i=2 ch='b' lastSeen['b']=1 ≥ left=0 → <tspan fill="#e94560">дубликат!</tspan> left = max(0, 1+1) = 2</text>
+  <g transform="translate(20, 630)">
+    <rect x="0" y="0" width="55" height="32" class="cell inactive"/>
+    <rect x="55" y="0" width="55" height="32" class="cell removed"/>
+    <rect x="110" y="0" width="55" height="32" class="cell window"/>
+    <rect x="165" y="0" width="55" height="32" class="cell inactive"/>
+    <text x="27" y="21" text-anchor="middle" fill="#999">a</text>
+    <text x="82" y="21" text-anchor="middle" fill="#999">b</text>
+    <text x="137" y="21" text-anchor="middle">b</text>
+    <text x="192" y="21" text-anchor="middle">a</text>
+    <text x="137" y="48" text-anchor="middle" class="ptr" fill="#e94560">L,i</text>
   </g>
-  <rect x="260" y="700" width="120" height="26" class="set-box"/>
-  <text x="320" y="718" text-anchor="middle" class="step">set: {d,v}</text>
-  <text x="410" y="718" class="dim">len=2 max=2</text>
+  <text x="300" y="650" class="dim">lastSeen['b']=2, left=2</text>
+  <text x="520" y="650" class="dim">len=1 max=2</text>
 
-  <!-- dvdf шаг 2: дубликат 'd' — ПРАВИЛЬНОЕ поведение -->
-  <text x="20" y="770" class="step">i=2 tmp='d' <tspan fill="#e94560">дубликат!</tspan></text>
-
-  <!-- Правильно -->
-  <rect x="20" y="785" width="380" height="115" rx="6" fill="#d4edda" fill-opacity="0.3" stroke="#28a745" stroke-width="1.5"/>
-  <text x="30" y="805" class="step" fill="#28a745" font-weight="bold">✓ while (chars.contains(tmp))</text>
-  <text x="30" y="825" class="dim">remove 'd' → set={v} → 'd' нет в set → СТОП</text>
-  <text x="30" y="845" class="dim">'v' остаётся! left=1</text>
-  <g transform="translate(30, 855)">
-    <rect x="0" y="0" width="50" height="28" class="cell removed"/>
-    <rect x="50" y="0" width="50" height="28" class="cell window"/>
-    <rect x="100" y="0" width="50" height="28" class="cell window"/>
-    <rect x="150" y="0" width="50" height="28" class="cell inactive"/>
-    <text x="25" y="19" text-anchor="middle" fill="#999">d</text>
-    <text x="75" y="19" text-anchor="middle">v</text>
-    <text x="125" y="19" text-anchor="middle">d</text>
-    <text x="175" y="19" text-anchor="middle">f</text>
-    <text x="75" y="42" text-anchor="middle" class="ptr" fill="#e94560">L</text>
-    <text x="125" y="42" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
+  <!-- abba i=3 дубликат 'a' — вот тут max() спасает! -->
+  <text x="20" y="700" class="step">i=3 ch='a' lastSeen['a']=0 ≥ left=2? <tspan fill="#28a745">НЕТ! 0 &lt; 2</tspan> → дубликат ЗА окном, пропускаем</text>
+  <g transform="translate(20, 710)">
+    <rect x="0" y="0" width="55" height="32" class="cell inactive"/>
+    <rect x="55" y="0" width="55" height="32" class="cell inactive"/>
+    <rect x="110" y="0" width="55" height="32" class="cell window"/>
+    <rect x="165" y="0" width="55" height="32" class="cell window"/>
+    <text x="27" y="21" text-anchor="middle" fill="#999">a</text>
+    <text x="82" y="21" text-anchor="middle" fill="#999">b</text>
+    <text x="137" y="21" text-anchor="middle">b</text>
+    <text x="192" y="21" text-anchor="middle">a</text>
+    <text x="137" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="192" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
   </g>
+  <text x="300" y="730" class="dim">lastSeen['a']=3</text>
+  <text x="520" y="730" class="dim">len=2 max=2</text>
 
-  <!-- Неправильно -->
-  <rect x="420" y="785" width="380" height="115" rx="6" fill="#f8d7da" fill-opacity="0.3" stroke="#e94560" stroke-width="1.5"/>
-  <text x="430" y="805" class="step" fill="#e94560" font-weight="bold">✗ while (chars.contains(s.charAt(left)))</text>
-  <text x="430" y="825" class="dim">remove 'd' → set={v} → 'v' в set? ДА → remove 'v'!</text>
-  <text x="430" y="845" class="dim">'v' потеряна! left=2, окно схлопнулось</text>
-  <g transform="translate(430, 855)">
-    <rect x="0" y="0" width="50" height="28" class="cell removed"/>
-    <rect x="50" y="0" width="50" height="28" class="cell removed"/>
-    <rect x="100" y="0" width="50" height="28" class="cell window"/>
-    <rect x="150" y="0" width="50" height="28" class="cell inactive"/>
-    <text x="25" y="19" text-anchor="middle" fill="#999">d</text>
-    <text x="75" y="19" text-anchor="middle" fill="#999">v</text>
-    <text x="125" y="19" text-anchor="middle">d</text>
-    <text x="175" y="19" text-anchor="middle">f</text>
-    <text x="125" y="42" text-anchor="middle" class="ptr" fill="#e94560">L,i</text>
-  </g>
+  <!-- Сравнение: что было бы без проверки >= left -->
+  <rect x="20" y="765" width="390" height="75" class="ok-box"/>
+  <text x="35" y="790" class="step" fill="#28a745" font-weight="bold">✓ С проверкой lastSeen[ch] &gt;= left</text>
+  <text x="35" y="810" class="dim">lastSeen['a']=0, left=2 → 0 &lt; 2 → пропускаем</text>
+  <text x="35" y="830" class="dim">Окно "ba", len=2, max=2 ✓</text>
 
-  <!-- dvdf шаг 3: финал -->
-  <text x="20" y="930" class="step">i=3 tmp='f' нет в set</text>
+  <rect x="430" y="765" width="390" height="75" class="err-box"/>
+  <text x="445" y="790" class="step" fill="#e94560" font-weight="bold">✗ Без проверки: left = lastSeen['a']+1 = 1</text>
+  <text x="445" y="810" class="dim">left откатился с 2 на 1!</text>
+  <text x="445" y="830" class="dim">Окно "bba" — 'b' дважды → НЕПРАВИЛЬНО</text>
 
-  <rect x="20" y="940" width="380" height="55" rx="6" fill="#d4edda" fill-opacity="0.3" stroke="#28a745" stroke-width="1.5"/>
-  <text x="30" y="960" class="step" fill="#28a745" font-weight="bold">✓ окно [1..3] = "vdf" → len=3</text>
-  <text x="30" y="980" class="dim">set: {v,d,f}  max=3  ПРАВИЛЬНО!</text>
+  <text x="20" y="875" class="subtitle">Результат: max = 2 ("ab" или "ba")</text>
 
-  <rect x="420" y="940" width="380" height="55" rx="6" fill="#f8d7da" fill-opacity="0.3" stroke="#e94560" stroke-width="1.5"/>
-  <text x="430" y="960" class="step" fill="#e94560" font-weight="bold">✗ окно [2..3] = "df" → len=2</text>
-  <text x="430" y="980" class="dim">set: {d,f}  max=2  НЕПРАВИЛЬНО!</text>
+  <!-- ===== Эволюция: v1 vs v2 ===== -->
+  <line x1="20" y1="905" x2="830" y2="905" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="935" class="subtitle">Эволюция решения: v1 (HashSet) → v2 (lastSeen[])</text>
 
-  <!-- ===== Ключевой кейс: "abba" ===== -->
-  <line x1="20" y1="1015" x2="800" y2="1015" stroke="#ddd" stroke-width="1"/>
-  <text x="20" y="1040" class="subtitle">Кейс: s = "abba" → ответ 2</text>
+  <text x="20" y="965" class="step">Пример: "abcdefghija", i=10, ch='a', дубликат на позиции 0</text>
 
-  <text x="20" y="1070" class="step">i=1 окно "ab", set={a,b}, max=2</text>
-  <g transform="translate(20, 1080)">
-    <rect x="0" y="0" width="50" height="32" class="cell window"/>
-    <rect x="50" y="0" width="50" height="32" class="cell window"/>
-    <rect x="100" y="0" width="50" height="32" class="cell inactive"/>
-    <rect x="150" y="0" width="50" height="32" class="cell inactive"/>
-    <text x="25" y="21" text-anchor="middle">a</text>
-    <text x="75" y="21" text-anchor="middle">b</text>
-    <text x="125" y="21" text-anchor="middle">b</text>
-    <text x="175" y="21" text-anchor="middle">a</text>
-    <text x="25" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
-    <text x="75" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
-  </g>
+  <!-- v1 -->
+  <rect x="20" y="980" width="390" height="140" class="err-box"/>
+  <text x="35" y="1005" class="step" fill="#e94560" font-weight="bold">v1: HashSet + while-цикл</text>
+  <text x="35" y="1030" class="dim">while: remove 'a' → remove 'b' → remove 'c' →</text>
+  <text x="35" y="1050" class="dim">remove 'd' → remove 'e' → remove 'f' →</text>
+  <text x="35" y="1070" class="dim">remove 'g' → remove 'h' → remove 'i'</text>
+  <text x="35" y="1095" class="note">9 шагов чтобы найти дубликат</text>
+  <text x="35" y="1112" class="dim">O(n) амортизированно, но шагов много</text>
 
-  <text x="20" y="1150" class="step">i=2 tmp='b' <tspan fill="#e94560">дубликат!</tspan> → remove 'a', remove 'b', left=2</text>
-  <g transform="translate(20, 1160)">
-    <rect x="0" y="0" width="50" height="32" class="cell removed"/>
-    <rect x="50" y="0" width="50" height="32" class="cell removed"/>
-    <rect x="100" y="0" width="50" height="32" class="cell window"/>
-    <rect x="150" y="0" width="50" height="32" class="cell inactive"/>
-    <text x="25" y="21" text-anchor="middle" fill="#999">a</text>
-    <text x="75" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="125" y="21" text-anchor="middle">b</text>
-    <text x="175" y="21" text-anchor="middle">a</text>
-    <text x="125" y="48" text-anchor="middle" class="ptr" fill="#e94560">L,i</text>
-  </g>
-  <text x="260" y="1182" class="dim">set: {b}  len=1  'a' ушла с 'b' — она была на пути</text>
+  <!-- v2 -->
+  <rect x="430" y="980" width="390" height="140" class="ok-box"/>
+  <text x="445" y="1005" class="step" fill="#28a745" font-weight="bold">v2: lastSeen[] + прямой прыжок</text>
+  <text x="445" y="1035" class="dim">lastSeen['a'] = 0</text>
+  <text x="445" y="1055" class="dim">left = max(left, 0 + 1) = 1</text>
+  <text x="445" y="1080" class="step" fill="#28a745" font-weight="bold">1 шаг. Всё.</text>
+  <text x="445" y="1112" class="dim">O(1) на каждый отдельный шаг</text>
 
-  <text x="20" y="1230" class="step">i=3 tmp='a' нет в set (удалена на шаге выше!) → окно "ba"</text>
-  <g transform="translate(20, 1240)">
-    <rect x="0" y="0" width="50" height="32" class="cell inactive"/>
-    <rect x="50" y="0" width="50" height="32" class="cell inactive"/>
-    <rect x="100" y="0" width="50" height="32" class="cell window"/>
-    <rect x="150" y="0" width="50" height="32" class="cell window"/>
-    <text x="25" y="21" text-anchor="middle" fill="#999">a</text>
-    <text x="75" y="21" text-anchor="middle" fill="#999">b</text>
-    <text x="125" y="21" text-anchor="middle">b</text>
-    <text x="175" y="21" text-anchor="middle">a</text>
-    <text x="125" y="48" text-anchor="middle" class="ptr" fill="#e94560">L</text>
-    <text x="175" y="48" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
-  </g>
-  <text x="260" y="1262" class="dim">set: {b,a}  len=2  max=2</text>
+  <!-- ===== Механика lastSeen[] ===== -->
+  <line x1="20" y1="1140" x2="830" y2="1140" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1170" class="subtitle">Как работает lastSeen[]</text>
 
-  <text x="20" y="1310" class="subtitle">Результат: max = 2 ("ab" или "ba")</text>
+  <rect x="20" y="1185" width="800" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
 
-  <!-- Итоговая заметка -->
-  <line x1="20" y1="1330" x2="800" y2="1330" stroke="#ddd" stroke-width="1"/>
-  <text x="410" y="1360" text-anchor="middle" class="note">while (chars.contains(tmp)) — удаляем только до дубликата, а не всё подряд!</text>
+  <text x="40" y="1215" class="step">int[] lastSeen = new int[128]  — весь ASCII (буквы, цифры, пробелы)</text>
+  <text x="40" y="1240" class="step">Заполнен -1 → "ещё не встречался"</text>
+
+  <text x="40" y="1275" class="step" fill="#28a745" font-weight="bold">Два вопроса на каждом шаге:</text>
+  <text x="40" y="1300" class="step">1. lastSeen[ch] &gt;= left?  → дубликат ВНУТРИ окна → прыгаем</text>
+  <text x="40" y="1325" class="step">2. lastSeen[ch] &lt; left?   → дубликат ЗА окном → игнорируем</text>
+  <text x="40" y="1350" class="dim">Затем: lastSeen[ch] = i (обновляем позицию на текущую)</text>
+
+  <!-- ===== Почему 128, а не 26 ===== -->
+  <line x1="20" y1="1375" x2="830" y2="1375" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1405" class="subtitle">Почему массив на 128, а не 26?</text>
+
+  <rect x="20" y="1420" width="800" height="80" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+
+  <text x="40" y="1445" class="step">По условию: s содержит буквы, цифры, пробелы и спецсимволы</text>
+  <text x="40" y="1470" class="step">int[26] покроет только a-z. int[128] — весь ASCII</text>
+  <text x="40" y="1490" class="dim">Память: 128 * 4 байта = 512 байт — ничтожно</text>
+
+  <!-- Граничные случаи -->
+  <line x1="20" y1="1520" x2="830" y2="1520" stroke="#ddd" stroke-width="1"/>
+  <text x="20" y="1550" class="subtitle">Граничные случаи</text>
+
+  <text x="40" y="1580" class="step">• "" → max=0 (цикл не выполняется)</text>
+  <text x="40" y="1605" class="step">• "a" → max=1</text>
+  <text x="40" y="1630" class="step">• "bbbbb" → каждый шаг прыжок, max=1</text>
+  <text x="40" y="1655" class="step">• "dvdf" → lastSeen['d']=0, left=1, окно "vdf", max=3</text>
+
+  <!-- Итог -->
+  <line x1="20" y1="1680" x2="830" y2="1680" stroke="#ddd" stroke-width="1"/>
+  <text x="425" y="1710" text-anchor="middle" class="step" font-weight="bold">lastSeen[] хранит ПОЗИЦИЮ → знаем КУДА и НУЖНО ЛИ прыгать</text>
+  <text x="425" y="1735" text-anchor="middle" class="dim">v1 (HashSet+while): O(n) амортизированно | v2 (lastSeen[]): O(1) на каждый шаг</text>
 </svg>
