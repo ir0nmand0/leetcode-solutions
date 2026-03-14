@@ -1,0 +1,414 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 2420" font-family="monospace" font-size="14">
+  <style>
+    .title    { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .step     { font-size: 13px; fill: #1a1a2e; }
+    .note     { font-size: 12px; fill: #e94560; font-weight: bold; }
+    .dim      { font-size: 12px; fill: #888; }
+    .ptr      { font-size: 11px; font-weight: bold; }
+    .cell     { stroke: #333; stroke-width: 1.5; }
+    .win      { fill: #d4edda; }
+    .rem      { fill: #f8d7da; }
+    .off      { fill: #f0f0f0; }
+    .best     { fill: #cce5ff; }
+    .exc      { fill: #fff3cd; }
+    .err-box  { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; }
+    .ok-box   { fill: #d4edda; fill-opacity: 0.3; stroke: #28a745; stroke-width: 1.5; }
+  </style>
+
+  <!-- ══════════════════════════════════════════════════════════ TITLE -->
+  <text x="425" y="30" text-anchor="middle" class="title">76. Minimum Window Substring (Hard)</text>
+  <text x="425" y="50" text-anchor="middle" class="dim">Гибкое окно [left..right] + freqT/freqW + have/need → O(|s|+|t|), память O(1)</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ SETUP -->
+  <text x="20" y="80" class="subtitle">Вход: s = "ADOBECODEBANC",  t = "ABC"  →  ответ: "BANC"</text>
+
+  <text x="20" y="105" class="step">Шаг 0: строим freqT и need за один проход по t:</text>
+  <!-- freqT boxes -->
+  <rect x="20"  y="114" width="52" height="26" rx="4" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="46"  y="131" text-anchor="middle" class="step" font-weight="bold">A = 1</text>
+  <rect x="82"  y="114" width="52" height="26" rx="4" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="108" y="131" text-anchor="middle" class="step" font-weight="bold">B = 1</text>
+  <rect x="144" y="114" width="52" height="26" rx="4" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="170" y="131" text-anchor="middle" class="step" font-weight="bold">C = 1</text>
+  <text x="208" y="131" class="dim">  D,O,E,N,... = 0 (мусор)</text>
+  <text x="640" y="131" class="note">need = 3 (уникальных)</text>
+
+  <text x="20" y="158" class="dim">freqT[c]==1 — момент уникальности. Дубли живут в freqT[c]: t="AABB" → need=2, freqT[A]=2, freqT[B]=2.</text>
+
+  <line x1="20" y1="172" x2="830" y2="172" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════════════ PHASE 1: i=5 -->
+  <text x="20" y="195" class="subtitle">Фаза 1: Рост → i=5 'C', первое валидное окно [0..5] "ADOBEC"</text>
+
+  <text x="20" y="214" class="step">i=0 'A': freqW[A]=1 == freqT[A]=1 → <tspan fill="#28a745" font-weight="bold">have++=1</tspan></text>
+  <text x="20" y="230" class="step">i=1 'D': freqT[D]=0 → <tspan fill="#888">мусор: freqW не пишем</tspan></text>
+  <text x="20" y="246" class="step">i=2 'O': freqT[O]=0 → <tspan fill="#888">мусор</tspan></text>
+  <text x="20" y="262" class="step">i=3 'B': freqW[B]=1 == freqT[B]=1 → <tspan fill="#28a745" font-weight="bold">have++=2</tspan></text>
+  <text x="20" y="278" class="step">i=4 'E': freqT[E]=0 → <tspan fill="#888">мусор</tspan></text>
+  <text x="20" y="294" class="step">i=5 'C': freqW[C]=1 == freqT[C]=1 → <tspan fill="#28a745" font-weight="bold">have++=3 = need → валидно!</tspan></text>
+
+  <!-- Array: phase 1, i=5, left=0 -->
+  <g transform="translate(20,306)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <text x="17"  y="20" text-anchor="middle">A</text>
+    <text x="52"  y="20" text-anchor="middle">D</text>
+    <text x="87"  y="20" text-anchor="middle">O</text>
+    <text x="122" y="20" text-anchor="middle">B</text>
+    <text x="157" y="20" text-anchor="middle">E</text>
+    <text x="192" y="20" text-anchor="middle">C</text>
+    <text x="227" y="20" text-anchor="middle" fill="#bbb">O</text>
+    <text x="262" y="20" text-anchor="middle" fill="#bbb">D</text>
+    <text x="297" y="20" text-anchor="middle" fill="#bbb">E</text>
+    <text x="332" y="20" text-anchor="middle" fill="#bbb">B</text>
+    <text x="367" y="20" text-anchor="middle" fill="#bbb">A</text>
+    <text x="402" y="20" text-anchor="middle" fill="#bbb">N</text>
+    <text x="437" y="20" text-anchor="middle" fill="#bbb">C</text>
+    <text x="17"  y="46" text-anchor="middle" class="ptr" fill="#e94560">L</text>
+    <text x="192" y="46" text-anchor="middle" class="ptr" fill="#4a90d9">i</text>
+  </g>
+  <!-- State right of array -->
+  <text x="490" y="324" class="step">freqW: A=1 B=1 C=1</text>
+  <text x="490" y="341" class="dim">D,O,E — мусор, не записаны</text>
+  <text x="490" y="358" class="note">have=3  need=3  ✓</text>
+  <text x="490" y="376" class="step" fill="#28a745">Снимок: resLeft=0  resRight=5</text>
+  <text x="490" y="393" class="dim">minLen=6   "ADOBEC"</text>
+
+  <text x="20" y="380" class="step">↓ Нельзя остановиться — правее может быть короче!</text>
+  <text x="20" y="397" class="dim">  "ADOBEC"(6) → ... → "BANC"(4) — финальный ответ правее.</text>
+
+  <line x1="20" y1="415" x2="830" y2="415" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ PHASE 2: Shrink, have drops -->
+  <text x="20" y="437" class="subtitle">Фаза 2: Сжатие — A[0] уходит, have падает, едем вправо</text>
+
+  <text x="20" y="457" class="step">lc=s[0]='A': freqT[A]>0 → freqW[A]-- = 0.  <tspan fill="#e94560" font-weight="bold">0 &lt; freqT[A]=1 → have--=2.</tspan>  left=1</text>
+  <text x="20" y="474" class="step">have=2 ≠ need=3 → while стоп. Снимок resLeft=0,resRight=5 сохранён. right++.</text>
+
+  <!-- Array: phase 2 -->
+  <g transform="translate(20,487)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <text x="17"  y="20" text-anchor="middle" fill="#c00">A</text>
+    <text x="52"  y="20" text-anchor="middle">D</text>
+    <text x="87"  y="20" text-anchor="middle">O</text>
+    <text x="122" y="20" text-anchor="middle">B</text>
+    <text x="157" y="20" text-anchor="middle">E</text>
+    <text x="192" y="20" text-anchor="middle">C</text>
+    <text x="227" y="20" text-anchor="middle" fill="#bbb">O</text>
+    <text x="262" y="20" text-anchor="middle" fill="#bbb">D</text>
+    <text x="297" y="20" text-anchor="middle" fill="#bbb">E</text>
+    <text x="332" y="20" text-anchor="middle" fill="#bbb">B</text>
+    <text x="367" y="20" text-anchor="middle" fill="#bbb">A</text>
+    <text x="402" y="20" text-anchor="middle" fill="#bbb">N</text>
+    <text x="437" y="20" text-anchor="middle" fill="#bbb">C</text>
+    <text x="17"  y="46" text-anchor="middle" class="ptr" fill="#aaa">✗</text>
+    <text x="52"  y="46" text-anchor="middle" class="ptr" fill="#e94560">L=1</text>
+    <text x="192" y="46" text-anchor="middle" class="ptr" fill="#4a90d9">i=5</text>
+  </g>
+  <text x="490" y="505" class="step">freqW: A=0 B=1 C=1</text>
+  <text x="490" y="522" class="note">have=2  need=3  ✗</text>
+  <text x="490" y="539" class="dim">right++ → растём дальше</text>
+  <text x="490" y="556" class="dim">Снимок: resLeft=0 resRight=5 len=6</text>
+
+  <line x1="20" y1="575" x2="830" y2="575" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════ PHASE 3: Excess B + A restores -->
+  <text x="20" y="597" class="subtitle">Фаза 3: Рост — i=9 'B' (излишек!),  i=10 'A' → have=3 снова</text>
+
+  <text x="20" y="617" class="step">i=6..8 'O','D','E': freqT=0 → мусор, freqW не пишем. have=2.</text>
+  <text x="20" y="634" class="step">i=9 'B': freqW[B]++ = <tspan fill="#d4a017" font-weight="bold">2</tspan>.  2 ≠ freqT[B]=1 →  <tspan fill="#888">излишек: have НЕ растёт (have=2)</tspan></text>
+  <text x="20" y="651" class="step">i=10 'A': freqW[A]++ = 1 == freqT[A]=1 → <tspan fill="#28a745" font-weight="bold">have++=3 = need  →  валидно!</tspan></text>
+
+  <!-- Array: phase 3, i=10 -->
+  <g transform="translate(20,664)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell exc"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <text x="17"  y="20" text-anchor="middle" fill="#c00">A</text>
+    <text x="52"  y="20" text-anchor="middle">D</text>
+    <text x="87"  y="20" text-anchor="middle">O</text>
+    <text x="122" y="20" text-anchor="middle">B</text>
+    <text x="157" y="20" text-anchor="middle">E</text>
+    <text x="192" y="20" text-anchor="middle">C</text>
+    <text x="227" y="20" text-anchor="middle">O</text>
+    <text x="262" y="20" text-anchor="middle">D</text>
+    <text x="297" y="20" text-anchor="middle">E</text>
+    <text x="332" y="20" text-anchor="middle" font-weight="bold">B</text>
+    <text x="367" y="20" text-anchor="middle">A</text>
+    <text x="402" y="20" text-anchor="middle" fill="#bbb">N</text>
+    <text x="437" y="20" text-anchor="middle" fill="#bbb">C</text>
+    <!-- "×2" label под жёлтой клеткой -->
+    <text x="332" y="44" text-anchor="middle" class="ptr" fill="#d4a017">×2!</text>
+    <text x="52"  y="46" text-anchor="middle" class="ptr" fill="#e94560">L=1</text>
+    <text x="367" y="46" text-anchor="middle" class="ptr" fill="#4a90d9">i=10</text>
+  </g>
+  <text x="490" y="682" class="step">freqW: A=1  B=<tspan fill="#d4a017">2</tspan>  C=1</text>
+  <text x="490" y="699" class="dim">B=2: излишек — запасной экземпляр</text>
+  <text x="490" y="716" class="note">have=3  need=3  ✓</text>
+  <text x="490" y="733" class="dim">Окно [1..10] len=10 &gt; 6</text>
+  <text x="490" y="750" class="dim">Снимок не обновляем</text>
+
+  <line x1="20" y1="768" x2="830" y2="768" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════ PHASE 4: Shrink, excess B used, C breaks -->
+  <text x="20" y="790" class="subtitle">Фаза 4: Сжатие — мусор уходит, B[3] уходит но B[9] держит норму, C[5] ломает have</text>
+
+  <text x="20" y="810" class="step">lc='D': мусор → left=2.   lc='O': мусор → left=3.</text>
+  <text x="20" y="827" class="step">lc=s[3]='B': freqW[B]-- = <tspan fill="#28a745" font-weight="bold">1</tspan>.  1 ≮ freqT[B]=1 → <tspan fill="#28a745" font-weight="bold">have держится!</tspan>  (B[9] = запасной)   left=4</text>
+  <text x="20" y="844" class="step">lc='E': мусор → left=5.   Окно [5..10] len=6 — не лучше, снимок без изменений.</text>
+  <text x="20" y="861" class="step">lc=s[5]='C': freqW[C]-- = 0.  <tspan fill="#e94560" font-weight="bold">0 &lt; freqT[C]=1 → have--=2.</tspan>  left=6. Сжатие стоп.</text>
+
+  <!-- Array: phase 4 end, left=6, i=10 -->
+  <g transform="translate(20,874)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell off"/>
+    <text x="17"  y="20" text-anchor="middle" fill="#c00">A</text>
+    <text x="52"  y="20" text-anchor="middle" fill="#c00">D</text>
+    <text x="87"  y="20" text-anchor="middle" fill="#c00">O</text>
+    <text x="122" y="20" text-anchor="middle" fill="#c00">B</text>
+    <text x="157" y="20" text-anchor="middle" fill="#c00">E</text>
+    <text x="192" y="20" text-anchor="middle" fill="#c00">C</text>
+    <text x="227" y="20" text-anchor="middle">O</text>
+    <text x="262" y="20" text-anchor="middle">D</text>
+    <text x="297" y="20" text-anchor="middle">E</text>
+    <text x="332" y="20" text-anchor="middle">B</text>
+    <text x="367" y="20" text-anchor="middle">A</text>
+    <text x="402" y="20" text-anchor="middle" fill="#bbb">N</text>
+    <text x="437" y="20" text-anchor="middle" fill="#bbb">C</text>
+    <text x="227" y="46" text-anchor="middle" class="ptr" fill="#e94560">L=6</text>
+    <text x="367" y="46" text-anchor="middle" class="ptr" fill="#4a90d9">i=10</text>
+  </g>
+  <text x="490" y="892" class="step">freqW: A=1  B=1  C=0</text>
+  <text x="490" y="909" class="note">have=2  need=3  ✗</text>
+  <text x="490" y="926" class="dim">Снимок: resLeft=0 resRight=5  len=6</text>
+  <text x="490" y="945" class="note">B[9] держал норму когда</text>
+  <text x="490" y="962" class="note">B[3] вышел! Излишек спас.</text>
+
+  <line x1="20" y1="980" x2="830" y2="980" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════ PHASE 5: N garbage, C → BANC -->
+  <text x="20" y="1003" class="subtitle">Фаза 5: i=11 'N' мусор,  i=12 'C' → have=3,  финальное сжатие до "BANC"</text>
+
+  <text x="20" y="1023" class="step">i=11 'N': freqT[N]=0 → мусор. have=2.</text>
+  <text x="20" y="1040" class="step">i=12 'C': freqW[C]++ = 1 == freqT[C]=1 → <tspan fill="#28a745" font-weight="bold">have++=3 = need  →  валидно!</tspan></text>
+
+  <!-- Array: phase 5 i=12 before shrink -->
+  <g transform="translate(20,1053)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell win"/>
+    <text x="17"  y="20" text-anchor="middle" fill="#c00">A</text>
+    <text x="52"  y="20" text-anchor="middle" fill="#c00">D</text>
+    <text x="87"  y="20" text-anchor="middle" fill="#c00">O</text>
+    <text x="122" y="20" text-anchor="middle" fill="#c00">B</text>
+    <text x="157" y="20" text-anchor="middle" fill="#c00">E</text>
+    <text x="192" y="20" text-anchor="middle" fill="#c00">C</text>
+    <text x="227" y="20" text-anchor="middle">O</text>
+    <text x="262" y="20" text-anchor="middle">D</text>
+    <text x="297" y="20" text-anchor="middle">E</text>
+    <text x="332" y="20" text-anchor="middle">B</text>
+    <text x="367" y="20" text-anchor="middle">A</text>
+    <text x="402" y="20" text-anchor="middle">N</text>
+    <text x="437" y="20" text-anchor="middle">C</text>
+    <text x="227" y="46" text-anchor="middle" class="ptr" fill="#e94560">L=6</text>
+    <text x="437" y="46" text-anchor="middle" class="ptr" fill="#4a90d9">i=12</text>
+  </g>
+  <text x="490" y="1071" class="step">freqW: A=1  B=1  C=1</text>
+  <text x="490" y="1088" class="note">have=3  need=3  ✓</text>
+  <text x="490" y="1105" class="dim">Окно [6..12] "ODEBANC" len=7</text>
+  <text x="490" y="1122" class="dim">7 &gt; 6 → снимок не обновляем</text>
+
+  <!-- Phase 5 shrink sub-steps -->
+  <text x="20" y="1120" class="step">Сжимаем слева (have==need), сравниваем с minLen=6 на каждом шаге:</text>
+
+  <text x="20" y="1140" class="step">❶ lc='O': мусор → left=7.  [7..12] "DEBANC"  len=6.  6 ≮ 6 → без снимка.</text>
+  <text x="20" y="1157" class="step">❷ lc='D': мусор → left=8.  [8..12] "EBANC"   len=5.  <tspan fill="#28a745" font-weight="bold">5 &lt; 6 → СНИМОК: resLeft=8, minLen=5</tspan></text>
+  <text x="20" y="1174" class="step">❸ lc='E': мусор → left=9.  [9..12] "BANC"    len=4.  <tspan fill="#28a745" font-weight="bold">4 &lt; 5 → СНИМОК: resLeft=9, minLen=4</tspan></text>
+  <text x="20" y="1191" class="step">❹ lc='B': freqW[B]-- = 0.  <tspan fill="#e94560" font-weight="bold">0 &lt; freqT[B]=1 → have--=2.</tspan>  left=10. Сжатие стоп.</text>
+
+  <!-- Final "BANC" array -->
+  <g transform="translate(20,1205)">
+    <rect x="0"   y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="35"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="70"  y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="105" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="140" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="175" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="210" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="245" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="280" y="0" width="35" height="30" rx="3" class="cell rem"/>
+    <rect x="315" y="0" width="35" height="30" rx="3" class="cell best" stroke="#28a745" stroke-width="2.5"/>
+    <rect x="350" y="0" width="35" height="30" rx="3" class="cell best" stroke="#28a745" stroke-width="2.5"/>
+    <rect x="385" y="0" width="35" height="30" rx="3" class="cell best" stroke="#28a745" stroke-width="2.5"/>
+    <rect x="420" y="0" width="35" height="30" rx="3" class="cell best" stroke="#28a745" stroke-width="2.5"/>
+    <text x="17"  y="20" text-anchor="middle" fill="#c00">A</text>
+    <text x="52"  y="20" text-anchor="middle" fill="#c00">D</text>
+    <text x="87"  y="20" text-anchor="middle" fill="#c00">O</text>
+    <text x="122" y="20" text-anchor="middle" fill="#c00">B</text>
+    <text x="157" y="20" text-anchor="middle" fill="#c00">E</text>
+    <text x="192" y="20" text-anchor="middle" fill="#c00">C</text>
+    <text x="227" y="20" text-anchor="middle" fill="#c00">O</text>
+    <text x="262" y="20" text-anchor="middle" fill="#c00">D</text>
+    <text x="297" y="20" text-anchor="middle" fill="#c00">E</text>
+    <text x="332" y="20" text-anchor="middle" font-weight="bold">B</text>
+    <text x="367" y="20" text-anchor="middle" font-weight="bold">A</text>
+    <text x="402" y="20" text-anchor="middle" font-weight="bold">N</text>
+    <text x="437" y="20" text-anchor="middle" font-weight="bold">C</text>
+    <text x="385" y="46" text-anchor="middle" class="ptr" fill="#28a745">← ОТВЕТ</text>
+  </g>
+
+  <text x="490" y="1223" class="note" font-size="16px">Ответ: "BANC"</text>
+  <text x="490" y="1244" class="dim">s.substring(resLeft=9, resRight+1=13)</text>
+  <text x="490" y="1261" class="dim">N — мусор между B и C,</text>
+  <text x="490" y="1278" class="dim">физически застрял. Не выбросить.</text>
+
+  <!-- Timeline summary -->
+  <text x="20" y="1272" class="subtitle">Три валидных окна — только последнее минимально:</text>
+  <text x="40" y="1292" class="step">[0..5]  "ADOBEC"     len=6  →  снимок #1</text>
+  <text x="40" y="1309" class="step">[1..10] "DOBECODEBA" len=10 →  без нового рекорда</text>
+  <text x="40" y="1326" class="step">[9..12] "BANC"       len=4  →  <tspan fill="#28a745" font-weight="bold">финальный снимок ✓</tspan></text>
+
+  <line x1="20" y1="1345" x2="830" y2="1345" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════ KEY CASE: Excess cap breaks algo -->
+  <text x="20" y="1369" class="subtitle">Ключевой кейс: почему излишек нельзя ограничивать (cap freqW at freqT)</text>
+
+  <rect x="20"  y="1382" width="395" height="118" rx="6" class="err-box"/>
+  <text x="35"  y="1405" class="step" fill="#e94560" font-weight="bold">✗  Cap: if (freqW[B] &lt; freqT[B]) freqW[B]++</text>
+  <text x="35"  y="1425" class="dim">i=9 B[9]: freqW[B] уже 1 → cap, не пишем</text>
+  <text x="35"  y="1445" class="dim">i=5 B[3] уходит left++: freqW[B]-- = 0</text>
+  <text x="35"  y="1465" class="dim" fill="#e94560">freqW[B]=0 &lt; freqT[B]=1 → have-- → норму</text>
+  <text x="35"  y="1485" class="dim" fill="#e94560">не закроем! right идёт только →, назад нельзя.</text>
+
+  <rect x="435" y="1382" width="395" height="118" rx="6" class="ok-box"/>
+  <text x="450" y="1405" class="step" fill="#28a745" font-weight="bold">✓  Хранить излишек freqW[B]=2</text>
+  <text x="450" y="1425" class="dim">i=9 B[9]: freqW[B]++ = 2 (записываем!)</text>
+  <text x="450" y="1445" class="dim">i=5 B[3] уходит: freqW[B]-- = 1</text>
+  <text x="450" y="1465" class="dim" fill="#28a745">1 == freqT[B]=1 → норма держится ✓</text>
+  <text x="450" y="1485" class="dim" fill="#28a745">B[9] был запасным экземпляром.</text>
+
+  <line x1="20" y1="1515" x2="830" y2="1515" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ have/need vs Arrays.equals -->
+  <text x="20" y="1540" class="subtitle">have/need vs Arrays.equals(freqW, freqT) — O(1) против O(128) на каждом шаге</text>
+
+  <rect x="20"  y="1553" width="395" height="115" rx="6" class="err-box"/>
+  <text x="35"  y="1576" class="step" fill="#e94560" font-weight="bold">✗  Arrays.equals на каждом шаге</text>
+  <text x="35"  y="1596" class="dim">Сравнивает ВСЕ 128 ячеек</text>
+  <text x="35"  y="1616" class="dim">Константа O(128) большая</text>
+  <text x="35"  y="1636" class="dim">Не выражает семантику: нам важны</text>
+  <text x="35"  y="1656" class="dim">только символы из t, не весь массив</text>
+
+  <rect x="435" y="1553" width="395" height="115" rx="6" class="ok-box"/>
+  <text x="450" y="1576" class="step" fill="#28a745" font-weight="bold">✓  have/need — один int vs int</text>
+  <text x="450" y="1596" class="dim">have и need считают УНИКАЛЬНЫЕ символы</text>
+  <text x="450" y="1616" class="dim">have++ только при freqW[c] == freqT[c]</text>
+  <text x="450" y="1636" class="dim">have-- только при freqW[lc] &lt; freqT[lc]</text>
+  <text x="450" y="1656" class="dim">Один сдвиг = одна O(1) проверка</text>
+
+  <line x1="20" y1="1683" x2="830" y2="1683" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════════════ GARBAGE SKIP -->
+  <text x="20" y="1706" class="subtitle">Оптимизация: мусор не пишем в freqW</text>
+  <rect x="20" y="1718" width="810" height="85" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="35" y="1741" class="step">if (freqT[c] &gt; 0) { freqW[c]++;  if (freqW[c] == freqT[c]) have++; }</text>
+  <text x="35" y="1761" class="dim">freqT[мусор]=0 → ветка не войдёт → freqW[мусор] никогда не читается → незачем хранить.</text>
+  <text x="35" y="1781" class="dim">При сжатии зеркально: if (freqT[lc] &gt; 0) { freqW[lc]--;  if (freqW[lc] &lt; freqT[lc]) have--; }</text>
+
+  <line x1="20" y1="1818" x2="830" y2="1818" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ freqT/freqW MECHANICS -->
+  <text x="20" y="1841" class="subtitle">Как взаимодействуют freqT и freqW</text>
+  <rect x="20" y="1853" width="810" height="120" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="35" y="1876" class="step" font-weight="bold">freqT[c]  =  "сколько нужно"  (эталон из t, константа, не меняется)</text>
+  <text x="35" y="1896" class="step" font-weight="bold">freqW[c]  =  "сколько есть"   (текущее окно, меняется при каждом сдвиге)</text>
+  <text x="35" y="1921" class="dim">freqW[c] &lt; freqT[c]   →  норма не закрыта   →  have не меняется</text>
+  <text x="35" y="1941" class="dim">freqW[c] == freqT[c]  →  только что закрыли →  have++</text>
+  <text x="35" y="1961" class="dim">freqW[c] &gt; freqT[c]   →  излишек            →  have не растёт, но ОБЯЗАТЕЛЬНО хранить</text>
+
+  <line x1="20" y1="1988" x2="830" y2="1988" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════ resLeft/resRight SNAPSHOT -->
+  <text x="20" y="2011" class="subtitle">Почему resLeft/resRight, а не просто minLen</text>
+  <rect x="20" y="2023" width="810" height="80" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="35" y="2046" class="dim">left/right постоянно двигаются и теряют историю. resLeft/resRight — снимок лучшего момента.</text>
+  <text x="35" y="2066" class="dim">В конце: s.substring(resLeft, resRight+1). Задача просит подстроку, а не длину (≠ задача 209).</text>
+  <text x="35" y="2086" class="dim">Нужна пара индексов. minLen — только для сравнения "лучше ли текущее окно".</text>
+
+  <line x1="20" y1="2118" x2="830" y2="2118" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════════════ EDGE CASES -->
+  <text x="20" y="2141" class="subtitle">Граничные случаи</text>
+  <text x="40" y="2163" class="step">•  s=""  |  t=""  |  |t|&gt;|s|   →  ""       (ранняя проверка, O(1))</text>
+  <text x="40" y="2183" class="step">•  s="a"   t="a"               →  "a"      (одна итерация, have=1=need)</text>
+  <text x="40" y="2203" class="step">•  s="a"   t="aa"              →  ""       (freqT[A]=2, freqW[A] никогда не достигнет 2)</text>
+  <text x="40" y="2223" class="step">•  s=t="ABC"                   →  "ABC"    (первое окно = весь s, сжатие невозможно)</text>
+  <text x="40" y="2243" class="step">•  s="AAABBC"  t="AABB"        →  "AABBC"  (need=2; freqT: A=2, B=2; излишек A=3)</text>
+
+  <line x1="20" y1="2263" x2="830" y2="2263" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════════════════ ИТОГО -->
+  <text x="20" y="2290" class="subtitle">Итого: две ключевых оптимизации</text>
+  <text x="40" y="2312" class="step">✅  Мусор: freqT[c]==0 → не пишем в freqW вообще</text>
+  <text x="40" y="2332" class="step">✅  have/need: не сравниваем массивы целиком O(128) на каждом шаге</text>
+  <text x="40" y="2352" class="step">❌  Излишек-cap: freqW[c] cap at freqT[c] — ломает алгоритм</text>
+
+  <line x1="20" y1="2372" x2="830" y2="2372" stroke="#ddd" stroke-width="1"/>
+  <text x="425" y="2398" text-anchor="middle" class="step" font-weight="bold">freqT/freqW = "норма" и "прогресс". have/need = O(1) замена Arrays.equals. Излишек в freqW = запас для сжатия.</text>
+  <text x="425" y="2415" text-anchor="middle" class="dim">Время: O(|s|+|t|)    Память: O(1) — два int[128], константа, не зависят от входа</text>
+</svg>

@@ -19,11 +19,12 @@
 | 3 | Longest Substring Without Repeating Characters | Medium | Sliding Window | [Java](sliding-window/3-longest-substring-without-repeating-characters.java) |
 | 424 | Longest Repeating Character Replacement | Medium | Sliding Window | [Java](sliding-window/424-longest-repeating-character-replacement.java) |
 | 567 | Permutation in String | Medium | Sliding Window | [Java](sliding-window/567-permutation-in-string.java) |
+| 76 | Minimum Window Substring | Hard | Sliding Window | [Java](sliding-window/76-minimum-window-substring.java) |
 
 ## Паттерны
 
 - [Two Pointers](two-pointers/) — 8/8 ✓
-- [Sliding Window](sliding-window/) — 5/6
+- [Sliding Window](sliding-window/) — 6/6 ✓
 - [Binary Search](binary-search/) — 0/5
 - [HashMap / HashSet](hashmap/) — 0/5
 - [Stack](stack/) — 0/5
@@ -60,7 +61,7 @@
 | 3 | Longest Substring Without Repeating Characters | Medium | Гибкое окно + HashSet | done |
 | 424 | Longest Repeating Character Replacement | Medium | Гибкое окно + подсчёт символов | done |
 | 567 | Permutation in String | Medium | Окно + частотный массив | done |
-| 76 | Minimum Window Substring | Hard | Гибкое окно + два счётчика | |
+| 76 | Minimum Window Substring | Hard | Гибкое окно + два счётчика | done |
 
 ### Binary Search
 | # | Задача | Сложность | Навык | Статус |
