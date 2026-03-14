@@ -20,12 +20,16 @@
 | 424 | Longest Repeating Character Replacement | Medium | Sliding Window | [Java](sliding-window/424-longest-repeating-character-replacement.java) |
 | 567 | Permutation in String | Medium | Sliding Window | [Java](sliding-window/567-permutation-in-string.java) |
 | 76 | Minimum Window Substring | Hard | Sliding Window | [Java](sliding-window/76-minimum-window-substring.java) |
+| 704 | Binary Search | Easy | Binary Search | [Java](binary-search/704-binary-search.java) |
+| 35 | Search Insert Position | Easy | Binary Search | [Java](binary-search/35-search-insert-position.java) |
+| 33 | Search in Rotated Sorted Array | Medium | Binary Search | [Java](binary-search/33-search-in-rotated-sorted-array.java) |
+| 153 | Find Minimum in Rotated Sorted Array | Medium | Binary Search | [Java](binary-search/153-find-minimum-in-rotated-sorted-array.java) |
 
 ## Паттерны
 
 - [Two Pointers](two-pointers/) — 8/8 ✓
 - [Sliding Window](sliding-window/) — 6/6 ✓
-- [Binary Search](binary-search/) — 0/5
+- [Binary Search](binary-search/) — 4/5
 - [HashMap / HashSet](hashmap/) — 0/5
 - [Stack](stack/) — 0/5
 - [Trees / BFS / DFS](trees/) — 0/5
@@ -66,10 +70,10 @@
 ### Binary Search
 | # | Задача | Сложность | Навык | Статус |
 |---|--------|-----------|-------|--------|
-| 704 | Binary Search | Easy | Базовый бинарный поиск | |
-| 35 | Search Insert Position | Easy | Поиск позиции вставки | |
-| 33 | Search in Rotated Sorted Array | Medium | Поиск в повёрнутом массиве | |
-| 153 | Find Minimum in Rotated Sorted Array | Medium | Поиск минимума в повёрнутом массиве | |
+| 704 | Binary Search | Easy | Базовый бинарный поиск | done |
+| 35 | Search Insert Position | Easy | Поиск позиции вставки | done |
+| 33 | Search in Rotated Sorted Array | Medium | Поиск в повёрнутом массиве | done |
+| 153 | Find Minimum in Rotated Sorted Array | Medium | Поиск минимума в повёрнутом массиве | done |
 | 4 | Median of Two Sorted Arrays | Hard | Бинарный поиск по двум массивам | |
 
 ### HashMap / HashSet

@@ -1,0 +1,2440 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 850 2510"
+   font-family="monospace"
+   font-size="14"
+   version="1.1"
+   id="svg310"
+   sodipodi:docname="33-search-in-rotated-sorted-array.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs310" />
+  <sodipodi:namedview
+     id="namedview310"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.2988048"
+     inkscape:cx="429.2408"
+     inkscape:cy="948.94939"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg310" />
+  <style
+     id="style1">
+    .title    { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .step     { font-size: 13px; fill: #1a1a2e; }
+    .note     { font-size: 12px; fill: #e94560; font-weight: bold; }
+    .dim      { font-size: 12px; fill: #888; }
+    .ptr      { font-size: 11px; font-weight: bold; }
+    .cell     { stroke: #333; stroke-width: 1.5; }
+    .win      { fill: #d4edda; }
+    .rem      { fill: #f8d7da; }
+    .off      { fill: #f0f0f0; }
+    .best     { fill: #cce5ff; }
+    .exc      { fill: #fff3cd; }
+    .err-box  { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; }
+    .ok-box   { fill: #d4edda; fill-opacity: 0.3; stroke: #28a745; stroke-width: 1.5; }
+    .info-box { fill: #fff9e6; fill-opacity: 0.6; stroke: #f0ad00; stroke-width: 1.5; }
+    .box-grey { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; }
+    .box-blue { fill: #e8f4ff; fill-opacity: 0.6; stroke: #4a90d9; stroke-width: 1.5; }
+    .box-purp { fill: #f3eeff; fill-opacity: 0.6; stroke: #9b59b6; stroke-width: 1.5; }
+  </style>
+  <!-- ══════════════════════════════════════════════════════ TITLE -->
+  <text
+     x="425"
+     y="30"
+     text-anchor="middle"
+     class="title"
+     id="text1">33. Search in Rotated Sorted Array (Medium)</text>
+  <text
+     x="425"
+     y="50"
+     text-anchor="middle"
+     class="dim"
+     id="text2">Докрут 704: та же механика two-pointer + mid, но сначала определяем какая половина отсортирована → O(log n), O(1)</text>
+  <line
+     x1="20"
+     y1="64"
+     x2="830"
+     y2="64"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line2" />
+  <!-- ══════════════════════════════════════ ЧТО ЗНАЧИТ "ПОВЁРНУТ" -->
+  <text
+     x="20"
+     y="86"
+     class="subtitle"
+     id="text3">Что значит «повёрнут» — и почему это сложнее 704</text>
+  <text
+     x="20"
+     y="106"
+     class="step"
+     id="text4">Исходный отсортированный массив (как в 704 — всё работает напрямую):</text>
+  <!-- Original [0,1,2,4,5,6,7] all green -->
+  <g
+     transform="translate(20,116)"
+     id="g23">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect4" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect5" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect6" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect7" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect8" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect9" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect10" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       id="text10">0</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       id="text11">1</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       id="text12">2</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       id="text13">4</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text14">5</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       id="text15">6</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text16">7</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text17">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text18">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text19">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text20">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text21">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text22">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text23">[6]</text>
+  </g>
+  <text
+     x="390"
+     y="134"
+     class="dim"
+     id="text24">Монотонно возрастает от [0] до [6].</text>
+  <text
+     x="390"
+     y="151"
+     class="dim"
+     id="text25">Любой target: mid делит «точно меньше» / «точно больше».</text>
+  <text
+     x="20"
+     y="176"
+     class="step"
+     id="text26">Повёрнут в точке k=4 (первые 4 элемента переместились вправо за хвост):</text>
+  <!-- Rotated [4,5,6,7,0,1,2]: green=left half, purple=right half -->
+  <g
+     transform="translate(20,188)"
+     id="g48">
+    <!-- Left sorted part [4,5,6,7] green -->
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#d4edda"
+       id="rect26" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#d4edda"
+       id="rect27" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#d4edda"
+       id="rect28" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#d4edda"
+       id="rect29" />
+    <!-- break vertical line -->
+    <line
+       x1="200"
+       y1="-6"
+       x2="200"
+       y2="36"
+       stroke="#e94560"
+       stroke-width="2"
+       stroke-dasharray="5,3"
+       id="line29" />
+    <!-- Right sorted part [0,1,2] purple -->
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#e8d5f5"
+       id="rect30" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#e8d5f5"
+       id="rect31" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell"
+       fill="#e8d5f5"
+       id="rect32" />
+    <!-- values -->
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       id="text32">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       id="text33">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       id="text34">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       id="text35">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text36">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       id="text37">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text38">2</text>
+    <!-- indices -->
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text39">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text40">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text41">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text42">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text43">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text44">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text45">[6]</text>
+    <!-- break label -->
+    <text
+       x="200"
+       y="57"
+       text-anchor="middle"
+       class="note"
+       font-size="11px"
+       id="text46">↑ разрыв</text>
+    <!-- bracket left -->
+    <line
+       x1="0"
+       y1="66"
+       x2="200"
+       y2="66"
+       stroke="#28a745"
+       stroke-width="1.5"
+       id="line46" />
+    <text
+       x="100"
+       y="79"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#28a745"
+       id="text47">отсортирована [4,5,6,7]</text>
+    <!-- bracket right -->
+    <line
+       x1="200"
+       y1="66"
+       x2="350"
+       y2="66"
+       stroke="#9b59b6"
+       stroke-width="1.5"
+       id="line47" />
+    <text
+       x="275"
+       y="79"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#9b59b6"
+       id="text48">отсортирована [0,1,2]</text>
+  </g>
+  <text
+     x="390"
+     y="208"
+     class="dim"
+     id="text49">Зелёная [4,5,6,7] — монотонна.</text>
+  <text
+     x="390"
+     y="225"
+     class="dim"
+     id="text50">Фиолетовая [0,1,2] — тоже монотонна.</text>
+  <text
+     x="390"
+     y="242"
+     class="dim"
+     id="text51">Между ними: 7→0 — точка разрыва.</text>
+  <text
+     x="20"
+     y="292"
+     class="step"
+     font-weight="bold"
+     id="text52">Ключевое: разрыв ровно ОДИН. Одна из двух половин [left..mid] или [mid..right]</text>
+  <text
+     x="20"
+     y="310"
+     class="step"
+     font-weight="bold"
+     id="text53">ВСЕГДА гарантированно отсортирована целиком — это фундамент всего алгоритма.</text>
+  <line
+     x1="20"
+     y1="325"
+     x2="830"
+     y2="325"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line53" />
+  <!-- ═══════════════════════════ ПОЧЕМУ НЕЛЬЗЯ КАК В 704 -->
+  <text
+     x="20"
+     y="348"
+     class="subtitle"
+     id="text54">Почему нельзя просто сравнить target с nums[mid] как в 704</text>
+  <text
+     x="20"
+     y="368"
+     class="step"
+     id="text55">В 704 весь массив отсортирован: target &lt; nums[mid] → target точно ЛЕВЕЕ mid. В 33 — нет.</text>
+  <text
+     x="20"
+     y="384"
+     class="dim"
+     id="text56">Контрпример: nums=[4,5,6,7,0,1,2],  target=0,  left=0, right=6,  mid=3</text>
+  <!-- Counter-example array with mid highlighted -->
+  <g
+     transform="translate(20,396)"
+     id="g78">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect56" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect57" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect58" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell best"
+       id="rect59" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect60" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect61" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect62" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       id="text62">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       id="text63">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       id="text64">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text65">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text66">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       id="text67">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text68">2</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text69">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text70">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text71">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text72">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text73">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text74">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text75">[6]</text>
+    <text
+       x="25"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text76">L=0</text>
+    <text
+       x="175"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text77">M=3</text>
+    <text
+       x="325"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text78">R=6</text>
+  </g>
+  <!-- two boxes: wrong vs right approach -->
+  <rect
+     x="20"
+     y="470"
+     width="390"
+     height="90"
+     rx="6"
+     class="err-box"
+     id="rect78" />
+  <text
+     x="35"
+     y="492"
+     class="step"
+     fill="#e94560"
+     font-weight="bold"
+     id="text79">✗  Логика 704: target=0 &lt; nums[mid]=7</text>
+  <text
+     x="35"
+     y="512"
+     class="dim"
+     id="text80">→ «target левее» → right = mid−1 = 2</text>
+  <text
+     x="35"
+     y="532"
+     class="dim"
+     id="text81">Ищем в [4,5,6] — target=0 там нет!</text>
+  <text
+     x="35"
+     y="552"
+     class="dim"
+     fill="#e94560"
+     id="text82">return −1 → БАГ! target на индексе 4 (правее разрыва)</text>
+  <rect
+     x="430"
+     y="470"
+     width="400"
+     height="90"
+     rx="6"
+     class="ok-box"
+     id="rect82" />
+  <text
+     x="445"
+     y="492"
+     class="step"
+     fill="#28a745"
+     font-weight="bold"
+     id="text83">✓  Логика 33: сначала — какая половина?</text>
+  <text
+     x="445"
+     y="512"
+     class="dim"
+     id="text84">nums[0]=4 ≤ nums[3]=7 → левая [4..7] отсортирована.</text>
+  <text
+     x="445"
+     y="532"
+     class="dim"
+     id="text85">target=0 ∈ [4..7)? 4≤0? НЕТ → идём вправо</text>
+  <text
+     x="445"
+     y="552"
+     class="dim"
+     fill="#28a745"
+     id="text86">left = mid+1 = 4 → найдём 0 на индексе 4 ✓</text>
+  <line
+     x1="20"
+     y1="576"
+     x2="830"
+     y2="576"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line86" />
+  <!-- ═══════════════════════════ КАК ОПРЕДЕЛИТЬ ПОЛОВИНУ -->
+  <text
+     x="20"
+     y="599"
+     class="subtitle"
+     id="text87">Как определить какая половина отсортирована: сравниваем nums[left] и nums[mid]</text>
+  <text
+     x="20"
+     y="619"
+     class="dim"
+     id="text88">Всего два числа — дают полную картину: где находится разрыв, а где гарантирован порядок.</text>
+  <!-- Box left: nums[left] <= nums[mid] -->
+  <rect
+     x="7.6809816"
+     y="625.61041"
+     width="393"
+     height="148"
+     rx="6"
+     class="box-blue"
+     id="rect88" />
+  <text
+     x="35"
+     y="653"
+     class="step"
+     font-weight="bold"
+     fill="#4a90d9"
+     id="text89">nums[left] ≤ nums[mid]  →  левая отсортирована</text>
+  <text
+     x="35"
+     y="669"
+     class="dim"
+     id="text90">Разрыв — в правой части. До mid включительно</text>
+  <text
+     x="35"
+     y="685"
+     class="dim"
+     id="text91">порядок не нарушен.</text>
+  <!-- mini array [4,5,6,7,0,1,2] left half green, rest off -->
+  <g
+     transform="translate(35,695)"
+     id="g106">
+    <rect
+       x="0"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#d4edda"
+       stroke="#28a745"
+       stroke-width="2"
+       id="rect91" />
+    <rect
+       x="40"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#d4edda"
+       id="rect92" />
+    <rect
+       x="80"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#d4edda"
+       id="rect93" />
+    <rect
+       x="120"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell best"
+       stroke="#4a90d9"
+       stroke-width="2"
+       id="rect94" />
+    <rect
+       x="160"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect95" />
+    <rect
+       x="200"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect96" />
+    <rect
+       x="240"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect97" />
+    <text
+       x="20"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text97">4</text>
+    <text
+       x="60"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text98">5</text>
+    <text
+       x="100"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text99">6</text>
+    <text
+       x="140"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       font-weight="bold"
+       id="text100">7</text>
+    <text
+       x="180"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text101">0</text>
+    <text
+       x="220"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text102">1</text>
+    <text
+       x="260"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text103">2</text>
+    <text
+       x="20"
+       y="38"
+       text-anchor="middle"
+       class="ptr"
+       fill="#28a745"
+       id="text104">L=4</text>
+    <text
+       x="140"
+       y="38"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text105">M=7</text>
+    <!-- bracket -->
+    <line
+       x1="0"
+       y1="45"
+       x2="160"
+       y2="45"
+       stroke="#28a745"
+       stroke-width="1.5"
+       id="line105" />
+    <text
+       x="80"
+       y="57"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#28a745"
+       id="text106">✓ [4,5,6,7] строго отсортирована</text>
+  </g>
+  <text
+     x="35"
+     y="766"
+     class="dim"
+     font-size="11px"
+     id="text107">4 ≤ 7 → до mid включительно: монотонный рост.</text>
+  <!-- Box right: nums[left] > nums[mid] -->
+  <rect
+     x="441.61963"
+     y="625.61041"
+     width="393"
+     height="148"
+     rx="6"
+     class="box-purp"
+     id="rect107" />
+  <text
+     x="452"
+     y="653"
+     class="step"
+     font-weight="bold"
+     fill="#9b59b6"
+     id="text108">nums[left] &gt; nums[mid]  →  правая отсортирована</text>
+  <text
+     x="452"
+     y="669"
+     class="dim"
+     id="text109">Разрыв — в левой части. От mid+1 до right</text>
+  <text
+     x="452"
+     y="685"
+     class="dim"
+     id="text110">порядок не нарушен.</text>
+  <!-- mini array [6,7,0,1,2,4,5] right half purple, rest off -->
+  <g
+     transform="translate(452,695)"
+     id="g125">
+    <rect
+       x="0"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect110" />
+    <rect
+       x="40"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect111" />
+    <rect
+       x="80"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell off"
+       id="rect112" />
+    <rect
+       x="120"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell best"
+       stroke="#4a90d9"
+       stroke-width="2"
+       id="rect113" />
+    <rect
+       x="160"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#e8d5f5"
+       id="rect114" />
+    <rect
+       x="200"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#e8d5f5"
+       id="rect115" />
+    <rect
+       x="240"
+       y="0"
+       width="40"
+       height="24"
+       rx="2"
+       class="cell"
+       fill="#e8d5f5"
+       stroke="#9b59b6"
+       stroke-width="2"
+       id="rect116" />
+    <text
+       x="20"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text116">6</text>
+    <text
+       x="60"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text117">7</text>
+    <text
+       x="100"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text118">0</text>
+    <text
+       x="140"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       font-weight="bold"
+       id="text119">1</text>
+    <text
+       x="180"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text120">2</text>
+    <text
+       x="220"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text121">4</text>
+    <text
+       x="260"
+       y="17"
+       text-anchor="middle"
+       font-size="12px"
+       id="text122">5</text>
+    <text
+       x="20"
+       y="38"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text123">L=6</text>
+    <text
+       x="140"
+       y="38"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text124">M=1</text>
+    <!-- bracket -->
+    <line
+       x1="120"
+       y1="45"
+       x2="280"
+       y2="45"
+       stroke="#9b59b6"
+       stroke-width="1.5"
+       id="line124" />
+    <text
+       x="200"
+       y="57"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#9b59b6"
+       id="text125">✓ [2,4,5] строго отсортирована</text>
+  </g>
+  <text
+     x="445.07056"
+     y="764.46014"
+     class="dim"
+     font-size="11px"
+     id="text126">6 &gt; 1 → разрыв в левой → правая гарантированно чистая.</text>
+  <line
+     x1="20"
+     y1="775"
+     x2="830"
+     y2="775"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line126" />
+  <!-- ═══════════════════════════ ЗАЖИМ: СТРОГОЕ vs НЕСТРОГОЕ -->
+  <text
+     x="20"
+     y="798"
+     class="subtitle"
+     id="text127">Зажим target: почему строгое &lt; для mid и нестрогое ≤ для left/right</text>
+  <text
+     x="20"
+     y="818"
+     class="dim"
+     id="text128">«Зажим» — проверяем лежит ли target МЕЖДУ границами отсортированной половины. Детали строгости критичны.</text>
+  <!-- Main logic box -->
+  <rect
+     x="20"
+     y="830"
+     width="810"
+     height="158"
+     rx="6"
+     class="box-grey"
+     id="rect128" />
+  <text
+     x="32.690186"
+     y="845.3006"
+     class="step"
+     font-weight="bold"
+     id="text129">Левая половина отсортирована (nums[left] ≤ nums[mid]):</text>
+  <text
+     x="31.150307"
+     y="860.68097"
+     class="step"
+     id="text133">if <tspan
+   fill="#28a745"
+   id="tspan129">(nums[left]</tspan><tspan
+   fill="#28a745"
+   font-weight="bold"
+   id="tspan130">≤</tspan><tspan
+   fill="#28a745"
+   id="tspan131">target &amp;&amp; target</tspan><tspan
+   fill="#e94560"
+   font-weight="bold"
+   id="tspan132">&lt;</tspan><tspan
+   fill="#28a745"
+   id="tspan133">nums[mid])</tspan> → right = mid−1 (target внутри левой → идём влево)</text>
+  <text
+     x="31.150307"
+     y="874.06134"
+     class="dim"
+     id="text134"><tspan
+       sodipodi:role="line"
+       id="tspan312"
+       x="31.150307"
+       y="874.06134">left нестрогое ≤ : left — пока только граница, сам ещё НЕ проверялся как кандидат.</tspan><tspan
+       sodipodi:role="line"
+       id="tspan313"
+       x="31.150307"
+       y="889.06134">target может лежать прямо на left.</tspan></text>
+  <text
+     x="34.230061"
+     y="904.69019"
+     class="dim"
+     id="text135">mid строгое &lt; : mid уже проверен строчкой «if (nums[mid]==target) return mid». Включать снова — бессмысленно.</text>
+  <text
+     x="32.690186"
+     y="918.99078"
+     class="step"
+     font-weight="bold"
+     id="text136">Правая половина отсортирована (nums[left] &gt; nums[mid]):</text>
+  <text
+     x="31.920246"
+     y="932.8313"
+     class="step"
+     id="text140">if <tspan
+   fill="#28a745"
+   id="tspan136">(nums[mid]</tspan><tspan
+   fill="#e94560"
+   font-weight="bold"
+   id="tspan137">&lt;</tspan><tspan
+   fill="#28a745"
+   id="tspan138">target &amp;&amp; target</tspan><tspan
+   fill="#28a745"
+   font-weight="bold"
+   id="tspan139">≤</tspan><tspan
+   fill="#28a745"
+   id="tspan140">nums[right])</tspan> → left = mid+1 (target внутри правой → идём вправо)</text>
+  <text
+     x="32.690186"
+     y="944.67175"
+     class="dim"
+     id="text141">mid строгое &lt; : уже проверен.</text>
+  <text
+     x="32.690186"
+     y="957.59204"
+     class="dim"
+     id="text142"><tspan
+       sodipodi:role="line"
+       id="tspan310"
+       x="32.690186"
+       y="957.59204">right нестрогое ≤ : right — пока только граница, сам ещё НЕ проверялся как кандидат.</tspan><tspan
+       sodipodi:role="line"
+       id="tspan311"
+       x="32.690186"
+       y="972.59204">target может лежать прямо на right.</tspan></text>
+  <!-- Why non-strict for left/right matters -->
+  <rect
+     x="20"
+     y="1000"
+     width="393"
+     height="88"
+     rx="6"
+     class="err-box"
+     id="rect142" />
+  <text
+     x="35"
+     y="1022"
+     class="step"
+     fill="#e94560"
+     font-weight="bold"
+     id="text143">✗  Строгое &lt; для left (ошибка):</text>
+  <text
+     x="35"
+     y="1042"
+     class="dim"
+     id="text144">nums=[3,4,5], left=0, mid=2, target=3</text>
+  <text
+     x="35"
+     y="1062"
+     class="dim"
+     id="text145">nums[left]=3 &lt; target=3? — ложь. Уйдём вправо.</text>
+  <text
+     x="35"
+     y="1080"
+     class="dim"
+     fill="#e94560"
+     id="text146">target прямо на left → пропустим! return −1 → БАГ.</text>
+  <rect
+     x="437"
+     y="1000"
+     width="393"
+     height="88"
+     rx="6"
+     class="ok-box"
+     id="rect146" />
+  <text
+     x="452"
+     y="1022"
+     class="step"
+     fill="#28a745"
+     font-weight="bold"
+     id="text147">✓  Нестрогое ≤ для left (правильно):</text>
+  <text
+     x="452"
+     y="1042"
+     class="dim"
+     id="text148">nums=[3,4,5], left=0, mid=2, target=3</text>
+  <text
+     x="442.76074"
+     y="1062"
+     class="dim"
+     id="text149">nums[left]=3 ≤ target=3? — истина. target в диапазоне.</text>
+  <text
+     x="452"
+     y="1080"
+     class="dim"
+     fill="#28a745"
+     id="text150">right = mid−1 → сузимся, найдём 3 ✓</text>
+  <line
+     x1="20"
+     y1="1103"
+     x2="830"
+     y2="1103"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line150" />
+  <!-- ═══════════════════════════ WALKTHROUGH SETUP -->
+  <text
+     x="20"
+     y="1126"
+     class="subtitle"
+     id="text151">Разбор: nums = [4, 5, 6, 7, 0, 1, 2],  target = 0  →  ответ: индекс 4</text>
+  <text
+     x="20"
+     y="1146"
+     class="step"
+     id="text152">Шаг 0: left = 0,  right = 6.  Весь массив — зона поиска.</text>
+  <text
+     x="20"
+     y="1162"
+     class="dim"
+     id="text153">Один шаг = определить отсортированную половину + зажать target. Повторять до нахождения или return −1.</text>
+  <!-- Start array -->
+  <g
+     transform="translate(20,1174)"
+     id="g174">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect153" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect154" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect155" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect156" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect157" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect158" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect159" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       id="text159">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       id="text160">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       id="text161">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       id="text162">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text163">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       id="text164">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text165">2</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text166">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text167">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text168">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text169">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text170">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text171">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text172">[6]</text>
+    <text
+       x="25"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text173">L=0</text>
+    <text
+       x="325"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text174">R=6</text>
+  </g>
+  <text
+     x="390"
+     y="1193"
+     class="step"
+     id="text175">left=0, right=6</text>
+  <text
+     x="390"
+     y="1210"
+     class="dim"
+     id="text176">Все 7 элементов — кандидаты.</text>
+  <text
+     x="390"
+     y="1227"
+     class="dim"
+     id="text177">mid ещё не вычислен.</text>
+  <line
+     x1="20"
+     y1="1252"
+     x2="830"
+     y2="1252"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line177" />
+  <!-- ═══════════════════════════ ITERATION 1 -->
+  <text
+     x="20"
+     y="1274"
+     class="subtitle"
+     id="text178">Итерация 1: left=0, right=6 → mid = 0 + (6−0)/2 = 3</text>
+  <text
+     x="20"
+     y="1294"
+     class="step"
+     id="text179">nums[3] = 7 ≠ target=0.  Какая половина отсортирована?</text>
+  <text
+     x="20"
+     y="1312"
+     class="step"
+     id="text180">nums[left]=nums[0]=4 ≤ nums[mid]=nums[3]=7  →  <tspan
+   fill="#28a745"
+   font-weight="bold"
+   id="tspan179">левая [4,5,6,7] отсортирована.</tspan></text>
+  <text
+     x="20"
+     y="1330"
+     class="step"
+     id="text181">Зажим: nums[0]=4 ≤ target=0 &lt; nums[3]=7?   4≤0 — ЛОЖЬ.  target вне левой →  <tspan
+   fill="#e94560"
+   font-weight="bold"
+   id="tspan180">left = mid+1 = 4</tspan></text>
+  <g
+     transform="translate(20,1342)"
+     id="g204">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect181" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect182" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect183" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell best"
+       id="rect184" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect185" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect186" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect187" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       id="text187">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       id="text188">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       id="text189">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text190">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text191">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       id="text192">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text193">2</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text194">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text195">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text196">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text197">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text198">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text199">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text200">[6]</text>
+    <text
+       x="25"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text201">L=0</text>
+    <text
+       x="175"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text202">M=3</text>
+    <text
+       x="325"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text203">R=6</text>
+    <!-- bracket: sorted left half -->
+    <line
+       x1="0"
+       y1="68"
+       x2="200"
+       y2="68"
+       stroke="#28a745"
+       stroke-width="1.5"
+       id="line203" />
+    <text
+       x="100"
+       y="81"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#28a745"
+       id="text204">отсортирована [4,5,6,7]</text>
+  </g>
+  <text
+     x="390"
+     y="1362"
+     class="step"
+     id="text205">nums[0]=4 ≤ nums[3]=7</text>
+  <text
+     x="390"
+     y="1379"
+     class="dim"
+     id="text206">→ левая [0..3] отсортирована.</text>
+  <text
+     x="390"
+     y="1396"
+     class="step"
+     id="text207">4 ≤ 0 &lt; 7?  НЕТ (4 &gt; 0)</text>
+  <text
+     x="390"
+     y="1413"
+     class="note"
+     id="text208">→ left = mid+1 = 4</text>
+  <text
+     x="390"
+     y="1430"
+     class="dim"
+     id="text209">Индексы [0..3] выброшены.</text>
+  <text
+     x="20"
+     y="1446"
+     class="dim"
+     id="text210">После шага: 4 из 7 отброшено. В [4,5,6,7] target=0 точно нет — они все больше нуля.</text>
+  <line
+     x1="20"
+     y1="1460"
+     x2="830"
+     y2="1460"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line210" />
+  <!-- ═══════════════════════════ ITERATION 2 -->
+  <text
+     x="20"
+     y="1482"
+     class="subtitle"
+     id="text211">Итерация 2: left=4, right=6 → mid = 4 + (6−4)/2 = 5</text>
+  <text
+     x="20"
+     y="1502"
+     class="step"
+     id="text212">nums[5] = 1 ≠ target=0.  Какая половина отсортирована?</text>
+  <text
+     x="20"
+     y="1520"
+     class="step"
+     id="text213">nums[left]=nums[4]=0 ≤ nums[mid]=nums[5]=1  →  <tspan
+   fill="#28a745"
+   font-weight="bold"
+   id="tspan212">левая [0,1] отсортирована.</tspan></text>
+  <text
+     x="20"
+     y="1538"
+     class="step"
+     id="text214">Зажим: nums[4]=0 ≤ target=0 &lt; nums[5]=1?   0≤0 — ИСТИНА, 0&lt;1 — ИСТИНА.  →  <tspan
+   fill="#e94560"
+   font-weight="bold"
+   id="tspan213">right = mid−1 = 4</tspan></text>
+  <g
+     transform="translate(20,1550)"
+     id="g237">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect214" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect215" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect216" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect217" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect218" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell best"
+       id="rect219" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell win"
+       id="rect220" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text220">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text221">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text222">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text223">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       id="text224">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text225">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       id="text226">2</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text227">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text228">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text229">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text230">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text231">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text232">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text233">[6]</text>
+    <text
+       x="225"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text234">L=4</text>
+    <text
+       x="275"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text235">M=5</text>
+    <text
+       x="325"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#e94560"
+       id="text236">R=6</text>
+    <!-- bracket sorted left [4..5] -->
+    <line
+       x1="200"
+       y1="68"
+       x2="300"
+       y2="68"
+       stroke="#28a745"
+       stroke-width="1.5"
+       id="line236" />
+    <text
+       x="250"
+       y="81"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#28a745"
+       id="text237">отсортирована [0,1]</text>
+  </g>
+  <text
+     x="390"
+     y="1570"
+     class="step"
+     id="text238">nums[4]=0 ≤ nums[5]=1</text>
+  <text
+     x="390"
+     y="1587"
+     class="dim"
+     id="text239">→ левая [4..5] отсортирована.</text>
+  <text
+     x="390"
+     y="1604"
+     class="step"
+     id="text240">0 ≤ 0 &lt; 1?  ДА ✓</text>
+  <text
+     x="390"
+     y="1621"
+     class="note"
+     id="text241">→ right = mid−1 = 4</text>
+  <text
+     x="390"
+     y="1638"
+     class="dim"
+     id="text242">Правая [5..6] выброшена.</text>
+  <text
+     x="390"
+     y="1655"
+     class="dim"
+     id="text243">Остался 1 кандидат: [4..4].</text>
+  <line
+     x1="20"
+     y1="1655"
+     x2="830"
+     y2="1655"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line243" />
+  <!-- ═══════════════════════════ ITERATION 3: FOUND -->
+  <text
+     x="20"
+     y="1677"
+     class="subtitle"
+     id="text244">Итерация 3: left=4, right=4 → mid = 4 + (4−4)/2 = 4</text>
+  <text
+     x="20"
+     y="1697"
+     class="step"
+     id="text245">nums[4] = 0 == target=0  →  <tspan
+   fill="#28a745"
+   font-weight="bold"
+   id="tspan244">НАЙДЕНО! return 4</tspan></text>
+  <text
+     x="20"
+     y="1713"
+     class="dim"
+     id="text246">left==right — вошли благодаря ≤. Это последний кандидат, и он совпал.</text>
+  <g
+     transform="translate(20,1725)"
+     id="g266">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect246" />
+    <rect
+       x="50"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect247" />
+    <rect
+       x="100"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect248" />
+    <rect
+       x="150"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect249" />
+    <rect
+       x="200"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell best"
+       stroke="#28a745"
+       stroke-width="2.5"
+       id="rect250" />
+    <rect
+       x="250"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect251" />
+    <rect
+       x="300"
+       y="0"
+       width="50"
+       height="28"
+       rx="3"
+       class="cell rem"
+       id="rect252" />
+    <text
+       x="25"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text252">4</text>
+    <text
+       x="75"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text253">5</text>
+    <text
+       x="125"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text254">6</text>
+    <text
+       x="175"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text255">7</text>
+    <text
+       x="225"
+       y="19"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text256">0</text>
+    <text
+       x="275"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text257">1</text>
+    <text
+       x="325"
+       y="19"
+       text-anchor="middle"
+       fill="#c00"
+       id="text258">2</text>
+    <text
+       x="25"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text259">[0]</text>
+    <text
+       x="75"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text260">[1]</text>
+    <text
+       x="125"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text261">[2]</text>
+    <text
+       x="175"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text262">[3]</text>
+    <text
+       x="225"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text263">[4]</text>
+    <text
+       x="275"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text264">[5]</text>
+    <text
+       x="325"
+       y="42"
+       text-anchor="middle"
+       class="dim"
+       id="text265">[6]</text>
+    <text
+       x="225"
+       y="58"
+       text-anchor="middle"
+       class="ptr"
+       fill="#4a90d9"
+       id="text266">L=R=M=4</text>
+  </g>
+  <text
+     x="390"
+     y="1744"
+     class="step"
+     id="text267">nums[4]=0 == target=0</text>
+  <text
+     x="390"
+     y="1761"
+     class="step"
+     fill="#28a745"
+     font-weight="bold"
+     id="text268">→ return 4  ✓</text>
+  <text
+     x="390"
+     y="1778"
+     class="dim"
+     id="text269">3 итерации: 7 → 3 → 1 кандидат.</text>
+  <text
+     x="390"
+     y="1795"
+     class="dim"
+     id="text270">O(log 7) ≈ 2.8 → как и ожидалось.</text>
+  <text
+     x="21.539877"
+     y="1804.9203"
+     class="dim"
+     id="text271"><tspan
+       sodipodi:role="line"
+       id="tspan314"
+       x="21.539877"
+       y="1804.9203">Выброс шёл 7→3→1. Каждый шаг — половина. Ровно как в 704,</tspan><tspan
+       sodipodi:role="line"
+       id="tspan315"
+       x="21.539877"
+       y="1819.9203">только решение «куда идти» требует двух шагов (какая половина + зажим).</tspan></text>
+  <line
+     x1="20"
+     y1="1822"
+     x2="830"
+     y2="1822"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line271" />
+  <!-- ══════════════════ ПОЧЕМУ left <= right -->
+  <text
+     x="20"
+     y="1845"
+     class="subtitle"
+     id="text272">Почему left ≤ right, а не left &lt; right — граничный случай одного элемента</text>
+  <text
+     x="20"
+     y="1865"
+     class="dim"
+     id="text273">nums=[1], target=1. Один элемент → left=0, right=0. Единственный кандидат — нужно войти в цикл.</text>
+  <rect
+     x="20"
+     y="1877"
+     width="393"
+     height="88"
+     rx="6"
+     class="err-box"
+     id="rect273" />
+  <text
+     x="35"
+     y="1899"
+     class="step"
+     fill="#e94560"
+     font-weight="bold"
+     id="text274">✗  while (left &lt; right)</text>
+  <text
+     x="35"
+     y="1919"
+     class="dim"
+     id="text275">left=0, right=0: 0 &lt; 0 — ложь</text>
+  <text
+     x="35"
+     y="1939"
+     class="dim"
+     id="text276">Цикл не войдёт. nums[0]=1 не проверен.</text>
+  <text
+     x="35"
+     y="1957"
+     class="dim"
+     fill="#e94560"
+     id="text277">return −1 → БАГ! Пропустили единственный элемент.</text>
+  <rect
+     x="437"
+     y="1877"
+     width="393"
+     height="88"
+     rx="6"
+     class="ok-box"
+     id="rect277" />
+  <text
+     x="452"
+     y="1899"
+     class="step"
+     fill="#28a745"
+     font-weight="bold"
+     id="text278">✓  while (left ≤ right)</text>
+  <text
+     x="452"
+     y="1919"
+     class="dim"
+     id="text279">left=0, right=0: 0 ≤ 0 — истина</text>
+  <text
+     x="452"
+     y="1939"
+     class="dim"
+     id="text280">mid=0, nums[0]=1 == target=1</text>
+  <text
+     x="452"
+     y="1957"
+     class="dim"
+     fill="#28a745"
+     id="text281">return 0  ✓  Последний кандидат проверен.</text>
+  <line
+     x1="20"
+     y1="1980"
+     x2="830"
+     y2="1980"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line281" />
+  <!-- ══════════════════ ПОЧЕМУ mid FORMULA -->
+  <text
+     x="20"
+     y="2003"
+     class="subtitle"
+     id="text282">Почему mid = left + (right − left) / 2, а не (left + right) / 2 — переполнение int</text>
+  <rect
+     x="20"
+     y="2015"
+     width="393"
+     height="138"
+     rx="6"
+     class="err-box"
+     id="rect282" />
+  <text
+     x="35"
+     y="2037"
+     class="step"
+     fill="#e94560"
+     font-weight="bold"
+     id="text283">✗  (left + right) / 2 — переполнение!</text>
+  <text
+     x="35"
+     y="2057"
+     class="dim"
+     id="text284">left  = 2_000_000_000</text>
+  <text
+     x="35"
+     y="2077"
+     class="dim"
+     id="text285">right = 2_100_000_000</text>
+  <text
+     x="35"
+     y="2097"
+     class="dim"
+     id="text286">left + right = 4_100_000_000 ← взрыв int!</text>
+  <text
+     x="35"
+     y="2117"
+     class="dim"
+     fill="#e94560"
+     id="text287">→ −194_967_296 → 💥 ArrayIndexOutOfBounds</text>
+  <text
+     x="35"
+     y="2137"
+     class="dim"
+     id="text288">Integer.MAX_VALUE = 2_147_483_647</text>
+  <text
+     x="35"
+     y="2145"
+     class="dim"
+     fill="#e94560"
+     id="text289">Взрыв ещё до деления — порядок операций важен.</text>
+  <rect
+     x="437"
+     y="2015"
+     width="393"
+     height="138"
+     rx="6"
+     class="ok-box"
+     id="rect289" />
+  <text
+     x="452"
+     y="2037"
+     class="step"
+     fill="#28a745"
+     font-weight="bold"
+     id="text290">✓  left + (right − left) / 2</text>
+  <text
+     x="452"
+     y="2057"
+     class="dim"
+     id="text291">left  = 2_000_000_000</text>
+  <text
+     x="452"
+     y="2077"
+     class="dim"
+     id="text292">right − left = 100_000_000  ← просто расстояние</text>
+  <text
+     x="452"
+     y="2097"
+     class="dim"
+     id="text293">100_000_000 / 2 = 50_000_000</text>
+  <text
+     x="452"
+     y="2117"
+     class="dim"
+     fill="#28a745"
+     id="text294">2_000_000_000 + 50_000_000 = 2_050_000_000 ✓</text>
+  <text
+     x="452"
+     y="2137"
+     class="dim"
+     id="text295">Сначала вычитаем → маленькое расстояние →</text>
+  <text
+     x="452"
+     y="2145"
+     class="dim"
+     fill="#28a745"
+     id="text296">никакого переполнения. Профессиональная привычка.</text>
+  <line
+     x1="20"
+     y1="2168"
+     x2="830"
+     y2="2168"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line296" />
+  <!-- ══════════════════ +1/-1 -->
+  <text
+     x="20"
+     y="2191"
+     class="subtitle"
+     id="text297">Как сужается окно: +1 и −1 обязательны</text>
+  <rect
+     x="20"
+     y="2203"
+     width="810"
+     height="116"
+     rx="6"
+     class="box-grey"
+     id="rect297" />
+  <text
+     x="35"
+     y="2226"
+     class="step"
+     font-weight="bold"
+     id="text298">Левая отсорт., target внутри:  right = mid − 1   (mid проверен, перешагиваем)</text>
+  <text
+     x="35"
+     y="2246"
+     class="step"
+     font-weight="bold"
+     id="text299">Левая отсорт., target снаружи: left  = mid + 1   (mid проверен, перешагиваем)</text>
+  <text
+     x="35"
+     y="2266"
+     class="step"
+     font-weight="bold"
+     id="text300">Правая отсорт.: симметрично.</text>
+  <text
+     x="35"
+     y="2286"
+     class="dim"
+     id="text301">Без +1/−1: если left==right — mid==left==right, никуда не сдвинемся → бесконечный цикл.</text>
+  <text
+     x="35"
+     y="2303"
+     class="dim"
+     id="text302">+1/−1 гарантируют: каждый шаг выбрасывает ≥1 элемент. Цикл конечен.</text>
+  <line
+     x1="20"
+     y1="2333"
+     x2="830"
+     y2="2333"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line302" />
+  <!-- ══════════════════ ИТОГО -->
+  <text
+     x="20"
+     y="2356"
+     class="subtitle"
+     id="text303">Итого: ключевые отличия 33 от 704</text>
+  <text
+     x="40"
+     y="2378"
+     class="step"
+     id="text304">✅  704: одно условие «target vs mid». 33: два шага — (1) какая половина, (2) зажим target в ней.</text>
+  <text
+     x="40"
+     y="2398"
+     class="step"
+     id="text305">✅  nums[left] ≤ nums[mid] → левая [left..mid] отсортирована; иначе → правая [mid..right].</text>
+  <text
+     x="40"
+     y="2418"
+     class="step"
+     id="text306">✅  left нестрогое ≤ (граница, не проверена), mid строгое &lt; (уже проверен), right нестрогое ≤.</text>
+  <text
+     x="40"
+     y="2438"
+     class="step"
+     id="text307">✅  left ≤ right: последний кандидат (left==right) тоже проверяется. left &lt; right → пропустим его.</text>
+  <text
+     x="40"
+     y="2458"
+     class="step"
+     id="text308">✅  mid = left + (right−left)/2: right−left это расстояние, не сумма → нет переполнения int.</text>
+  <line
+     x1="20"
+     y1="2478"
+     x2="830"
+     y2="2478"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line308" />
+  <text
+     x="424.23007"
+     y="2491.3804"
+     text-anchor="middle"
+     class="step"
+     font-weight="bold"
+     id="text309">Разрыв всегда в одной половине → другая всегда отсортирована → зажимаем target только в ней.</text>
+  <text
+     x="425"
+     y="2506.1504"
+     text-anchor="middle"
+     class="dim"
+     id="text310">Время: O(log n) Память: O(1) — три переменных left/right/mid, нет рекурсии, нет доп. структур</text>
+</svg>

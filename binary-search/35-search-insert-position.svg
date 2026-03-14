@@ -1,0 +1,337 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 1990" font-family="monospace" font-size="14">
+  <style>
+    .title    { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+    .step     { font-size: 13px; fill: #1a1a2e; }
+    .note     { font-size: 12px; fill: #e94560; font-weight: bold; }
+    .dim      { font-size: 12px; fill: #888; }
+    .ptr      { font-size: 11px; font-weight: bold; }
+    .cell     { stroke: #333; stroke-width: 1.5; }
+    .win      { fill: #d4edda; }
+    .rem      { fill: #f8d7da; }
+    .best     { fill: #cce5ff; }
+    .err-box  { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; }
+    .ok-box   { fill: #d4edda; fill-opacity: 0.3; stroke: #28a745; stroke-width: 1.5; }
+    .key-box  { fill: #fffbea; fill-opacity: 0.85; stroke: #f59e0b; stroke-width: 2.5; }
+    .ins-cell { fill: #c8e6c9; stroke: #28a745; stroke-width: 2.5; }
+  </style>
+
+  <!-- ══════════════════════════════════════════════════════════ TITLE -->
+  <text x="425" y="30" text-anchor="middle" class="title">35. Search Insert Position (Easy)</text>
+  <text x="425" y="50" text-anchor="middle" class="dim">Binary Search из 704 + одно изменение: target не найден → return left (место вставки), а не −1</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ SETUP -->
+  <text x="20"  y="80"  class="subtitle">Вход: nums = [1, 3, 5, 6],  target = 2  →  ответ: индекс 1  (вставить 2 перед 3)</text>
+  <text x="20"  y="100" class="step">Шаг 0: left = 0,  right = nums.length−1 = 3.  Весь массив — зона поиска.</text>
+  <text x="20"  y="116" class="dim">Массив отсортирован → mid всегда делит на "точно меньше" и "точно больше". Мусора нет.</text>
+
+  <!-- Стартовый массив: все win, L=0 R=3 -->
+  <g transform="translate(20,128)">
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <text x="25"  y="20" text-anchor="middle">1</text>
+    <text x="75"  y="20" text-anchor="middle">3</text>
+    <text x="125" y="20" text-anchor="middle">5</text>
+    <text x="175" y="20" text-anchor="middle">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#e94560">L=0</text>
+    <text x="175" y="62" text-anchor="middle" class="ptr" fill="#e94560">R=3</text>
+  </g>
+  <text x="290" y="148" class="step">left = 0,  right = 3</text>
+  <text x="290" y="165" class="dim">Все 4 элемента — кандидаты.</text>
+  <text x="290" y="182" class="dim">mid ещё не вычислен.</text>
+
+  <line x1="20" y1="210" x2="830" y2="210" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════════ ITERATION 1 -->
+  <text x="20" y="230" class="subtitle">Итерация 1: left=0, right=3 → mid = 0 + (3−0)/2 = 1</text>
+  <text x="20" y="250" class="step">nums[mid] = nums[1] = 3.  3 &gt; target=2 → target где-то левее mid.</text>
+  <text x="20" y="266" class="step">mid=1 уже проверен, не подходит → right = mid−1 = <tspan fill="#e94560" font-weight="bold">0</tspan>  (перешагиваем через проверенный mid)</text>
+
+  <!-- Итерация 1: [0]=win, [1]=best(mid), [2,3]=win -->
+  <g transform="translate(20,278)">
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell best"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <text x="25"  y="20" text-anchor="middle">1</text>
+    <text x="75"  y="20" text-anchor="middle" font-weight="bold">3</text>
+    <text x="125" y="20" text-anchor="middle">5</text>
+    <text x="175" y="20" text-anchor="middle">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#e94560">L=0</text>
+    <text x="75"  y="62" text-anchor="middle" class="ptr" fill="#4a90d9">M=1</text>
+    <text x="175" y="62" text-anchor="middle" class="ptr" fill="#e94560">R=3</text>
+  </g>
+  <text x="290" y="298" class="step">nums[1]=3 &gt; target=2</text>
+  <text x="290" y="315" class="note">→ right = mid−1 = 0</text>
+  <text x="290" y="332" class="dim">Правая половина [1..3] выброшена.</text>
+  <text x="290" y="349" class="dim">Осталось кандидатов: [0..0]</text>
+
+  <text x="20" y="375" class="dim">После шага: 3 из 4 элементов выброшено за одну итерацию — O(log n) в действии.</text>
+
+  <line x1="20" y1="389" x2="830" y2="389" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════ ITERATION 2 (last) -->
+  <text x="20" y="409" class="subtitle">Итерация 2 (последняя): left=0, right=0 → mid = 0 + (0−0)/2 = 0</text>
+  <text x="20" y="429" class="step">nums[mid] = nums[0] = 1.  1 &lt; target=2 → target где-то правее mid.</text>
+  <text x="20" y="445" class="step">mid=0 проверен, не подходит → left = mid+1 = <tspan fill="#28a745" font-weight="bold">1</tspan>.  Теперь left=1 &gt; right=0 → цикл завершён!</text>
+
+  <!-- Итерация 2: [0]=best(mid), [1,2,3]=rem (выброшены после ит.1) -->
+  <g transform="translate(20,457)">
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell best"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <text x="25"  y="20" text-anchor="middle" font-weight="bold">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#c00">3</text>
+    <text x="125" y="20" text-anchor="middle" fill="#c00">5</text>
+    <text x="175" y="20" text-anchor="middle" fill="#c00">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <!-- left=right=mid=0 — все три указателя на один элемент -->
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#4a90d9">L=R=M=0</text>
+  </g>
+  <text x="290" y="477" class="step">nums[0]=1 &lt; target=2</text>
+  <text x="290" y="494" class="note">→ left = mid+1 = 1</text>
+  <text x="290" y="511" class="dim">left=1 &gt; right=0</text>
+  <text x="290" y="528" class="note">Цикл завершён! → return left = 1</text>
+
+  <line x1="20" y1="552" x2="830" y2="552" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════ ⭐ KEY FEATURE: LEFT ПЕРЕШАГИВАЕТ RIGHT -->
+  <rect x="15" y="567" width="820" height="370" rx="8" class="key-box"/>
+  <text x="425" y="593" text-anchor="middle" font-size="15px" font-weight="bold" fill="#92400e">⭐  Ключевая фича: left перешагивает через right → return left = место вставки</text>
+  <text x="425" y="612" text-anchor="middle" class="dim">В 704 target не найден → return −1.  В 35 — return left, потому что left точно указывает на место вставки.</text>
+
+  <!-- Панель "ДО перешагивания" (левая половина) -->
+  <text x="205" y="639" text-anchor="middle" class="step" font-weight="bold">До перешагивания</text>
+  <text x="205" y="655" text-anchor="middle" class="dim">left=right=mid=0, nums[0]=1 &lt; target=2</text>
+
+  <g transform="translate(95,665)">
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell best"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <text x="25"  y="20" text-anchor="middle" font-weight="bold">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#c00">3</text>
+    <text x="125" y="20" text-anchor="middle" fill="#c00">5</text>
+    <text x="175" y="20" text-anchor="middle" fill="#c00">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#4a90d9">L=R=M=0</text>
+  </g>
+  <!-- Действие: left прыгает на 1 -->
+  <text x="205" y="755" text-anchor="middle" class="step">1 &lt; 2 → left = 0 + 1 = <tspan fill="#28a745" font-weight="bold">1</tspan></text>
+
+  <!-- Стрелка между панелями -->
+  <line x1="365" y1="700" x2="455" y2="700" stroke="#f59e0b" stroke-width="2.5"/>
+  <polygon points="455,695 468,700 455,705" fill="#f59e0b"/>
+
+  <!-- Панель "ПОСЛЕ перешагивания" (правая половина) -->
+  <text x="645" y="639" text-anchor="middle" class="step" font-weight="bold" fill="#e94560">После перешагивания!</text>
+  <text x="645" y="655" text-anchor="middle" class="dim">left=1 &gt; right=0 → while(left&lt;=right) ложь → выход</text>
+
+  <g transform="translate(530,665)">
+    <!-- Все красные — ни один не прошёл проверку как target -->
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <text x="25"  y="20" text-anchor="middle" fill="#c00">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#c00">3</text>
+    <text x="125" y="20" text-anchor="middle" fill="#c00">5</text>
+    <text x="175" y="20" text-anchor="middle" fill="#c00">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <!-- right=0 и left=1 — left перешагнул вправо через right -->
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#e94560">R=0</text>
+    <text x="75"  y="62" text-anchor="middle" class="ptr" fill="#28a745">L=1 !</text>
+  </g>
+  <text x="645" y="755" text-anchor="middle" class="step" fill="#28a745" font-weight="bold">return left = 1  ✅</text>
+
+  <!-- Объяснение ПОЧЕМУ именно left — суть задачи -->
+  <text x="425" y="787" text-anchor="middle" class="step">left стоит ровно на первом элементе который БОЛЬШЕ target (3 &gt; 2) — это идеальное место вставки.</text>
+  <text x="425" y="803" text-anchor="middle" class="dim">left двигался вправо только когда nums[mid] &lt; target → "всё что левее меня точно меньше target".</text>
+  <text x="425" y="819" text-anchor="middle" class="dim">right двигался влево только когда nums[mid] &gt; target → "всё что правее меня точно больше target".</text>
+  <text x="425" y="835" text-anchor="middle" class="dim">При перешагивании: слева от left всё &lt; target, справа всё &gt; target → left = граница вставки.</text>
+
+  <!-- Визуализация результирующего массива с вставкой -->
+  <text x="425" y="858" text-anchor="middle" class="step" font-weight="bold">Вставляем target=2 на позицию left=1 → [1, <tspan fill="#28a745">2</tspan>, 3, 5, 6]</text>
+
+  <g transform="translate(300,867)">
+    <!-- Массив после вставки: 5 элементов, [1] — вставленный -->
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="ins-cell"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <rect x="200" y="0" width="50" height="30" rx="3" class="cell win"/>
+    <text x="25"  y="20" text-anchor="middle">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#28a745" font-weight="bold">2</text>
+    <text x="125" y="20" text-anchor="middle">3</text>
+    <text x="175" y="20" text-anchor="middle">5</text>
+    <text x="225" y="20" text-anchor="middle">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <text x="225" y="44" text-anchor="middle" class="dim">[4]</text>
+    <!-- Указатель на место вставки -->
+    <text x="75"  y="62" text-anchor="middle" class="ptr" fill="#28a745">↑ return left=1</text>
+  </g>
+  <!-- Конец key-box: 867+62+15=944, box ends at 567+370=937 — достаточно -->
+
+  <line x1="20" y1="955" x2="830" y2="955" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ════════════════════════════════════ ГРАНИЧНЫЕ СЛУЧАИ ВСТАВКИ -->
+  <text x="20" y="975" class="subtitle">Граничные случаи: left или right выходит за пределы массива</text>
+
+  <!-- ── Вставка в начало: target=0 ── -->
+  <text x="20" y="998"  class="step" font-weight="bold">Вставка в начало: target=0 → все элементы &gt; 0 → right уходит в −1</text>
+  <text x="20" y="1014" class="dim">Iter A: mid=1, nums[1]=3 &gt; 0 → right=0.  Iter B: mid=0, nums[0]=1 &gt; 0 → right=−1.</text>
+  <text x="20" y="1030" class="dim">left=0 &gt; right=−1 → цикл завершён. right ушёл ЗА ЛЕВУЮ ГРАНИЦУ — left остался на 0.</text>
+
+  <!-- Финальное состояние: ghost-ячейка на позиции −1 (призрак правее, за левым краем) -->
+  <g transform="translate(70,1040)">
+    <!-- Призрачная ячейка [−1] — right ушёл сюда, за пределы массива -->
+    <rect x="-50" y="0" width="50" height="30" rx="3" style="fill:none;stroke:#e94560;stroke-width:1.5;stroke-dasharray:5,3;"/>
+    <text x="-25" y="20" text-anchor="middle" fill="#e94560" font-style="italic">∅</text>
+    <text x="-25" y="44" text-anchor="middle" class="dim">[−1]</text>
+    <!-- Реальные ячейки: все красные (target не найден) -->
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <text x="25"  y="20" text-anchor="middle" fill="#c00">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#c00">3</text>
+    <text x="125" y="20" text-anchor="middle" fill="#c00">5</text>
+    <text x="175" y="20" text-anchor="middle" fill="#c00">6</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <!-- R=−1 на призрачной ячейке, L=0 на первой реальной -->
+    <text x="-25" y="62" text-anchor="middle" class="ptr" fill="#e94560">R=−1 !</text>
+    <text x="25"  y="62" text-anchor="middle" class="ptr" fill="#28a745">L=0</text>
+  </g>
+  <text x="295" y="1060" class="step">right = −1  (за пределами!)</text>
+  <text x="295" y="1077" class="dim">left=0 &gt; right=−1 → выход</text>
+  <text x="295" y="1094" class="step" fill="#28a745" font-weight="bold">return left = 0  ✅</text>
+  <text x="295" y="1111" class="dim">→ [<tspan fill="#28a745" font-weight="bold">0</tspan>, 1, 3, 5, 6]</text>
+
+  <!-- ── Вставка в конец: target=7 ── -->
+  <text x="20" y="1142" class="step" font-weight="bold">Вставка в конец: target=7 → все элементы &lt; 7 → left уходит в 4 (n)</text>
+  <text x="20" y="1158" class="dim">Iter A: mid=1, 3&lt;7 → left=2.  Iter B: mid=2, 5&lt;7 → left=3.  Iter C: mid=3, 6&lt;7 → left=4.</text>
+  <text x="20" y="1174" class="dim">left=4 &gt; right=3 → цикл завершён. left ушёл ЗА ПРАВУЮ ГРАНИЦУ — вставка в самый конец.</text>
+
+  <!-- Финальное состояние: ghost-ячейка на позиции 4 (left ушёл за правый край) -->
+  <g transform="translate(20,1184)">
+    <!-- Реальные ячейки: все красные -->
+    <rect x="0"   y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="50"  y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="100" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <rect x="150" y="0" width="50" height="30" rx="3" class="cell rem"/>
+    <!-- Призрачная ячейка [4] — left ушёл сюда, за правую границу -->
+    <rect x="200" y="0" width="50" height="30" rx="3" style="fill:none;stroke:#28a745;stroke-width:1.5;stroke-dasharray:5,3;"/>
+    <text x="25"  y="20" text-anchor="middle" fill="#c00">1</text>
+    <text x="75"  y="20" text-anchor="middle" fill="#c00">3</text>
+    <text x="125" y="20" text-anchor="middle" fill="#c00">5</text>
+    <text x="175" y="20" text-anchor="middle" fill="#c00">6</text>
+    <text x="225" y="20" text-anchor="middle" fill="#28a745" font-style="italic">∅</text>
+    <text x="25"  y="44" text-anchor="middle" class="dim">[0]</text>
+    <text x="75"  y="44" text-anchor="middle" class="dim">[1]</text>
+    <text x="125" y="44" text-anchor="middle" class="dim">[2]</text>
+    <text x="175" y="44" text-anchor="middle" class="dim">[3]</text>
+    <text x="225" y="44" text-anchor="middle" fill="#28a745" class="dim">[4]</text>
+    <!-- R=3 на последнем реальном, L=4 на призрачной ячейке -->
+    <text x="175" y="62" text-anchor="middle" class="ptr" fill="#e94560">R=3</text>
+    <text x="225" y="62" text-anchor="middle" class="ptr" fill="#28a745">L=4 !</text>
+  </g>
+  <text x="295" y="1204" class="step">left = 4  (за пределами!)</text>
+  <text x="295" y="1221" class="dim">left=4 &gt; right=3 → выход</text>
+  <text x="295" y="1238" class="step" fill="#28a745" font-weight="bold">return left = 4  ✅</text>
+  <text x="295" y="1255" class="dim">→ [1, 3, 5, 6, <tspan fill="#28a745" font-weight="bold">7</tspan>]</text>
+
+  <line x1="20" y1="1283" x2="830" y2="1283" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ════════════════════════ ПОЧЕМУ left &lt;= right, А НЕ left &lt; right -->
+  <text x="20" y="1303" class="subtitle">Почему left &lt;= right, а не left &lt; right — граничный случай одного элемента</text>
+  <text x="20" y="1323" class="dim">nums=[5], target=3 (вставка перед 5). Один элемент → left=0, right=0. Единственный кандидат — нужно войти в цикл.</text>
+
+  <rect x="20"  y="1335" width="395" height="108" rx="6" class="err-box"/>
+  <text x="35"  y="1358" class="step" fill="#e94560" font-weight="bold">✗  while (left &lt; right)</text>
+  <text x="35"  y="1378" class="dim">left=0, right=0: 0 &lt; 0 — ложь</text>
+  <text x="35"  y="1398" class="dim">Цикл не войдёт. nums[0]=5 не проверен.</text>
+  <text x="35"  y="1418" class="dim" fill="#e94560">return left=0 → БАГ! (должно быть 0, но</text>
+  <text x="35"  y="1436" class="dim" fill="#e94560">мы не знаем что 5 &gt; 3 → пропуск кандидата)</text>
+
+  <rect x="435" y="1335" width="395" height="108" rx="6" class="ok-box"/>
+  <text x="450" y="1358" class="step" fill="#28a745" font-weight="bold">✓  while (left &lt;= right)</text>
+  <text x="450" y="1378" class="dim">left=0, right=0: 0 &lt;= 0 — истина</text>
+  <text x="450" y="1398" class="dim">mid=0, nums[0]=5 &gt; 3 → right=−1</text>
+  <text x="450" y="1418" class="dim" fill="#28a745">left=0 &gt; right=−1 → return 0  ✓</text>
+  <text x="450" y="1436" class="dim">left==right → один кандидат, проверяем.</text>
+
+  <line x1="20" y1="1460" x2="830" y2="1460" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ════════════════════ ПОЧЕМУ mid = left + (right-left)/2 -->
+  <text x="20" y="1480" class="subtitle">Почему mid = left + (right − left) / 2, а не (left + right) / 2 — переполнение int</text>
+
+  <rect x="20"  y="1492" width="395" height="148" rx="6" class="err-box"/>
+  <text x="35"  y="1515" class="step" fill="#e94560" font-weight="bold">✗  (left + right) / 2 — переполнение!</text>
+  <text x="35"  y="1535" class="dim">left  = 2_000_000_000</text>
+  <text x="35"  y="1555" class="dim">right = 2_100_000_000</text>
+  <text x="35"  y="1575" class="dim">left + right = 4_100_000_000 ← переполнение int!</text>
+  <text x="35"  y="1595" class="dim" fill="#e94560">= −194_967_296 → 💥 ArrayIndexOutOfBounds</text>
+  <text x="35"  y="1615" class="dim">Integer.MAX_VALUE = 2_147_483_647</text>
+  <text x="35"  y="1632" class="dim" fill="#e94560">Взрыв до деления — порядок операций важен.</text>
+
+  <rect x="435" y="1492" width="395" height="148" rx="6" class="ok-box"/>
+  <text x="450" y="1515" class="step" fill="#28a745" font-weight="bold">✓  left + (right − left) / 2</text>
+  <text x="450" y="1535" class="dim">left  = 2_000_000_000</text>
+  <text x="450" y="1555" class="dim">right − left = 100_000_000  ← расстояние!</text>
+  <text x="450" y="1575" class="dim">100_000_000 / 2 = 50_000_000</text>
+  <text x="450" y="1595" class="dim" fill="#28a745">2_000_000_000 + 50_000_000 = 2_050_000_000 ✓</text>
+  <text x="450" y="1615" class="dim">Математически одно и то же (left/2 + right/2),</text>
+  <text x="450" y="1632" class="dim" fill="#28a745">но сначала вычитаем → маленькое число → нет взрыва.</text>
+
+  <text x="20" y="1660" class="dim">На LeetCode массивы маленькие — не сломается. Но в проде int[] легко на 2 млрд. Привычка писать безопасный вариант — профессиональная.</text>
+
+  <line x1="20" y1="1676" x2="830" y2="1676" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════════ КАК СУЖАЕТСЯ ОКНО -->
+  <text x="20" y="1699" class="subtitle">Как сужается окно: +1 и −1 обязательны</text>
+  <rect x="20" y="1711" width="810" height="118" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="35" y="1734" class="step" font-weight="bold">nums[mid] &gt; target   →  mid проверен, target левее    →  right = mid − 1</text>
+  <text x="35" y="1754" class="step" font-weight="bold">nums[mid] &lt; target   →  mid проверен, target правее   →  left  = mid + 1</text>
+  <text x="35" y="1774" class="step" font-weight="bold">nums[mid] == target  →  нашли                         →  return mid  (как в 704)</text>
+  <text x="35" y="1799" class="dim">Без +1/−1: mid уже проверен — перешагиваем. Если left==right и не перешагнуть: бесконечный цикл.</text>
+  <text x="35" y="1817" class="dim">+1/−1 гарантируют: каждый шаг выбрасывает ≥1 элемент. Цикл конечен. Худший случай: O(log₂ n) итераций.</text>
+
+  <line x1="20" y1="1845" x2="830" y2="1845" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════════════ ИТОГО -->
+  <text x="20" y="1868" class="subtitle">Итого: ключевые точки</text>
+  <text x="40" y="1890" class="step">✅  Всё как в 704 — Binary Search с left/right/mid. Единственное отличие: return left вместо return −1.</text>
+  <text x="40" y="1910" class="step">✅  left перешагивает right → left стоит на первом элементе &gt; target = идеальное место вставки.</text>
+  <text x="40" y="1930" class="step">✅  left &lt;= right — последний кандидат (left==right) тоже проверяется, нет пропуска.</text>
+  <text x="40" y="1950" class="step">✅  mid = left + (right−left)/2 — безопасное вычисление: right−left = расстояние, не сумма.</text>
+
+  <line x1="20" y1="1968" x2="830" y2="1968" stroke="#ddd" stroke-width="1"/>
+  <text x="425" y="1980" text-anchor="middle" class="step" font-weight="bold">left двигается вправо только когда nums[mid]&lt;target, right влево только когда nums[mid]&gt;target.</text>
+  <text x="425" y="1990" text-anchor="middle" class="dim">При перешагивании: слева от left всё &lt; target, справа всё &gt; target → left = место вставки.   Время: O(log n)   Память: O(1)</text>
+</svg>

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 850 2160" font-family="monospace" font-size="14"
+     xmlns="http://www.w3.org/2000/svg">
+
+<style>
+  .title    { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+  .subtitle { font-size: 14px; font-weight: bold; fill: #16213e; }
+  .step     { font-size: 13px; fill: #1a1a2e; }
+  .note     { font-size: 12px; fill: #e94560; font-weight: bold; }
+  .dim      { font-size: 12px; fill: #888; }
+  .ptr      { font-size: 11px; font-weight: bold; }
+  .cell     { stroke: #333; stroke-width: 1.5; }
+  .win      { fill: #d4edda; }
+  .rem      { fill: #f8d7da; }
+  .off      { fill: #f0f0f0; }
+  .err-box  { fill: #f8d7da; fill-opacity: 0.3; stroke: #e94560; stroke-width: 1.5; }
+  .ok-box   { fill: #d4edda; fill-opacity: 0.3; stroke: #28a745; stroke-width: 1.5; }
+  .box-grey { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; }
+  .box-blue { fill: #e8f4ff; fill-opacity: 0.6; stroke: #4a90d9; stroke-width: 1.5; }
+</style>
+
+<!-- ══════════════════════════════════════════════════════ TITLE -->
+<text x="425" y="30" text-anchor="middle" class="title">153. Find Minimum in Rotated Sorted Array (Medium)</text>
+<text x="425" y="50" text-anchor="middle" class="dim">Докрут 33: нет target — ищем точку разрыва напрямую. mid vs right, left &lt; right, right=mid → O(log n), O(1)</text>
+<line x1="20" y1="64" x2="830" y2="64" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ЧТО ЗНАЧИТ "ПОВЁРНУТ" -->
+<text x="20" y="86" class="subtitle">Что значит «повёрнут» — и почему задача проще чем 33</text>
+<text x="20" y="106" class="step">Исходный отсортированный массив (как в 704):</text>
+
+<!-- Original [0,1,2,4,5,6,7] all green -->
+<g transform="translate(20,116)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <text x="25"  y="19" text-anchor="middle">0</text>
+  <text x="75"  y="19" text-anchor="middle">1</text>
+  <text x="125" y="19" text-anchor="middle">2</text>
+  <text x="175" y="19" text-anchor="middle">4</text>
+  <text x="225" y="19" text-anchor="middle">5</text>
+  <text x="275" y="19" text-anchor="middle">6</text>
+  <text x="325" y="19" text-anchor="middle">7</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+</g>
+<text x="390" y="134" class="dim">Монотонно возрастает. Минимум = nums[0] = 0, виден сразу.</text>
+<text x="390" y="151" class="dim">В 33 искали target. Здесь target нет — ищем точку разрыва.</text>
+
+<text x="20" y="178" class="step">Повёрнут в точке k=4 (хвост массива переместился в голову):</text>
+
+<!-- Rotated [4,5,6,7,0,1,2] -->
+<g transform="translate(20,190)">
+  <!-- left sorted part [4,5,6,7] green -->
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell" fill="#d4edda"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell" fill="#d4edda"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell" fill="#d4edda"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell" fill="#d4edda"/>
+  <!-- break line -->
+  <line x1="200" y1="-6" x2="200" y2="36" stroke="#e94560" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <text x="200" y="-11" text-anchor="middle" font-size="11px" fill="#e94560" font-weight="bold">разрыв</text>
+  <!-- minimum cell highlighted -->
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd" stroke="#c87000" stroke-width="2.5"/>
+  <!-- right part [1,2] purple -->
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell" fill="#e8d5f5"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell" fill="#e8d5f5"/>
+  <!-- values -->
+  <text x="25"  y="19" text-anchor="middle">4</text>
+  <text x="75"  y="19" text-anchor="middle">5</text>
+  <text x="125" y="19" text-anchor="middle">6</text>
+  <text x="175" y="19" text-anchor="middle">7</text>
+  <text x="225" y="19" text-anchor="middle" font-weight="bold" fill="#c87000">0</text>
+  <text x="275" y="19" text-anchor="middle">1</text>
+  <text x="325" y="19" text-anchor="middle">2</text>
+  <!-- indices -->
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim" fill="#c87000">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <!-- min annotation -->
+  <text x="225" y="60" text-anchor="middle" font-size="11px" fill="#c87000" font-weight="bold">&#x2191; min=0</text>
+</g>
+<text x="390" y="210" class="dim">После поворота: две отсортированных части, между ними разрыв.</text>
+<text x="390" y="228" class="dim">Минимум ВСЕГДА в точке разрыва — начало правой части.</text>
+<text x="390" y="246" class="dim">Задача: найти точку разрыва за O(log n) без знания target.</text>
+
+<line x1="20" y1="268" x2="830" y2="268" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ПРАВИЛО 1: mid vs right -->
+<text x="20" y="290" class="subtitle">Правило 1 из 5: почему mid сравниваем с right, а не с left</text>
+
+<rect x="20"  y="302" width="393" height="164" rx="6" class="err-box"/>
+<text x="35"  y="324" class="step" fill="#e94560" font-weight="bold">&#x2717;  nums[left] vs nums[mid] — не работает без target</text>
+<text x="35"  y="344" class="dim">В 33 сравнивали left и mid — но там был target.</text>
+<text x="35"  y="362" class="dim">«Левая отсортирована? → target внутри или нет?»</text>
+<text x="35"  y="380" class="dim">Без target left — бесполезный ориентир.</text>
+<text x="35"  y="398" class="dim">[6,7,0,1,2,4,5]: nums[left]=6 &gt; nums[mid]=1</text>
+<text x="35"  y="416" class="dim">[4,5,6,7,0,1,2]: nums[left]=4 &lt; nums[mid]=7</text>
+<text x="35"  y="434" class="dim">Разные отношения — минимум в обоих случаях справа!</text>
+<text x="35"  y="454" class="dim" fill="#e94560">left vs mid → неопределённость → неверный выбор стороны.</text>
+
+<rect x="437" y="302" width="393" height="164" rx="6" class="ok-box"/>
+<text x="452" y="324" class="step" fill="#28a745" font-weight="bold">&#x2713;  nums[mid] vs nums[right] — работает само по себе</text>
+<text x="452" y="344" class="dim">Инвариант: минимум НИКОГДА не находится</text>
+<text x="452" y="362" class="dim">правее right. right — надёжная правая граница.</text>
+<text x="452" y="380" class="dim">nums[mid] &gt; nums[right]:</text>
+<text x="452" y="398" class="dim">  mid &gt; right → разрыв справа → left = mid+1</text>
+<text x="452" y="416" class="dim">nums[mid] &lt; nums[right]:</text>
+<text x="452" y="434" class="dim">  порядок справа сохранён → разрыв слева → right = mid</text>
+<text x="452" y="454" class="dim" fill="#28a745">Два случая, оба однозначны. Никакой неопределённости.</text>
+
+<line x1="20" y1="482" x2="830" y2="482" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ПРАВИЛО 2: как сдвигаться -->
+<text x="20" y="504" class="subtitle">Правило 2 из 5: как nums[mid] vs nums[right] выявляет сторону разрыва</text>
+
+<!-- CASE A -->
+<text x="20" y="524" class="step" font-weight="bold">Случай А: nums[mid] &gt; nums[right]  →  разрыв в ПРАВОЙ части  →  left = mid + 1</text>
+
+<!-- Array [4,5,6,7,0,1,2], L=0, M=3(7), R=6(2) -->
+<g transform="translate(20,532)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <text x="25"  y="19" text-anchor="middle">4</text>
+  <text x="75"  y="19" text-anchor="middle">5</text>
+  <text x="125" y="19" text-anchor="middle">6</text>
+  <text x="175" y="19" text-anchor="middle" font-weight="bold">7</text>
+  <text x="225" y="19" text-anchor="middle">0</text>
+  <text x="275" y="19" text-anchor="middle">1</text>
+  <text x="325" y="19" text-anchor="middle">2</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <text x="25"  y="60" text-anchor="middle" class="ptr" fill="#28a745">L=0</text>
+  <text x="175" y="60" text-anchor="middle" class="ptr" fill="#4a90d9">M=3</text>
+  <text x="325" y="60" text-anchor="middle" class="ptr" fill="#e94560">R=6</text>
+</g>
+<text x="390" y="550" class="dim">nums[3]=7, nums[6]=2</text>
+<text x="390" y="568" class="dim">7 &gt; 2 → nums[mid] &gt; nums[right]</text>
+<text x="390" y="586" class="dim">mid=3 точно НЕ минимум (7 выше правого края).</text>
+<text x="390" y="604" class="dim">Разрыв в правой части [mid+1..right].</text>
+<text x="390" y="620" class="step" fill="#e94560" font-weight="bold">→  left = mid + 1 = 4  (левую часть включая mid — выброс)</text>
+
+<!-- CASE B -->
+<text x="20" y="654" class="step" font-weight="bold">Случай Б: nums[mid] &lt; nums[right]  →  разрыв в ЛЕВОЙ части  →  right = mid</text>
+
+<!-- Array [6,7,0,1,2,4,5], L=0, M=3(1), R=6(5) -->
+<g transform="translate(20,662)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <text x="25"  y="19" text-anchor="middle">6</text>
+  <text x="75"  y="19" text-anchor="middle">7</text>
+  <text x="125" y="19" text-anchor="middle">0</text>
+  <text x="175" y="19" text-anchor="middle" font-weight="bold">1</text>
+  <text x="225" y="19" text-anchor="middle">2</text>
+  <text x="275" y="19" text-anchor="middle">4</text>
+  <text x="325" y="19" text-anchor="middle">5</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <text x="25"  y="60" text-anchor="middle" class="ptr" fill="#28a745">L=0</text>
+  <text x="175" y="60" text-anchor="middle" class="ptr" fill="#4a90d9">M=3</text>
+  <text x="325" y="60" text-anchor="middle" class="ptr" fill="#e94560">R=6</text>
+</g>
+<text x="390" y="680" class="dim">nums[3]=1, nums[6]=5</text>
+<text x="390" y="698" class="dim">1 &lt; 5 → nums[mid] &lt; nums[right]</text>
+<text x="390" y="716" class="dim">Разрыв в левой части [left..mid]. mid=3 МОГ</text>
+<text x="390" y="734" class="dim">оказаться минимумом — нельзя выбрасывать!</text>
+<text x="390" y="750" class="step" fill="#28a745" font-weight="bold">→  right = mid = 3  (не mid-1!  mid остаётся)</text>
+
+<line x1="20" y1="772" x2="830" y2="772" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ТРАССИРОВКА -->
+<text x="20" y="794" class="subtitle">Трассировка — nums=[4,5,6,7,0,1,2],  ищем минимум (answer = 0 @ index 4)</text>
+<text x="20" y="810" class="dim">Начало: left=0, right=6.  Цикл: left &lt; right → 0 &lt; 6 истина, входим.</text>
+
+<!-- ─── ИТЕРАЦИЯ 1 ─── -->
+<text x="20" y="832" class="step" font-weight="bold">Итерация 1:  left=0  right=6  mid = 0+(6-0)/2 = 3</text>
+
+<g transform="translate(20,842)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <text x="25"  y="19" text-anchor="middle">4</text>
+  <text x="75"  y="19" text-anchor="middle">5</text>
+  <text x="125" y="19" text-anchor="middle">6</text>
+  <text x="175" y="19" text-anchor="middle" font-weight="bold">7</text>
+  <text x="225" y="19" text-anchor="middle">0</text>
+  <text x="275" y="19" text-anchor="middle">1</text>
+  <text x="325" y="19" text-anchor="middle">2</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <text x="25"  y="60" text-anchor="middle" class="ptr" fill="#28a745">L=0</text>
+  <text x="175" y="60" text-anchor="middle" class="ptr" fill="#4a90d9">M=3</text>
+  <text x="325" y="60" text-anchor="middle" class="ptr" fill="#e94560">R=6</text>
+</g>
+<text x="390" y="862" class="step">nums[3]=7  vs  nums[6]=2</text>
+<text x="390" y="880" class="step">7 &gt; 2  →  разрыв в правой части [mid+1..right]</text>
+<text x="390" y="898" class="step">mid=3 точно НЕ минимум (7 выше правого края)</text>
+<text x="390" y="916" class="step" fill="#e94560" font-weight="bold">→  left = mid + 1 = 4</text>
+<text x="390" y="932" class="dim">Выброшены индексы 0..3, оконо сжалось с 7 до 3 элементов.</text>
+
+<!-- ─── ИТЕРАЦИЯ 2 ─── -->
+<text x="20" y="954" class="step" font-weight="bold">Итерация 2:  left=4  right=6  mid = 4+(6-4)/2 = 5</text>
+
+<g transform="translate(20,964)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <text x="25"  y="19" text-anchor="middle" class="dim">4</text>
+  <text x="75"  y="19" text-anchor="middle" class="dim">5</text>
+  <text x="125" y="19" text-anchor="middle" class="dim">6</text>
+  <text x="175" y="19" text-anchor="middle" class="dim">7</text>
+  <text x="225" y="19" text-anchor="middle">0</text>
+  <text x="275" y="19" text-anchor="middle" font-weight="bold">1</text>
+  <text x="325" y="19" text-anchor="middle">2</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <text x="225" y="60" text-anchor="middle" class="ptr" fill="#28a745">L=4</text>
+  <text x="275" y="60" text-anchor="middle" class="ptr" fill="#4a90d9">M=5</text>
+  <text x="325" y="60" text-anchor="middle" class="ptr" fill="#e94560">R=6</text>
+</g>
+<text x="390" y="984" class="step">nums[5]=1  vs  nums[6]=2</text>
+<text x="390" y="1002" class="step">1 &lt; 2  →  разрыв в левой части [left..mid]</text>
+<text x="390" y="1020" class="step">mid=5 МОГ оказаться минимумом — не выбрасываем</text>
+<text x="390" y="1038" class="step" fill="#28a745" font-weight="bold">→  right = mid = 5  (не mid-1!)</text>
+<text x="390" y="1054" class="dim">Выброшен индекс 6. Окно сжалось с 3 до 2 элементов.</text>
+
+<!-- ─── ИТЕРАЦИЯ 3 ─── -->
+<text x="20" y="1076" class="step" font-weight="bold">Итерация 3:  left=4  right=5  mid = 4+(5-4)/2 = 4</text>
+
+<g transform="translate(20,1086)">
+  <rect x="0"   y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="50"  y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="100" y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="150" y="0" width="50" height="28" rx="3" class="cell off"/>
+  <rect x="200" y="0" width="50" height="28" rx="3" class="cell" fill="#fff3cd"/>
+  <rect x="250" y="0" width="50" height="28" rx="3" class="cell win"/>
+  <rect x="300" y="0" width="50" height="28" rx="3" class="cell off"/>
+  <text x="25"  y="19" text-anchor="middle" class="dim">4</text>
+  <text x="75"  y="19" text-anchor="middle" class="dim">5</text>
+  <text x="125" y="19" text-anchor="middle" class="dim">6</text>
+  <text x="175" y="19" text-anchor="middle" class="dim">7</text>
+  <text x="225" y="19" text-anchor="middle" font-weight="bold">0</text>
+  <text x="275" y="19" text-anchor="middle">1</text>
+  <text x="325" y="19" text-anchor="middle" class="dim">2</text>
+  <text x="25"  y="42" text-anchor="middle" class="dim">[0]</text>
+  <text x="75"  y="42" text-anchor="middle" class="dim">[1]</text>
+  <text x="125" y="42" text-anchor="middle" class="dim">[2]</text>
+  <text x="175" y="42" text-anchor="middle" class="dim">[3]</text>
+  <text x="225" y="42" text-anchor="middle" class="dim">[4]</text>
+  <text x="275" y="42" text-anchor="middle" class="dim">[5]</text>
+  <text x="325" y="42" text-anchor="middle" class="dim">[6]</text>
+  <text x="225" y="60" text-anchor="middle" class="ptr" fill="#4a90d9">L=M=4</text>
+  <text x="275" y="60" text-anchor="middle" class="ptr" fill="#e94560">R=5</text>
+</g>
+<text x="390" y="1106" class="step">nums[4]=0  vs  nums[5]=1</text>
+<text x="390" y="1124" class="step">0 &lt; 1  →  разрыв в левой части</text>
+<text x="390" y="1142" class="step">mid=4 МОГ оказаться минимумом — не выбрасываем</text>
+<text x="390" y="1160" class="step" fill="#28a745" font-weight="bold">→  right = mid = 4</text>
+<text x="390" y="1176" class="dim">Теперь left=4, right=4. Условие 4 &lt; 4 — ложь. Выход.</text>
+
+<!-- Result box -->
+<rect x="20" y="1196" width="810" height="48" rx="6" class="box-blue"/>
+<text x="425" y="1218" text-anchor="middle" class="step">left == right == 4.  Оба указателя сошлись на минимуме.</text>
+<text x="425" y="1236" text-anchor="middle" class="step" font-weight="bold" fill="#4a90d9">return nums[left] = nums[4] = 0  ✓    (3 итерации: 7 → 3 → 2 → 1 кандидат)</text>
+
+<line x1="20" y1="1258" x2="830" y2="1258" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ПРАВИЛО 3: left < right -->
+<text x="20" y="1280" class="subtitle">Правило 3 из 5: цикл left &lt; right, а не left ≤ right</text>
+<text x="20" y="1298" class="dim">Пример: nums=[2,1]. Минимум=1 (индекс 1). Начало: left=0, right=1.</text>
+
+<rect x="20"  y="1308" width="393" height="130" rx="6" class="err-box"/>
+<text x="35"  y="1330" class="step" fill="#e94560" font-weight="bold">&#x2717;  while (left ≤ right) — бесконечный цикл!</text>
+<text x="35"  y="1350" class="dim">mid=0. nums[0]=2 &gt; nums[1]=1 → left=mid+1=1.</text>
+<text x="35"  y="1368" class="dim">left=1, right=1. 1≤1 → входим. mid=1.</text>
+<text x="35"  y="1386" class="dim">nums[1] NOT&gt; nums[1] → else: right=mid=1. Нет сдвига.</text>
+<text x="35"  y="1404" class="dim">left=1, right=1. 1≤1 → снова входим. mid=1...</text>
+<text x="35"  y="1422" class="dim" fill="#e94560">right=mid не сдвигает указатель → вечный цикл 💥</text>
+
+<rect x="437" y="1308" width="393" height="130" rx="6" class="ok-box"/>
+<text x="452" y="1330" class="step" fill="#28a745" font-weight="bold">&#x2713;  while (left &lt; right) — корректное завершение</text>
+<text x="452" y="1350" class="dim">mid=0. nums[0]=2 &gt; nums[1]=1 → left=mid+1=1.</text>
+<text x="452" y="1368" class="dim">left=1, right=1. 1 &lt; 1 — ЛОЖЬ. Выходим.</text>
+<text x="452" y="1386" class="dim" fill="#28a745">return nums[1] = 1  ✓</text>
+<text x="452" y="1404" class="dim">Когда left==right — ответ уже найден.</text>
+<text x="452" y="1422" class="dim">Входить в цикл бессмысленно и опасно.</text>
+
+<line x1="20" y1="1454" x2="830" y2="1454" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ПРАВИЛО 4: right = mid -->
+<text x="20" y="1476" class="subtitle">Правило 4 из 5: right = mid, а не right = mid − 1</text>
+<text x="20" y="1494" class="dim">Пример: nums=[3,1,2]. Минимум=1 (индекс 1). left=0, right=2, mid=1.</text>
+<text x="20" y="1510" class="dim">nums[1]=1 &lt; nums[2]=2 → разрыв слева. mid=1 МОГ оказаться минимумом.</text>
+
+<rect x="20"  y="1520" width="393" height="120" rx="6" class="err-box"/>
+<text x="35"  y="1542" class="step" fill="#e94560" font-weight="bold">&#x2717;  right = mid − 1 = 0 — выбросим минимум!</text>
+<text x="35"  y="1562" class="dim">right=0. Окно: [0..0] → {nums[0]=3}.</text>
+<text x="35"  y="1580" class="dim">left=0, right=0. 0&lt;0 → ложь. Выходим.</text>
+<text x="35"  y="1598" class="dim" fill="#e94560">return nums[0] = 3 → НЕВЕРНО! Минимум=1 выброшен.</text>
+<text x="35"  y="1616" class="dim">В 33 mid==target проверялся — mid можно было выбросить.</text>
+<text x="35"  y="1632" class="dim">Здесь такой проверки нет — mid остаётся кандидатом.</text>
+
+<rect x="437" y="1520" width="393" height="120" rx="6" class="ok-box"/>
+<text x="452" y="1542" class="step" fill="#28a745" font-weight="bold">&#x2713;  right = mid — сохраняем mid как кандидата</text>
+<text x="452" y="1562" class="dim">right=1. Окно: [0..1] → {3, 1}.</text>
+<text x="452" y="1580" class="dim">mid=0. nums[0]=3 &gt; nums[1]=1 → left=mid+1=1.</text>
+<text x="452" y="1598" class="dim">left=1, right=1. 1&lt;1 → ложь. Выходим.</text>
+<text x="452" y="1616" class="dim" fill="#28a745">return nums[1] = 1  ✓</text>
+<text x="452" y="1632" class="dim">Нет гарантии mid != min → нельзя выбрасывать.</text>
+
+<line x1="20" y1="1656" x2="830" y2="1656" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ПРАВИЛО 5: return nums[left] -->
+<text x="20" y="1678" class="subtitle">Правило 5 из 5: return nums[left], а не return −1</text>
+
+<rect x="20" y="1690" width="810" height="84" rx="6" class="ok-box"/>
+<text x="35"  y="1712" class="step">Цикл left &lt; right завершается только когда left == right.</text>
+<text x="35"  y="1732" class="dim">Оба указателя сошлись в одной точке — это и есть минимум (инвариант алгоритма).</text>
+<text x="35"  y="1752" class="dim">В 33 возвращали −1: target могло отсутствовать в массиве.</text>
+<text x="35"  y="1766" class="dim" fill="#28a745">Здесь минимум ВСЕГДА существует → return nums[left] (= nums[right]). Никогда return −1.</text>
+
+<line x1="20" y1="1790" x2="830" y2="1790" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ MID FORMULA -->
+<text x="20" y="1812" class="subtitle">Почему mid = left + (right − left) / 2, а не (left + right) / 2 — переполнение int</text>
+
+<rect x="20"  y="1824" width="393" height="126" rx="6" class="err-box"/>
+<text x="35"  y="1846" class="step" fill="#e94560" font-weight="bold">&#x2717;  (left + right) / 2 — переполнение!</text>
+<text x="35"  y="1866" class="dim">left  = 2_000_000_000</text>
+<text x="35"  y="1886" class="dim">right = 2_100_000_000</text>
+<text x="35"  y="1906" class="dim">left + right = 4_100_000_000  ← взрыв int!</text>
+<text x="35"  y="1926" class="dim" fill="#e94560">→ −194_967_296 → 💥 ArrayIndexOutOfBounds</text>
+<text x="35"  y="1942" class="dim">Integer.MAX_VALUE = 2_147_483_647</text>
+
+<rect x="437" y="1824" width="393" height="126" rx="6" class="ok-box"/>
+<text x="452" y="1846" class="step" fill="#28a745" font-weight="bold">&#x2713;  left + (right − left) / 2</text>
+<text x="452" y="1866" class="dim">left  = 2_000_000_000</text>
+<text x="452" y="1886" class="dim">right − left = 100_000_000  ← просто расстояние</text>
+<text x="452" y="1906" class="dim">100_000_000 / 2 = 50_000_000</text>
+<text x="452" y="1926" class="dim" fill="#28a745">2_000_000_000 + 50_000_000 = 2_050_000_000  ✓</text>
+<text x="452" y="1942" class="dim">Сначала вычитаем → маленькое расстояние → нет взрыва.</text>
+
+<line x1="20" y1="1966" x2="830" y2="1966" stroke="#ddd" stroke-width="1"/>
+
+<!-- ══════════════════════════════════════ ИТОГО -->
+<text x="20" y="1988" class="subtitle">Итого: 5 ключевых правил 153 — чем отличается от 33</text>
+<text x="40" y="2010" class="step">&#x2705;  Правило 1: mid vs right (не left vs mid) — left без target не ориентир. right — гарантированная граница минимума.</text>
+<text x="40" y="2030" class="step">&#x2705;  Правило 2: nums[mid] &gt; nums[right] → left=mid+1 (разрыв справа); nums[mid] &lt; nums[right] → right=mid (разрыв слева).</text>
+<text x="40" y="2050" class="step">&#x2705;  Правило 3: left &lt; right (не ≤): при left==right ответ уже найден — входить не нужно, иначе бесконечный цикл.</text>
+<text x="40" y="2070" class="step">&#x2705;  Правило 4: right=mid (не mid−1): mid может оказаться минимумом, у нас нет проверки «mid==target» как в 33.</text>
+<text x="40" y="2090" class="step">&#x2705;  Правило 5: return nums[left] (не −1): минимум в массиве всегда есть, left и right сошлись точно на нём.</text>
+
+<line x1="20" y1="2110" x2="830" y2="2110" stroke="#ddd" stroke-width="1"/>
+<text x="425" y="2130" text-anchor="middle" class="step" font-weight="bold">mid vs right однозначно определяет сторону разрыва → сужаемся до одной точки → это и есть минимум.</text>
+<text x="425" y="2148" text-anchor="middle" class="dim">Время: O(log n)  Память: O(1) — три переменных left/right/mid, нет рекурсии, нет доп. структур</text>
+
+</svg>
